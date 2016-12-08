@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.neon.deardiary">
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity android:name=".Activities.StartActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <activity android:name=".Activities.MainActivity">
+
+        </activity>
+        <activity android:name=".Activities.EditActivity" />
+        <activity android:name=".Activities.SearchActivity" />
+        <activity android:name=".Activities.SettingActivity" />
+
+        <receiver
+            android:name=".NotifyReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote"
+            >
+            <intent-filter>
+                <action android:name="com.example.neon.deardiary.Reciver" />
+            </intent-filter>
+        </receiver>
+        <service android:name=".MyService"/>
+    </application>
+
+</manifest>
