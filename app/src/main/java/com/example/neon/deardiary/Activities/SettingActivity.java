@@ -43,13 +43,13 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
     //设置项在ListView中的位置
     private static final int REMIND_ME_TO_WRITE = 0;
     //    private static final int TEXT_SIZE = 1;
-    private static final int SET_PASSWORD = 1;
+//    private static final int SET_PASSWORD = 1;
 
 
     private int[] settingsID = {R.string.remind_me,
-            R.string.set_password};
+            };
     private int[] iconId = {R.drawable.remind_icon,
-            R.drawable.lock_icon};
+           };
 
     private SharedPreferences preferences;
 
@@ -109,10 +109,7 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
     /**
      * 相应LisView点击事件
      *
-     * @param parent
-     * @param view
-     * @param position
-     * @param id
+     *
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -124,9 +121,9 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
 //            case TEXT_SIZE:
 //                Toast.makeText(this, "该功能正在开发中...", Toast.LENGTH_SHORT).show();
 //                break;
-            case SET_PASSWORD:
-                Toast.makeText(this, "该功能正在开发中...", Toast.LENGTH_SHORT).show();
-                break;
+//            case SET_PASSWORD:
+//                Toast.makeText(this, "该功能正在开发中...", Toast.LENGTH_SHORT).show();
+//                break;
         }
     }
 
