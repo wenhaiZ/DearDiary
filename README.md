@@ -16,10 +16,10 @@
 数据储存SQLite、适配器BaseAdapter、ListView、BroadcastReceier、Activity、基础布局和控件
 * 效果截图
 <p>
-![主界面](https://github.com/neon-zhao/DearDiary/blob/master/app/src/main/res/pic/Screenshot_2016-12-08-22-07-34-267_com.example.ne.png?raw=true)
-![查看指定日期的日记](https://github.com/neon-zhao/DearDiary/blob/master/app/src/main/res/pic/Screenshot_2016-12-08-22-08-16-150_com.example.ne.png?raw=true)
-![搜索页](https://github.com/neon-zhao/DearDiary/blob/master/app/src/main/res/pic/Screenshot_2016-12-08-22-07-42-693_com.example.ne.png?raw=true)
-![设置页](https://github.com/neon-zhao/DearDiary/blob/master/app/src/main/res/pic/Screenshot_2016-12-08-22-07-50-981_com.example.ne.png?raw=true)
-![设置提醒](https://github.com/neon-zhao/DearDiary/blob/master/app/src/main/res/pic/Screenshot_2016-12-08-22-07-56-930_com.example.ne.png?raw=true)
-![日记撰写](https://github.com/neon-zhao/DearDiary/blob/master/app/src/main/res/pic/Screenshot_2016-12-08-22-08-09-680_com.example.ne.png?raw=true)
+![主界面](https://github.com/neon-zhao/DearDiary/blob/master/pic/Screenshot_2016-12-08-22-07-34-267_com.example.ne.png?raw=true)
+![查看指定日期的日记](https://github.com/neon-zhao/DearDiary/blob/master/pic/Screenshot_2016-12-08-22-08-16-150_com.example.ne.png?raw=true)
+![搜索页](https://github.com/neon-zhao/DearDiary/blob/master/pic/Screenshot_2016-12-08-22-07-42-693_com.example.ne.png?raw=true)
+![设置页](https://github.com/neon-zhao/DearDiary/blob/master/pic/Screenshot_2016-12-08-22-07-50-981_com.example.ne.png?raw=true)
+![设置提醒](https://github.com/neon-zhao/DearDiary/blob/master/pic/Screenshot_2016-12-08-22-07-56-930_com.example.ne.png?raw=true)
+![日记撰写](https://github.com/neon-zhao/DearDiary/blob/master/pic/Screenshot_2016-12-08-22-08-09-680_com.example.ne.png?raw=true)
 <p/>
