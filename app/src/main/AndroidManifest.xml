@@ -3,7 +3,6 @@
     package="com.example.neon.deardiary">
 
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <application
         android:allowBackup="true"
@@ -37,7 +36,6 @@
                 <action android:name="com.example.neon.deardiary.Reciver" />
             </intent-filter>
         </receiver>
-        <service android:name=".MyService"/>
     </application>
 
 </manifest>

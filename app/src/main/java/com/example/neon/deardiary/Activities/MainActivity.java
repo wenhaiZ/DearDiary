@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -16,98 +15,34 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.neon.deardiary.Adapter.AdapterForMainList;
-import com.example.neon.deardiary.DBManager;
+import com.example.neon.deardiary.DAO.DaoOpsHelper;
 import com.example.neon.deardiary.DatePickerDialogForBug;
-import com.example.neon.deardiary.MySQLHelper;
+import com.example.neon.deardiary.Diary;
 import com.example.neon.deardiary.R;
 
 import java.util.Calendar;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String TAG = "MainActivity";
+//    private static final String TAG = "MainActivity";
 
     private TextView year, month;//底部显示年月
     private ListView diaryList;//当月日记列表
     private AdapterForMainList adapter;//ListView的适配器
     private Calendar today;
-    private MySQLHelper helper;
-    private int scrollPos, scrollTop;
-
-//    private int currentItem = 0;
-//    private boolean atTop = false;
-//    private boolean atBottom = false;
-//    private GestureDetector detector;
+    private DaoOpsHelper daoHelper;
+    private int scrollPos, scrollTop;//记录滑动位置
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        today = Calendar.getInstance();
-        Log.d(TAG, "onCreate: " + today.toString());
-        helper = DBManager.newInstance(this);
+        today = Calendar.getInstance();//获得今天日期
+        daoHelper = new DaoOpsHelper(this);
         initView();
-//        detector = new GestureDetector(MainActivity.this, new GestureDetector.OnGestureListener() {
-//            @Override
-//            public boolean onDown(MotionEvent e) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onShowPress(MotionEvent e) {
-//
-//            }
-//
-//            @Override
-//            public boolean onSingleTapUp(MotionEvent e) {
-//
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-//                float y1 = e1.getY();
-//                float y2 = e2.getY();
-//                if (y1 - y2 > 50 && atBottom) {
-//                    Log.d(TAG, "onScroll: 在底部向上滑动 " + (y1 - y2));
-//                }
-//                if (y2 - y1 > 50 && atTop) {
-//                    Log.d(TAG, "onScroll: 在顶部向下滑动" + (y2 - y1));
-////                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,1);
-////                    lp.setMargins(0,(int)(y2-y1),0,0);
-////                    diaryList.setLayoutParams(lp);
-//                    diaryList.setY(y2 - y1);
-//
-//
-//
-//                }
-//
-//
-//                return false;
-//            }
-//
-//            @Override
-//            public void onLongPress(MotionEvent e) {
-//
-//            }
-//
-//            @Override
-//            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-//                Log.d(TAG, "onFling: ");
-//                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1);
-//                lp.setMargins(0, 0, 0, 0);
-//                diaryList.setLayoutParams(lp);
-//                return false;
-//            }
-//        });
     }
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
 
     /**
      * 初始化组件
@@ -129,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .setPositiveButton("是", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                helper.clearTable();
-                                adapter.setCursor(helper.queryAddDefault(today));
+                                daoHelper.deleteAll();
+                                adapter.setCalendar(today);
                                 adapter.notifyDataSetChanged();
                             }
                         }).setNegativeButton("否", null).create().show();
@@ -138,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
             }
         });
+
         //主界面左下角的显示时间的LinearLayout，点击可选择时间
         LinearLayout chooseDate = (LinearLayout) findViewById(R.id.chooseDate);
         chooseDate.setOnClickListener(new View.OnClickListener() {
@@ -153,13 +89,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Calendar calender = Calendar.getInstance();
                         if (today.before(calender)) {
                             setMainDate();
-                            adapter.setCursor(helper.queryAddDefault(today));
+                            adapter.setCalendar(today);
                             adapter.notifyDataSetChanged();
                             diaryList.setSelection(dayOfMonth - 1);
                         } else {//如果当前所选当前月份超前，跳到当前月份
                             today = calender;
                             setMainDate();
-                            adapter.setCursor(helper.queryAddDefault(today));
+                            adapter.setCalendar(today);
                             adapter.notifyDataSetChanged();
                             Toast.makeText(MainActivity.this, "只能选到今天", Toast.LENGTH_SHORT).show();
                         }
@@ -173,9 +109,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         year = (TextView) findViewById(R.id.year_in_main);
         month = (TextView) findViewById(R.id.month_in_main);
         setMainDate();
+
         //初始化ListView
-        diaryList = (ListView) findViewById(R.id.diaryList);
-        diaryList.setDividerHeight(0);
         inflateListView();
 
     }
@@ -185,10 +120,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 填充ListView数据项
      */
     private void inflateListView() {
+        diaryList = (ListView) findViewById(R.id.diaryList);
+        diaryList.setDividerHeight(0);
         //从数据库中查询当前月的日记记录
         adapter = new AdapterForMainList(this, today);
         diaryList.setAdapter(adapter);
         diaryList.setOnItemClickListener(adapter);
+        diaryList.setSelection(today.get(Calendar.DAY_OF_MONTH)-1);
 //        diaryList.setOnScrollListener(new AbsListView.OnScrollListener() {
 //            @Override
 //            public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -265,7 +203,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(this, EditActivity.class);
                 Bundle b = new Bundle();
                 //无论何时按下"撰",都会打开今天日记的编辑页面
-                b.putSerializable("calendar", Calendar.getInstance());
+                Diary diary = daoHelper.queryByDay(Calendar.getInstance());
+                b.putSerializable("diary", diary);
                 intent.putExtras(b);
                 startActivity(intent);
                 break;
@@ -276,7 +215,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.settings:
                 Intent intent1 = new Intent(this, SettingActivity.class);
                 startActivity(intent1);
-//                helper.fillTable();//写入测试数据
                 break;
         }
 
@@ -293,7 +231,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 由Calendar对象设置主界面时间
      */
     public void setMainDate() {
-
         int curYear = today.get(Calendar.YEAR);
         int curMonth = today.get(Calendar.MONTH) + 1;
         year.setText(String.format(Locale.getDefault(), "%d", curYear));

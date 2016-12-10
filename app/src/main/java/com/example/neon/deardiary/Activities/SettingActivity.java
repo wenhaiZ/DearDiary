@@ -64,8 +64,6 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
         preferences = getSharedPreferences(Constant.SHARED_PREFERENCE, Context.MODE_PRIVATE);
         setContentView(R.layout.settings);
         initComponent();
-
-
     }
 
 
@@ -231,7 +229,7 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
                         Log.d(TAG, "onTimeSet: triggerMills " + triggerMills);
                     }
                 }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true);
-                //设置丢画框标题
+                //设置对话框标题
                 chooseTimeDialog.setTitle("设置提醒时间");
                 chooseTimeDialog.show();
             }
