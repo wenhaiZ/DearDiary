@@ -1,28 +1,25 @@
 package com.example.neon.deardiary.Activities;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.neon.deardiary.Adapter.AdapterForSearch;
-import com.example.neon.deardiary.DBConstant;
-import com.example.neon.deardiary.DBManager;
+import com.example.neon.deardiary.DAO.DaoOpsHelper;
+import com.example.neon.deardiary.Diary;
 import com.example.neon.deardiary.R;
+
+import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
     private EditText search;
     private static final String TAG = "SearchActivity";
     private ListView resultList;
-    private SQLiteDatabase database;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,18 +46,14 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                Log.d(TAG, "afterTextChanged() called with: s = [" + s + "]");
-                database = DBManager.newInstance(SearchActivity.this).getReadableDatabase();
                 String key = s.toString();
-                Cursor cursor;
+                List<Diary> diaries;
                 if (!"".equals(key)) {
                     resultList.setVisibility(View.VISIBLE);
-                    cursor = database.rawQuery("select * from " + DBConstant.TABLE_NAME + " where " + DBConstant.CONTENT + " like '%" + key + "%'", null);
-                    AdapterForSearch adapterForSearch = new AdapterForSearch(SearchActivity.this, cursor);
+                    diaries = new DaoOpsHelper(SearchActivity.this).queryByContent("%"+key+"%");
+                    AdapterForSearch adapterForSearch = new AdapterForSearch(SearchActivity.this, diaries);
                     resultList.setAdapter(adapterForSearch);
                     resultList.setOnItemClickListener(adapterForSearch);
-                    database.close();
-
                 } else {
                     //若输入为空,则隐藏resultList
                     resultList.setVisibility(View.INVISIBLE);

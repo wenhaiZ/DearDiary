@@ -11,13 +11,10 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.neon.deardiary.Activities.EditActivity;
+import com.example.neon.deardiary.DAO.DaoOpsHelper;
 
 import java.util.Calendar;
 
-
-/**
- *
- */
 public class NotifyReceiver extends BroadcastReceiver {
     private static final String TAG = "NotifyReceiver";
 
@@ -36,8 +33,8 @@ public class NotifyReceiver extends BroadcastReceiver {
         int remindIdFromPreference = context.getSharedPreferences(Constant.SHARED_PREFERENCE, Context.MODE_PRIVATE).getInt(Constant.REMIND_ID, 65535);
         //从intent中读取id，该intent可能是上次设置的提醒中的，所以要进行判断
         int remindIdFromIntent = intent.getIntExtra(Constant.REMIND_ID, 0);
-        Log.d(TAG, "onReceive: isRemind?"+isRemind+" remindIdFromPreference:"
-        +remindIdFromPreference+",remindIdFromIntent: "+remindIdFromIntent);
+        Log.d(TAG, "onReceive: isRemind?" + isRemind + " remindIdFromPreference:"
+                + remindIdFromPreference + ",remindIdFromIntent: " + remindIdFromIntent);
         //如果开启了提醒，并且当前intent中的remind_id与配置文件中的相等，那么发送通知
         if (isRemind && (remindIdFromIntent == remindIdFromPreference)) {
             //发送通知
@@ -60,7 +57,7 @@ public class NotifyReceiver extends BroadcastReceiver {
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         //启复用上次的Intent，只更改 lastTime 的数据,确保remind_id不变，可以进行重复通知
         intent.putExtra(Constant.LAST_TIME, nextTime);
-        int remind_id = intent.getIntExtra(Constant.REMIND_ID,0);
+        int remind_id = intent.getIntExtra(Constant.REMIND_ID, 0);
         //用于发送广播的PendingIntent
         PendingIntent sender = PendingIntent.getBroadcast(context, Constant.REMIND_CODE, intent, PendingIntent.FLAG_ONE_SHOT);
         am.setExact(AlarmManager.RTC, nextTime, sender);
@@ -74,7 +71,14 @@ public class NotifyReceiver extends BroadcastReceiver {
         Intent mIntent = new Intent(context, EditActivity.class);
         Bundle b = new Bundle();
         //放入今天日期
-        b.putSerializable("calendar", Calendar.getInstance());
+        Calendar today = Calendar.getInstance();
+        DaoOpsHelper helper = new DaoOpsHelper(context);
+        Diary diary = helper.queryByDay(today);
+        if (diary == null) {
+            diary = new Diary(today);
+            helper.insertDairy(diary);
+        }
+        b.putSerializable("diary", diary);
         mIntent.putExtras(b);
         //包装上面Intent的PendingIntent
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, mIntent, 0);
