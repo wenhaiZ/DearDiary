@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 import com.example.neon.deardiary.Adapter.AdapterForSearch;
 import com.example.neon.deardiary.DAO.DaoOpsHelper;
-import com.example.neon.deardiary.Diary;
+import com.example.neon.deardiary.DAO.Diary;
 import com.example.neon.deardiary.R;
 
 import java.util.List;

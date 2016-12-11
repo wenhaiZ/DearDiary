@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.example.neon.deardiary.Adapter.AdapterForMainList;
 import com.example.neon.deardiary.DAO.DaoOpsHelper;
 import com.example.neon.deardiary.DatePickerDialogForBug;
-import com.example.neon.deardiary.Diary;
+import com.example.neon.deardiary.DAO.Diary;
 import com.example.neon.deardiary.R;
 
 import java.util.Calendar;

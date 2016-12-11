@@ -12,7 +12,7 @@ import com.example.neon.deardiary.R;
 /**
  * Splash Activity
  */
-public class StartActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity {
 
     private Handler handler = new Handler();
 
@@ -24,7 +24,7 @@ public class StartActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(StartActivity.this, MainActivity.class));
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();
             }
         }, 1200);
