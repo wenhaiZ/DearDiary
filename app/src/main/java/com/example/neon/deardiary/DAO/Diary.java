@@ -13,54 +13,44 @@ import java.util.Calendar;
  */
 
 @Entity
-public class Diary implements Serializable{
+public class Diary implements Serializable {
     @Id
     private Long id;//数据库id
     private int year;//年
     private int month;//月
     private int dayOfMonth;//日
     private int dayOfWeek;//星期
+
+    private int hour;//当天最后一次编辑的小时
+    private int minute;//当天最后一次编辑的分钟
+    private String title;//日记标题
+
     private String content;//日记内容
 
     private static final long serialVersionUID = 0L;
 
-
-    public Diary(int year, int month, int dayOfMonth, int dayOfWeek, String content) {
-        this.year = year;
-        this.month = month;
-        this.dayOfMonth = dayOfMonth;
-        this.dayOfWeek = dayOfWeek;
-        this.content = content;
-    }
-
-
     public Diary(Calendar c) {
-
         this.year = c.get(Calendar.YEAR);
         this.month = c.get(Calendar.MONTH) + 1;
         this.dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
         this.dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
         this.content = "";
+        this.title = "";
+        this.hour = 0;
+        this.minute = 0;
     }
 
-    public Diary(Calendar c, String content) {
-
-        this.year = c.get(Calendar.YEAR);
-        this.month = c.get(Calendar.MONTH) + 1;
-        this.dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
-        this.dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-        this.content = content;
-    }
-
-
-    @Generated(hash = 1463434633)
-    public Diary(Long id, int year, int month, int dayOfMonth, int dayOfWeek,
-                 String content) {
+    @Generated(hash = 455145805)
+    public Diary(Long id, int year, int month, int dayOfMonth, int dayOfWeek, int hour,
+                 int minute, String title, String content) {
         this.id = id;
         this.year = year;
         this.month = month;
         this.dayOfMonth = dayOfMonth;
         this.dayOfWeek = dayOfWeek;
+        this.hour = hour;
+        this.minute = minute;
+        this.title = title;
         this.content = content;
     }
 
@@ -94,14 +84,6 @@ public class Diary implements Serializable{
         this.dayOfMonth = dayOfMonth;
     }
 
-    public int getdayOfWeek() {
-        return dayOfWeek;
-    }
-
-    public void setdayOfWeek(int dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
-    }
-
     public String getContent() {
         return content;
     }
@@ -128,5 +110,35 @@ public class Diary implements Serializable{
 
     public void setDayOfWeek(int dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
+    }
+
+
+    public int getHour() {
+        return this.hour;
+    }
+
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+
+    public int getMinute() {
+        return this.minute;
+    }
+
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
+
+    public String getTitle() {
+        return this.title;
+    }
+
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

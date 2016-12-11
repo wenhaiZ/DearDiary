@@ -54,15 +54,21 @@ public class AdapterForSearch extends BaseAdapter implements AdapterView.OnItemC
             holder = new ViewHolder();
             holder.content = (TextView) convertView.findViewById(R.id.result_content);
             holder.date = (TextView) convertView.findViewById(R.id.result_date);
+            holder.title = (TextView) convertView.findViewById(R.id.result_title);
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();
         Diary diary = diaries.get(position);
         holder.content.setText(diary.getContent());
-        String year = diary.getYear()+"";
-        String month = diary.getMonth()+"";
-        String dayOfMonth = diary.getDayOfMonth()+"";
-        holder.date.setText(year + "年" + month + "月" + dayOfMonth + "日");
+        holder.title.setText(diary.getTitle());
+        String year = diary.getYear() + "";
+        String month = diary.getMonth() + "";
+        String dayOfMonth = diary.getDayOfMonth() + "";
+        //设置分钟
+        String minute = diary.getMinute() < 10 ? "0" + diary.getMinute() : diary.getMinute() + "";
+        String hour = diary.getHour() < 10 ? "0" + diary.getHour() : diary.getHour() + "";
+        holder.date.setText(year + "年" + month + "月" + dayOfMonth + "日 "
+                + hour + "时" + minute + "分");
         return convertView;
     }
 
@@ -79,8 +85,9 @@ public class AdapterForSearch extends BaseAdapter implements AdapterView.OnItemC
     }
 
     private class ViewHolder {
-        private TextView content;
         private TextView date;
+        private TextView title;
+        private TextView content;
 
     }
 

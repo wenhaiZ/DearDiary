@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Calendar today;
     private DaoOpsHelper daoHelper;
     private int scrollPos, scrollTop;//记录滑动位置
+    private boolean isFirstStart;
 
 
     @Override
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         today = Calendar.getInstance();//获得今天日期
         daoHelper = new DaoOpsHelper(this);
+        isFirstStart = true;
         initView();
     }
 
@@ -76,40 +78,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //主界面左下角的显示时间的LinearLayout，点击可选择时间
         LinearLayout chooseDate = (LinearLayout) findViewById(R.id.chooseDate);
-        chooseDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final DatePickerDialogForBug datePick = new DatePickerDialogForBug(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        //根据所选日期更新ListView和主页面时间
-                        today.set(Calendar.YEAR, year);
-                        today.set(Calendar.MONTH, monthOfYear);
-                        today.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        Calendar calender = Calendar.getInstance();
-                        if (today.before(calender)) {
-                            setMainDate();
-                            adapter.setCalendar(today);
-                            adapter.notifyDataSetChanged();
-                            diaryList.setSelection(dayOfMonth - 1);
-                        } else {//如果当前所选当前月份超前，跳到当前月份
-                            today = calender;
-                            setMainDate();
-                            adapter.setCalendar(today);
-                            adapter.notifyDataSetChanged();
-                            Toast.makeText(MainActivity.this, "只能选到今天", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
-                datePick.show();
-            }
-        });
+        chooseDate.setOnClickListener(this);
 
         //设置显示的日期
         year = (TextView) findViewById(R.id.year_in_main);
         month = (TextView) findViewById(R.id.month_in_main);
         setMainDate();
-
         //初始化ListView
         inflateListView();
 
@@ -126,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         adapter = new AdapterForMainList(this, today);
         diaryList.setAdapter(adapter);
         diaryList.setOnItemClickListener(adapter);
-        diaryList.setSelection(today.get(Calendar.DAY_OF_MONTH)-1);
+
 //        diaryList.setOnScrollListener(new AbsListView.OnScrollListener() {
 //            @Override
 //            public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -175,13 +149,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-//        //重设adapter的Calendar,并刷新数据
-        adapter.setCalendar(today);
-        adapter.notifyDataSetChanged();
+        configList();
+    }
 
-        //恢复到指定位置
-        diaryList.setSelectionFromTop(scrollPos, scrollTop);
-
+    private void configList() {
+        if (isFirstStart) {
+            diaryList.setSelection(today.get(Calendar.DAY_OF_MONTH) - 1);
+            diaryList.setSelection(diaryList.getCount() - 1);
+            isFirstStart = false;
+        } else {
+            //重设adapter的Calendar,并刷新数据
+            adapter.setCalendar(today);
+            adapter.notifyDataSetChanged();
+            //恢复到指定位置
+            diaryList.setSelectionFromTop(scrollPos, scrollTop);
+        }
 
     }
 
@@ -203,7 +185,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(this, EditActivity.class);
                 Bundle b = new Bundle();
                 //无论何时按下"撰",都会打开今天日记的编辑页面
-                Diary diary = daoHelper.queryByDay(Calendar.getInstance());
+                Calendar t = Calendar.getInstance();
+                Diary diary = daoHelper.queryByDay(t);
+                //这是个小概率时间，即用户在Activity中过零点后点击，此时数据库总并没有第二天的数据
+                if (diary == null) {
+                    diary = new Diary(t);
+                    daoHelper.insertDairy(diary);
+                }
                 b.putSerializable("diary", diary);
                 intent.putExtras(b);
                 startActivity(intent);
@@ -216,8 +204,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent1 = new Intent(this, SettingActivity.class);
                 startActivity(intent1);
                 break;
+            case R.id.chooseDate:
+                showDatePickDialog();
+                break;
         }
 
+    }
+
+
+    private void showDatePickDialog() {
+        final DatePickerDialogForBug datePick = new DatePickerDialogForBug(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                //根据所选日期更新ListView和主页面时间
+                today.set(Calendar.YEAR, year);
+                today.set(Calendar.MONTH, monthOfYear);
+                today.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                Calendar calender = Calendar.getInstance();
+                if (today.before(calender)) {
+                    setMainDate();
+                    adapter.setCalendar(today);
+                    adapter.notifyDataSetChanged();
+                    diaryList.setSelection(dayOfMonth - 1);
+                } else {//如果当前所选当前月份超前，跳到当前月份
+                    today = calender;
+                    setMainDate();
+                    adapter.setCalendar(today);
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(MainActivity.this, "只能选到今天", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
+        datePick.show();
     }
 
 

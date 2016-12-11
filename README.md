@@ -2,7 +2,20 @@
 >模仿iOS上的日记应用《素记》，做了一个安卓版的，算作学习安卓三个月的作业。
 初步功能已实现，还存在一些问题。后续会不断优化代码，并结合学习的新内容为应用增添新功能。
 
-##v1.1.0    更新时间 2016年12月10日 ##
+##v1.2.0  更新时间 2016年12月12日 ##
+* 增加了日记标题和编辑时间，并重新调整布局
+* 继续优化代码
+
+<p>更新后的布局
+![主界面](https://github.com/neon-zhao/DearDiary/blob/addtitle/pic/update_main.png?raw=true)
+![搜索面](https://github.com/neon-zhao/DearDiary/blob/addtitle/pic/update_search.png?raw=true)
+![编辑面](https://github.com/neon-zhao/DearDiary/blob/addtitle/pic/update_edit.png?raw=true)
+<p/>
+
+
+
+
+##v1.1.0    更新时间 2016年12月10日 ##
 * 用 GreenDao 框架重构了数据库代码
 * 优化了一些代码  
   

@@ -1,33 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="2dp">
-
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background"
+        android:background="@drawable/item_background"
         android:orientation="vertical"
-        android:padding="5dp">
+        android:padding="6dp">
+
+        <TextView
+            android:id="@+id/result_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="哦弄"
+            android:textColor="#000000"
+            android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/result_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:text="jfsdjfadfnvnoiahnfkkhciaidiasdhfidhfijsdoifioasdnfnvznvosdni"
-            android:textColor="#000000"
-            android:textSize="15sp" />
+            android:textColor="#353535"
+            android:textSize="15sp"/>
 
         <TextView
             android:id="@+id/result_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="4dp"
             android:text="2016年4月3日"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
     </LinearLayout>
-
-
 </LinearLayout>

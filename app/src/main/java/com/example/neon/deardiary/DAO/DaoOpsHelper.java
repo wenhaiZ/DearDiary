@@ -2,8 +2,6 @@ package com.example.neon.deardiary.DAO;
 
 import android.content.Context;
 
-import com.example.neon.deardiary.DiaryDao;
-
 import java.util.Calendar;
 import java.util.List;
 
@@ -34,10 +32,7 @@ public class DaoOpsHelper {
      * @param diary
      */
     public void updateDiary(Diary diary) {
-
-        Diary mDiary = diaryDao.loadByRowId(diary.getId());
-        mDiary.setContent(diary.getContent());
-        diaryDao.update(mDiary);
+        diaryDao.update(diary);
     }
 
     /**
@@ -62,7 +57,6 @@ public class DaoOpsHelper {
                 DiaryDao.Properties.Month.eq(month),
                 DiaryDao.Properties.DayOfMonth.eq(day)).unique();
     }
-
 
     /**
      * 查找一个月的记录
@@ -124,9 +118,13 @@ public class DaoOpsHelper {
 
 
     public List<Diary> queryByContent(String key){
-        return diaryDao.queryBuilder().where(DiaryDao.Properties.Content.like(key)).list();
+        return diaryDao.queryBuilder()
+                .where(DiaryDao.Properties.Content.like(key))
+                .orderDesc(DiaryDao.Properties.Year)
+                .orderDesc(DiaryDao.Properties.Month)
+                .orderDesc(DiaryDao.Properties.DayOfMonth)
+                .list();
     }
-
 
     /**
      * 查询所有日记内容不为空的记录，返回记录数量
