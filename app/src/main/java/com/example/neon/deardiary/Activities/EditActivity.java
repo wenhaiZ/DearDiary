@@ -18,8 +18,9 @@ import com.example.neon.deardiary.R;
 import java.util.Calendar;
 
 public class EditActivity extends AppCompatActivity implements View.OnClickListener {
-        private static final String TAG = "EditActivity";
+    private static final String TAG = "EditActivity";
     private EditText diaryContent;//编辑日记内容的输入框
+    private EditText diaryTitle;
     private DaoOpsHelper helper;
     private Diary diary;//每一个EditActivity对应一个日记实体
 
@@ -38,11 +39,13 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         helper = new DaoOpsHelper(this);
         Button appendTime = (Button) findViewById(R.id.appendTime);
         Button done = (Button) findViewById(R.id.done_write);
+        diaryTitle = (EditText) findViewById(R.id.diary_title);
+        diaryTitle.setText(diary.getTitle());
         diaryContent = (EditText) findViewById(R.id.diary_content);
         diaryContent.setText(diary.getContent());
-        //设置顶部标题时间
+        //设置底部标题时间
         TextView titleTime = (TextView) findViewById(R.id.titleTime);
-        titleTime.setText(diary.getYear()+"年"+diary.getMonth()+"月"+diary.getDayOfMonth()+"月");
+        titleTime.setText(diary.getYear() + "年" + diary.getMonth() + "月" + diary.getDayOfMonth() + "日");
         //将光标移到末尾
         diaryContent.requestFocus();
         diaryContent.setSelection(diaryContent.getText().length());
@@ -62,7 +65,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         Bundle b = getIntent().getExtras();
         if (b != null) {
             diary = (Diary) b.get("diary");
-            Log.d(TAG, "initDiaryFromIntent: "+diary.getYear()+","+diary.getMonth()+","+diary.getDayOfMonth());
+            Log.d(TAG, "initDiaryFromIntent: " + diary.getYear() + "," + diary.getMonth() + "," + diary.getDayOfMonth());
         } else {
             new AlertDialog.Builder(this).setMessage("未知错误,请重试。").setNegativeButton("确定", new DialogInterface.OnClickListener() {
                 @Override
@@ -71,17 +74,17 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }).create().show();
         }
-        if(diary==null){
+        if (diary == null) {
             Log.e(TAG, "initDiaryFromIntent: diary == null");
         }
     }
-
 
 
     @Override
     public void onClick(View view) {
 
         switch (view.getId()) {
+
             case R.id.appendTime:
                 //附加的是当前时间，重新获得一个Calendar对象
                 Calendar now = Calendar.getInstance();
@@ -92,10 +95,24 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.done_write:
                 //更新日记内容
                 String newContent = diaryContent.getText().toString();
-                diary.setContent(newContent);
-                helper.updateDiary(diary);
-                int diaryCount = helper.getValidDiaryCount();
-                getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE).edit().putInt(Constant.DIARY_COUNT, diaryCount).apply();
+                String title = diaryTitle.getText().toString();
+                //如果标题或内容变化进行更新数据
+                if (!newContent.equals(diary.getContent()) || !title.equals(diary.getTitle())) {
+                    diary.setContent(newContent);
+                    diary.setTitle(title);
+                    //设定时间
+                    Calendar c = Calendar.getInstance();
+                    int wHour = c.get(Calendar.HOUR_OF_DAY);
+                    int wMinute = c.get(Calendar.MINUTE);
+                    diary.setHour(wHour);
+                    diary.setMinute(wMinute);
+                    helper.updateDiary(diary);
+                    //更新有效日记数量并写入
+                    int diaryCount = helper.getValidDiaryCount();
+                    getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE)
+                            .edit().putInt(Constant.DIARY_COUNT, diaryCount)
+                            .apply();
+                }
                 finish();
                 break;
         }

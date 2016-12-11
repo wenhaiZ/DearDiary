@@ -28,12 +28,13 @@ import java.util.Locale;
 public class AdapterForMainList extends BaseAdapter implements AdapterView.OnItemClickListener {
     private Context context;
     private Calendar calendar;
-//    private static final String TAG = "AdapterForMainList";
-    private final String[] DAY_OF_WEEK={"","周日","周一","周二","周三","周四","周五","周六"};
+    private static final String TAG = "AdapterForMainList";
+    private final String[] DAY_OF_WEEK = {"", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
     private List<Diary> data;//ListView的数据源
 
     /**
      * 更改Adapter对应的Calendar，这会更改cursor，即adapter的数据发生变化
+     *
      * @param calendar
      */
     public void setCalendar(Calendar calendar) {
@@ -41,9 +42,9 @@ public class AdapterForMainList extends BaseAdapter implements AdapterView.OnIte
         this.data = new DaoOpsHelper(context).queryAddDefault(this.calendar);
     }
 
-
     /**
      * 构造方法
+     *
      * @param context
      * @param c
      */
@@ -73,16 +74,14 @@ public class AdapterForMainList extends BaseAdapter implements AdapterView.OnIte
     //获取视图
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         //获得当前位置的Diary
         Diary diary = this.data.get(position);
-        String dayOfWeek = DAY_OF_WEEK[diary.getDayOfWeek()];
-        //判断当前记录日记内容是否为空
-        if ("".equals(diary.getContent())) {
+        int dayOfWeek = diary.getDayOfWeek();
+        //判断当前记录日记内容和标题是否都为空
+        if ("".equals(diary.getContent()) && "".equals(diary.getTitle())) {
             convertView = LayoutInflater.from(context).inflate(R.layout.main_list_null_item, null);
             TextView textView = (TextView) convertView.findViewById(R.id.null_content);
-
-            if (dayOfWeek.equals("周六") || dayOfWeek.equals("周日")) {
+            if (dayOfWeek == 1 || dayOfWeek == 7) {
                 textView.setTextColor(context.getResources().getColor(R.color.
                         red));
             }
@@ -94,19 +93,26 @@ public class AdapterForMainList extends BaseAdapter implements AdapterView.OnIte
         ViewHolder holder;
         if (convertView == null || (boolean) convertView.getTag(R.string.isNull)) {
             LayoutInflater inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.main_list_item, null);
+            convertView = inflater.inflate(R.layout.main_list_item_title, null);
             holder = new ViewHolder();
             holder.content = (TextView) convertView.findViewById(R.id.content);
             holder.dayOfMonth = (TextView) convertView.findViewById(R.id.day_of_month);
             holder.dayOfWeek = (TextView) convertView.findViewById(R.id.week);
+            holder.editTime = (TextView) convertView.findViewById(R.id.editTime);
+            holder.title = (TextView) convertView.findViewById(R.id.title);
             convertView.setTag(R.string.isNull, false);
             convertView.setTag(holder);
         }
         //设置显示的内容
         holder = (ViewHolder) convertView.getTag();
-        holder.dayOfMonth.setText(String.format(Locale.getDefault(),"%d",diary.getDayOfMonth()));
-        holder.dayOfWeek.setText(dayOfWeek);
+        holder.dayOfMonth.setText(String.format(Locale.getDefault(), "%d", diary.getDayOfMonth()));
+        holder.dayOfWeek.setText(DAY_OF_WEEK[dayOfWeek]);
+        holder.title.setText(diary.getTitle());
         holder.content.setText(diary.getContent());
+        //分钟小于0，前面加个0
+        String minute = diary.getMinute() < 10 ? "0" + diary.getMinute() : diary.getMinute() + "";
+        String hour = diary.getHour() < 10 ? "0" + diary.getHour() : diary.getHour() + "";
+        holder.editTime.setText(hour + ":" + minute);
         return convertView;
     }
 
@@ -126,5 +132,7 @@ public class AdapterForMainList extends BaseAdapter implements AdapterView.OnIte
         private TextView dayOfMonth;
         private TextView dayOfWeek;
         private TextView content;
+        private TextView title;
+        private TextView editTime;
     }
 }

@@ -2,9 +2,6 @@ package com.example.neon.deardiary.DAO;
 
 import android.content.Context;
 
-import com.example.neon.deardiary.DaoMaster;
-import com.example.neon.deardiary.DaoSession;
-
 import org.greenrobot.greendao.database.Database;
 
 /**
