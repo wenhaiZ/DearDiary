@@ -1,4 +1,4 @@
-package com.example.neon.deardiary;
+package com.example.neon.deardiary.DAO;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;

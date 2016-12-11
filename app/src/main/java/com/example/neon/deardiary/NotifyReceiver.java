@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.example.neon.deardiary.Activities.EditActivity;
 import com.example.neon.deardiary.DAO.DaoOpsHelper;
+import com.example.neon.deardiary.DAO.Diary;
 
 import java.util.Calendar;
 

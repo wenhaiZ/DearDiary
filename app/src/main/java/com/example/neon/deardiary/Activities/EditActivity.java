@@ -12,11 +12,10 @@ import android.widget.TextView;
 
 import com.example.neon.deardiary.Constant;
 import com.example.neon.deardiary.DAO.DaoOpsHelper;
-import com.example.neon.deardiary.Diary;
+import com.example.neon.deardiary.DAO.Diary;
 import com.example.neon.deardiary.R;
 
 import java.util.Calendar;
-import java.util.Locale;
 
 public class EditActivity extends AppCompatActivity implements View.OnClickListener {
         private static final String TAG = "EditActivity";
@@ -34,7 +33,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
     //初始化组件
     private void initComponent() {
-        //从Intent获取 Calendar 对象,
+        //从Intent获取 Diary 对象,
         initDiaryFromIntent();
         helper = new DaoOpsHelper(this);
         Button appendTime = (Button) findViewById(R.id.appendTime);
@@ -42,13 +41,8 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         diaryContent = (EditText) findViewById(R.id.diary_content);
         diaryContent.setText(diary.getContent());
         //设置顶部标题时间
-        TextView year = (TextView) findViewById(R.id.year_in_edit);
-        TextView month = (TextView) findViewById(R.id.month_in_edit);
-        TextView day = (TextView) findViewById(R.id.day_in_edit);
-        year.setText(String.format(Locale.getDefault(), "%d", diary.getYear()));
-        month.setText(String.format(Locale.getDefault(), "%d", diary.getMonth()));
-        day.setText(String.format(Locale.getDefault(), "%d", diary.getDayOfMonth()));
-
+        TextView titleTime = (TextView) findViewById(R.id.titleTime);
+        titleTime.setText(diary.getYear()+"年"+diary.getMonth()+"月"+diary.getDayOfMonth()+"月");
         //将光标移到末尾
         diaryContent.requestFocus();
         diaryContent.setSelection(diaryContent.getText().length());

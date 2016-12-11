@@ -11,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.neon.deardiary.Activities.EditActivity;
-import com.example.neon.deardiary.Diary;
+import com.example.neon.deardiary.DAO.Diary;
 import com.example.neon.deardiary.R;
 
 import java.util.List;

@@ -2,7 +2,6 @@ package com.example.neon.deardiary.DAO;
 
 import android.content.Context;
 
-import com.example.neon.deardiary.Diary;
 import com.example.neon.deardiary.DiaryDao;
 
 import java.util.Calendar;
