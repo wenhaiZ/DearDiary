@@ -7,9 +7,9 @@
 * 继续优化代码
 
 <p>更新后的布局
-![主界面](https://github.com/neon-zhao/DearDiary/blob/addtitle/pic/update_main.png?raw=true)
-![搜索面](https://github.com/neon-zhao/DearDiary/blob/addtitle/pic/update_search.png?raw=true)
-![编辑面](https://github.com/neon-zhao/DearDiary/blob/addtitle/pic/update_edit.png?raw=true)
+![主界面](https://github.com/neon-zhao/DearDiary/blob/master/pic/update_main.png)
+![搜索面](https://github.com/neon-zhao/DearDiary/blob/master/pic/update_search.png)
+![编辑面](https://github.com/neon-zhao/DearDiary/blob/master/pic/update_edit.png)
 <p/>
 
 
