@@ -1,4 +1,4 @@
-package com.example.neon.deardiary.DAO;
+package com.example.neon.deardiary.dao;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
@@ -14,31 +14,20 @@ import java.util.Calendar;
 
 @Entity
 public class Diary implements Serializable {
+    private static final long serialVersionUID = 0L;
+
+    //字段
     @Id
     private Long id;//数据库id
     private int year;//年
     private int month;//月
     private int dayOfMonth;//日
     private int dayOfWeek;//星期
-
     private int hour;//当天最后一次编辑的小时
     private int minute;//当天最后一次编辑的分钟
     private String title;//日记标题
-
     private String content;//日记内容
 
-    private static final long serialVersionUID = 0L;
-
-    public Diary(Calendar c) {
-        this.year = c.get(Calendar.YEAR);
-        this.month = c.get(Calendar.MONTH) + 1;
-        this.dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
-        this.dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-        this.content = "";
-        this.title = "";
-        this.hour = 0;
-        this.minute = 0;
-    }
 
     @Generated(hash = 455145805)
     public Diary(Long id, int year, int month, int dayOfMonth, int dayOfWeek, int hour,
@@ -59,7 +48,19 @@ public class Diary implements Serializable {
     public Diary() {
     }
 
+    public Diary(Calendar c) {
+        this.year = c.get(Calendar.YEAR);
+        this.month = c.get(Calendar.MONTH) + 1;
+        this.dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
+        this.dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+        this.content = "";
+        this.title = "";
+        this.hour = 0;
+        this.minute = 0;
+    }
 
+
+    //getters and setters
     public int getYear() {
         return year;
     }

@@ -28,13 +28,12 @@
 
 
     <string name="remind_me">提醒我写日记</string>
-    <string name="start_anim">启动动画</string>
-    <string name="font_size">字体大小</string>
-    <string name="set_password">设置密码</string>
-
     <string name="title_activity_start">StartActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="setting_dialog_tip">开启提醒需要您允许应用自启</string>
+    <string name="setting_dialog_set_remind">开启提醒</string>
+    <string name="setting_dialog_remind_time">提醒时间</string>
 
 
 </resources>

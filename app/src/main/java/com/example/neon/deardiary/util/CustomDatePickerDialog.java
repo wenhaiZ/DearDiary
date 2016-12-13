@@ -1,4 +1,4 @@
-package com.example.neon.deardiary;
+package com.example.neon.deardiary.util;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -8,8 +8,8 @@ import android.content.Context;
  * Created by Neon on 2016/12/5.
  */
 
-public class DatePickerDialogForBug extends DatePickerDialog {
-    public DatePickerDialogForBug(Context context, OnDateSetListener callBack, int year, int monthOfYear, int dayOfMonth) {
+public class CustomDatePickerDialog extends DatePickerDialog {
+    public CustomDatePickerDialog(Context context, OnDateSetListener callBack, int year, int monthOfYear, int dayOfMonth) {
         super(context, callBack, year, monthOfYear, dayOfMonth);
     }
 

@@ -48,7 +48,7 @@
             style="@style/ButtonStyle"
             android:layout_alignParentStart="true"
             android:layout_marginStart="3dp"
-            android:background="@drawable/btn_press"
+            android:background="@drawable/btn_red"
             android:text="@string/edit_appendTime"
             android:textColor="#ffffff"
             />
@@ -67,7 +67,7 @@
             style="@style/ButtonStyle"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="3dp"
-            android:background="@drawable/btn_press"
+            android:background="@drawable/btn_red"
             android:text="@string/edit_done"
             android:textColor="#ffffff"
             />

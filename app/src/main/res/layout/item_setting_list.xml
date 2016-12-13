@@ -5,7 +5,7 @@
     android:padding="2dp"
     android:orientation="horizontal">
     <ImageView
-        android:src="@drawable/close"
+        android:src="@drawable/btn_search_close"
         android:padding="6dp"
         android:id="@+id/item_icon"
         android:layout_gravity="center_vertical"
@@ -28,7 +28,7 @@
     android:layout_width="30dp"
     android:scaleType="fitCenter"
     android:layout_height="wrap_content"
-    android:src="@drawable/arrow"/>
+    android:src="@drawable/ic_setting_arrow"/>
 
 
 

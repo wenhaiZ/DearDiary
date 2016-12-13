@@ -10,7 +10,6 @@
             <solid android:color="@color/background">
             </solid>
         </shape>
-
     </item>
 </layer-list>
 

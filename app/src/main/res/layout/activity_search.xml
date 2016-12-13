@@ -27,7 +27,7 @@
             android:id="@+id/search_close_btn"
             android:clickable="true"
             android:layout_width="30dp"
-            android:src="@drawable/close"
+            android:src="@drawable/btn_search_close"
             android:layout_height="wrap_content"
             android:gravity="center"
             />

@@ -1,4 +1,4 @@
-package com.example.neon.deardiary.Activities;
+package com.example.neon.deardiary.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,13 +17,14 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Handler handler = new Handler();
-        setContentView(R.layout.welcome_activity);
+        setContentView(R.layout.activity_splash);
         handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                finish();
-            }
-        }, 1200);
+                                @Override
+                                public void run() {
+                                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                                    finish();
+                                }
+                            },
+                1200);
     }
 }

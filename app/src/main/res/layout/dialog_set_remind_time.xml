@@ -5,13 +5,21 @@
     android:orientation="vertical"
     android:padding="10dp">
 
+    <TextView
+        android:id="@+id/dialog_tips"
+        android:text="@string/setting_dialog_tip"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <Switch
+        android:layout_below="@+id/dialog_tips"
         android:id="@+id/switch_remind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:text="开启提醒"
+        android:text="@string/setting_dialog_set_remind"
         android:textSize="16sp" />
 
     <LinearLayout
@@ -28,7 +36,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="提醒时间"
+            android:text="@string/setting_dialog_remind_time"
             android:textColor="#000000"
             android:textSize="16sp" />
 

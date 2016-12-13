@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.neon.deardiary.Activities.MainActivity">
+    tools:context="com.example.neon.deardiary.activity.MainActivity">
 
 
     <ListView
@@ -80,7 +80,7 @@
             style="@style/ButtonStyle"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/btn_press"
+            android:background="@drawable/btn_red"
             android:scaleType="centerInside"
             android:text="@string/main_write"
             android:textColor="#ffffff"

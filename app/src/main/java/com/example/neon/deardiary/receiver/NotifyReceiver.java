@@ -1,4 +1,4 @@
-package com.example.neon.deardiary;
+package com.example.neon.deardiary.receiver;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -10,9 +10,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.neon.deardiary.Activities.EditActivity;
-import com.example.neon.deardiary.DAO.DaoOpsHelper;
-import com.example.neon.deardiary.DAO.Diary;
+import com.example.neon.deardiary.activity.EditActivity;
+import com.example.neon.deardiary.util.Constant;
+import com.example.neon.deardiary.dao.DaoOpsHelper;
+import com.example.neon.deardiary.dao.Diary;
+import com.example.neon.deardiary.R;
 
 import java.util.Calendar;
 
@@ -79,7 +81,7 @@ public class NotifyReceiver extends BroadcastReceiver {
             diary = new Diary(today);
             helper.insertDairy(diary);
         }
-        b.putSerializable("diary", diary);
+        b.putSerializable(Constant.DIARY, diary);
         mIntent.putExtras(b);
         //包装上面Intent的PendingIntent
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, mIntent, 0);

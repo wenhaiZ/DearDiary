@@ -1,4 +1,4 @@
-package com.example.neon.deardiary.DAO;
+package com.example.neon.deardiary.dao;
 
 import android.content.Context;
 
@@ -10,15 +10,15 @@ import org.greenrobot.greendao.database.Database;
  */
 
 public class DaoManager {
-    private static DaoSession daoSession;
+    private static DaoSession sDaoSession;
 
     public static DaoSession getDaoSession(Context context) {
-        if (daoSession == null) {
+        if (sDaoSession == null) {
             DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "diary.db", null);
             Database db = helper.getReadableDb();
             DaoMaster daoMaster = new DaoMaster(db);
-            daoSession = daoMaster.newSession();
+            sDaoSession = daoMaster.newSession();
         }
-        return daoSession;
+        return sDaoSession;
     }
 }

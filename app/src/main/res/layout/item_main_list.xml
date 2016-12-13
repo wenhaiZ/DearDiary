@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_item_height"
-        android:background="@drawable/item_background"
+        android:background="@drawable/bg_list_item"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -67,7 +67,7 @@
                 android:maxLines="1"
                 android:paddingEnd="6dp"
                 android:paddingStart="0dp"
-                android:text="日记内功dadadge大哥加大今年毛毛虫年内挡泥"
+                android:text="日记内功虫年内挡泥"
                 android:textSize="13sp"/>
         </LinearLayout>
 

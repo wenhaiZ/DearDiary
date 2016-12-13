@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".Activities.SplashActivity">
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,21 +19,21 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".Activities.MainActivity">
+        <activity android:name=".activity.MainActivity">
 
         </activity>
-        <activity android:name=".Activities.EditActivity" />
-        <activity android:name=".Activities.SearchActivity" />
-        <activity android:name=".Activities.SettingActivity" />
+        <activity android:name=".activity.EditActivity" />
+        <activity android:name=".activity.SearchActivity" />
+        <activity android:name=".activity.SettingActivity" />
 
         <receiver
-            android:name=".NotifyReceiver"
+            android:name=".receiver.NotifyReceiver"
             android:enabled="true"
             android:exported="true"
             android:process=":remote"
             >
             <intent-filter>
-                <action android:name="com.example.neon.deardiary.Reciver" />
+                <action android:name="com.example.neon.deardiary.Receiver" />
             </intent-filter>
         </receiver>
     </application>

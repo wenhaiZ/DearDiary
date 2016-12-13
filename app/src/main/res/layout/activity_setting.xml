@@ -69,7 +69,7 @@
             style="@style/ButtonStyle"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="5dp"
-            android:background="@drawable/btn_press"
+            android:background="@drawable/btn_red"
             android:text="@string/main_settings"
             android:textColor="#ffffff"/>
     </RelativeLayout>

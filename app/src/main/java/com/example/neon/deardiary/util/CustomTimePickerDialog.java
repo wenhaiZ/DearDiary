@@ -1,4 +1,4 @@
-package com.example.neon.deardiary;
+package com.example.neon.deardiary.util;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -8,8 +8,8 @@ import android.content.Context;
  * Created by Neon on 2016/12/5.
  */
 
-public class TimePickerDialogForBug extends TimePickerDialog {
-    public TimePickerDialogForBug(Context context, OnTimeSetListener listener, int hourOfDay, int minute, boolean is24HourView) {
+public class CustomTimePickerDialog extends TimePickerDialog {
+    public CustomTimePickerDialog(Context context, OnTimeSetListener listener, int hourOfDay, int minute, boolean is24HourView) {
         super(context, listener, hourOfDay, minute, is24HourView);
     }
 

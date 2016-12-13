@@ -1,4 +1,4 @@
-package com.example.neon.deardiary.DAO;
+package com.example.neon.deardiary.dao;
 
 import android.content.Context;
 
@@ -11,73 +11,57 @@ import java.util.List;
  */
 
 public class DaoOpsHelper {
-    private DiaryDao diaryDao;
+
+    private DiaryDao mDiaryDao;
 
     public DaoOpsHelper(Context context) {
-        diaryDao = DaoManager.getDaoSession(context).getDiaryDao();
+        mDiaryDao = DaoManager.getDaoSession(context).getDiaryDao();
     }
 
-    /**
-     * 插入一条记录
-     *
-     * @param diary 日记实体
-     */
+    //插入一条记录
     public void insertDairy(Diary diary) {
-        diaryDao.insert(diary);
+        mDiaryDao.insert(diary);
     }
 
-    /**
-     * 更新指定日记内容
-     *
-     * @param diary
-     */
+    //更新指定日记内容
+
     public void updateDiary(Diary diary) {
-        diaryDao.update(diary);
+        mDiaryDao.update(diary);
     }
 
-    /**
-     * 删除所有数据
-     */
+    // 删除所有数据
+
     public void deleteAll() {
-        diaryDao.deleteAll();
+        mDiaryDao.deleteAll();
     }
 
 
-    /**
-     * 根据指定日期按天搜索数据库返回一个 Diary 对象
-     *
-     * @param c 传入的 calendar 对象
-     * @return 找到的记录（没有则为null）
-     */
+    //根据指定日期按天搜索数据库返回一个 Diary 对象
+
     public Diary queryByDay(Calendar c) {
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH) + 1;
         int day = c.get(Calendar.DAY_OF_MONTH);
-        return diaryDao.queryBuilder().where(DiaryDao.Properties.Year.eq(year),
+        return mDiaryDao.queryBuilder().where(DiaryDao.Properties.Year.eq(year),
                 DiaryDao.Properties.Month.eq(month),
                 DiaryDao.Properties.DayOfMonth.eq(day)).unique();
     }
 
-    /**
-     * 查找一个月的记录
-     *
-     * @param c
-     * @return
-     */
+
+    //查找一个月的记录
     public List<Diary> queryByMonth(Calendar c) {
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH) + 1;
-        return diaryDao.queryBuilder().where(DiaryDao.Properties.Year.eq(year), DiaryDao.Properties.Month.eq(month))
+        return mDiaryDao.queryBuilder().where(DiaryDao.Properties.Year.eq(year), DiaryDao.Properties.Month.eq(month))
                 .orderAsc(DiaryDao.Properties.DayOfMonth)
                 .list();
     }
 
 
-    /**
-     * 按月查询，如果当月没有记录或记录小于当前天数，为没有记录的日期添加默认值，以便listView的适配器决定视图
-     *
-     * @param c
-     * @return
+    /*
+     * 按月查询，
+     * 如果当月没有记录或记录小于当前天数，为没有记录的日期添加默认值，
+     * 以便listView的适配器决定视图
      */
     public List<Diary> queryAddDefault(Calendar c) {
         boolean isBefore = true;//标识是否是之前的月份,默认为true
@@ -117,8 +101,9 @@ public class DaoOpsHelper {
     }
 
 
-    public List<Diary> queryByContent(String key){
-        return diaryDao.queryBuilder()
+    //按内容搜索
+    public List<Diary> queryByContent(String key) {
+        return mDiaryDao.queryBuilder()
                 .where(DiaryDao.Properties.Content.like(key))
                 .orderDesc(DiaryDao.Properties.Year)
                 .orderDesc(DiaryDao.Properties.Month)
@@ -126,12 +111,10 @@ public class DaoOpsHelper {
                 .list();
     }
 
-    /**
-     * 查询所有日记内容不为空的记录，返回记录数量
-     *
-     * @return
-     */
+
+    //查询所有日记内容不为空的记录，返回记录数量
+
     public int getValidDiaryCount() {
-        return diaryDao.queryBuilder().where(DiaryDao.Properties.Content.notEq("")).list().size();
+        return mDiaryDao.queryBuilder().where(DiaryDao.Properties.Content.notEq("")).list().size();
     }
 }
