@@ -26,7 +26,6 @@ import java.util.Locale;
 import static com.example.neon.deardiary.R.id.chooseDate;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-//    private static final String TAG = "MainActivity";
 
     private TextView mYearTV, mMonthTV;//底部显示年月
     private ListView mDiaryLV;//当月日记列表
@@ -74,7 +73,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 mMainAdapter.setCalendar(mToday);
                                 mMainAdapter.notifyDataSetChanged();
                             }
-                        }).setNegativeButton("否", null).create().show();
+                        })
+                        .setNegativeButton("否", null)
+                        .create().show();
 
                 return true;
             }

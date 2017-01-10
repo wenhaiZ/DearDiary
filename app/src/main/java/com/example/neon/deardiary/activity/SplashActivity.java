@@ -21,7 +21,9 @@ public class SplashActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
+                                    //启动 MainActivity
                                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                                    //结束当前 Activity
                                     finish();
                                 }
                             },

@@ -13,6 +13,7 @@ public class DaoManager {
     private static DaoSession sDaoSession;
 
     public static DaoSession getDaoSession(Context context) {
+
         if (sDaoSession == null) {
             DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "diary.db", null);
             Database db = helper.getReadableDb();

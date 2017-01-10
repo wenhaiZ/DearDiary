@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.neon.deardiary">
+          package="com.example.neon.deardiary">
 
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -11,20 +11,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".activity.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
         <activity android:name=".activity.MainActivity">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
+
         </activity>
-        <activity android:name=".activity.EditActivity" />
-        <activity android:name=".activity.SearchActivity" />
-        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.EditActivity"/>
+        <activity android:name=".activity.SearchActivity"/>
+        <activity android:name=".activity.SettingActivity"/>
 
         <receiver
             android:name=".receiver.NotifyReceiver"
@@ -33,7 +31,7 @@
             android:process=":remote"
             >
             <intent-filter>
-                <action android:name="com.example.neon.deardiary.Receiver" />
+                <action android:name="com.example.neon.deardiary.Receiver"/>
             </intent-filter>
         </receiver>
     </application>

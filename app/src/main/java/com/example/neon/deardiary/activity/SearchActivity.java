@@ -18,7 +18,6 @@ import java.util.List;
 
 
 public class SearchActivity extends AppCompatActivity {
-//    private static final String TAG = "SearchActivity";
 
     private ListView mResultLV;//显示搜索结果的 ListView
 
