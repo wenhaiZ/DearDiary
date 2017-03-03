@@ -113,7 +113,6 @@ public class DaoOpsHelper {
 
 
     //查询所有日记内容不为空的记录，返回记录数量
-
     public int getValidDiaryCount() {
         return mDiaryDao.queryBuilder().where(DiaryDao.Properties.Content.notEq("")).list().size();
     }

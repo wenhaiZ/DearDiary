@@ -96,6 +96,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     /**
+     * 由Calendar对象设置主界面时间
+     */
+    public void setMainDate() {
+        int curYear = mToday.get(Calendar.YEAR);
+        int curMonth = mToday.get(Calendar.MONTH) + 1;
+        mYearTV.setText(String.format(Locale.getDefault(), "%d", curYear));
+        mMonthTV.setText(String.format(Locale.getDefault(), "%d", curMonth));
+
+    }
+
+
+    /**
      * 填充ListView数据项
      */
     private void inflateListView() {
@@ -135,8 +147,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onPause();
         //记录滑动的位置
         mScrollPos = mDiaryLV.getFirstVisiblePosition();//获取当前可见第一项在listView中的位置
-        View v1 = mDiaryLV.getChildAt(0);//获取获取当前屏幕可见第一项对应的View
-        mScrollTop = (v1 == null) ? 0 : v1.getTop();//获取当前View对应的距List顶部的高度
+        View v1 = mDiaryLV.getChildAt(0);//获取当前屏幕可见第一项对应的View
+        mScrollTop = (v1 == null) ? 0 : v1.getTop();//获取当前View顶部距ListView顶部的高度
 
     }
 
@@ -209,16 +221,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    /**
-     * 由Calendar对象设置主界面时间
-     */
-    public void setMainDate() {
-        int curYear = mToday.get(Calendar.YEAR);
-        int curMonth = mToday.get(Calendar.MONTH) + 1;
-        mYearTV.setText(String.format(Locale.getDefault(), "%d", curYear));
-        mMonthTV.setText(String.format(Locale.getDefault(), "%d", curMonth));
-
-    }
 
 
 }
