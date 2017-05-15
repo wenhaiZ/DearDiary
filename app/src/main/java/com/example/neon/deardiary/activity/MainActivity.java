@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //设置成应用的主题
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mToday = Calendar.getInstance();//获得今天日期
@@ -75,7 +77,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         })
                         .setNegativeButton("否", null)
-                        .create().show();
+                        .create()
+                        .show();
 
                 return true;
             }
@@ -103,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int curMonth = mToday.get(Calendar.MONTH) + 1;
         mYearTV.setText(String.format(Locale.getDefault(), "%d", curYear));
         mMonthTV.setText(String.format(Locale.getDefault(), "%d", curMonth));
-
     }
 
 
@@ -161,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //无论何时按下"撰",都会打开今天日记的编辑页面
                 Calendar t = Calendar.getInstance();
                 Diary diary = mDaoHelper.queryByDay(t);
-                //这是个小概率时间，即用户在Activity中过零点后点击，此时数据库总并没有第二天的数据
+                //这是个小概率事件，即用户在Activity中过零点后点击，此时数据库总并没有第二天的数据
                 if (diary == null) {
                     diary = new Diary(t);
                     mDaoHelper.insertDairy(diary);

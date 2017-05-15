@@ -13,20 +13,20 @@
 
         <TextView
 
-            style="@style/TextStyle"
+            style="@style/BlackText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="当前时间："/>
 
         <TextClock
             android:id="@+id/current_time"
-            style="@style/TextStyle"
+            style="@style/RedText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="false"
             android:enabled="true"
             android:format24Hour="HH:mm:ss"
-            android:textColor="@color/red"/>
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -36,18 +36,18 @@
         android:padding="5dp">
 
         <TextView
-            style="@style/TextStyle"
+            style="@style/BlackText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="已累计写日记："/>
 
         <TextView
             android:id="@+id/diary_count"
-            style="@style/TextStyle"
+            style="@style/RedText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="12天"
-            android:textColor="@color/red"/>
+            />
     </LinearLayout>
 
     <ListView
@@ -66,12 +66,11 @@
 
         <Button
             android:id="@+id/done_settings"
-            style="@style/ButtonStyle"
+            style="@style/RedButtonStyle"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="5dp"
-            android:background="@drawable/btn_red"
             android:text="@string/main_settings"
-            android:textColor="#ffffff"/>
+            />
     </RelativeLayout>
 
 </LinearLayout>

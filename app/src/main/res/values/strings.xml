@@ -34,6 +34,8 @@
     <string name="setting_dialog_tip">开启提醒需要您允许应用自启</string>
     <string name="setting_dialog_set_remind">开启提醒</string>
     <string name="setting_dialog_remind_time">提醒时间</string>
+    <string name="hint_title">日记标题</string>
+    <string name="divider">divider</string>
 
 
 </resources>

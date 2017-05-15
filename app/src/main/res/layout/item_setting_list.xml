@@ -15,7 +15,7 @@
 
     <TextView
         android:layout_marginStart="4dp"
-        style="@style/TextStyle"
+        style="@style/BlackText"
         android:textColor="#000000"
         android:text="提醒我写日记"
         android:gravity="center_vertical"

@@ -31,6 +31,10 @@ public class MainAdapter extends BaseAdapter implements AdapterView.OnItemClickL
             "", "Sun", "Mon",
             "Tue", "Wed", "Thu",
             "Fri", "Sat"};
+    private static final int VIEW_DIARY = 0;
+    private static final int VIEW_EMPTY = 1;
+
+    private static final int VIEW_TYPE_COUNT = 2;
 
     private Context mContext;
     private Calendar mCalendar;
@@ -79,43 +83,43 @@ public class MainAdapter extends BaseAdapter implements AdapterView.OnItemClickL
         //获得当前位置的Diary
         Diary diary = this.mDataList.get(position);
         int dayOfWeek = diary.getDayOfWeek();
-        //判断当前记录日记内容和标题是否都为空
-        if ("".equals(diary.getContent()) && "".equals(diary.getTitle())) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_main_list_null, null);
-            TextView textView = (TextView) convertView.findViewById(R.id.null_content);
-            if (dayOfWeek == 1 || dayOfWeek == 7) {
-                //noinspection deprecation
-                textView.setTextColor(mContext.getResources().getColor(R.color.
-                        red));
-            }
-            convertView.setTag(R.string.isNull, true);
-            return convertView;
+        switch (getItemViewType(position)) {
+            case VIEW_EMPTY://内容为空
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.item_main_list_null, null);
+                TextView textView = (TextView) convertView.findViewById(R.id.null_content);
+                //周六和周日文本显示红色
+                if (dayOfWeek == 1 || dayOfWeek == 7) {
+                    textView.setTextColor(mContext.getResources().getColor(R.color.
+                            colorPrimary));
+                }
+                convertView.setTag(R.string.isNull, true);
+                break;
+            case VIEW_DIARY://内容不为空
+                ViewHolder holder;
+                if (convertView == null) {
+                    LayoutInflater inflater = LayoutInflater.from(mContext);
+                    convertView = inflater.inflate(R.layout.item_main_list, null);
+                    holder = new ViewHolder();
+                    holder.mContentTV = (TextView) convertView.findViewById(R.id.content);
+                    holder.mDayOfMonthTV = (TextView) convertView.findViewById(R.id.day_of_month);
+                    holder.mDayOfWeekTV = (TextView) convertView.findViewById(R.id.week);
+                    holder.mEditTimeTV = (TextView) convertView.findViewById(R.id.editTime);
+                    holder.mTitleTV = (TextView) convertView.findViewById(R.id.title);
+                    convertView.setTag(R.string.isNull, false);
+                    convertView.setTag(holder);
+                }
+                //设置显示的内容
+                holder = (ViewHolder) convertView.getTag();
+                holder.mDayOfMonthTV.setText(String.format(Locale.getDefault(), "%d", diary.getDayOfMonth()));
+                holder.mDayOfWeekTV.setText(DAY_OF_WEEK[dayOfWeek]);
+                holder.mTitleTV.setText(diary.getTitle());
+                holder.mContentTV.setText(diary.getContent());
+                //分钟小于0，前面加个0
+                String minute = diary.getMinute() < 10 ? "0" + diary.getMinute() : diary.getMinute() + "";
+                String hour = diary.getHour() < 10 ? "0" + diary.getHour() : diary.getHour() + "";
+                holder.mEditTimeTV.setText(hour + ":" + minute);
+                break;
         }
-
-        //如果日记内容不为空，但是视图是默认视图或者为空，初始化视图
-        ViewHolder holder;
-        if (convertView == null || (boolean) convertView.getTag(R.string.isNull)) {
-            LayoutInflater inflater = LayoutInflater.from(mContext);
-            convertView = inflater.inflate(R.layout.item_main_list, null);
-            holder = new ViewHolder();
-            holder.mContentTV = (TextView) convertView.findViewById(R.id.content);
-            holder.mDayOfMonthTV = (TextView) convertView.findViewById(R.id.day_of_month);
-            holder.mDayOfWeekTV = (TextView) convertView.findViewById(R.id.week);
-            holder.mEditTimeTV = (TextView) convertView.findViewById(R.id.editTime);
-            holder.mTitleTV = (TextView) convertView.findViewById(R.id.title);
-            convertView.setTag(R.string.isNull, false);
-            convertView.setTag(holder);
-        }
-        //设置显示的内容
-        holder = (ViewHolder) convertView.getTag();
-        holder.mDayOfMonthTV.setText(String.format(Locale.getDefault(), "%d", diary.getDayOfMonth()));
-        holder.mDayOfWeekTV.setText(DAY_OF_WEEK[dayOfWeek]);
-        holder.mTitleTV.setText(diary.getTitle());
-        holder.mContentTV.setText(diary.getContent());
-        //分钟小于0，前面加个0
-        String minute = diary.getMinute() < 10 ? "0" + diary.getMinute() : diary.getMinute() + "";
-        String hour = diary.getHour() < 10 ? "0" + diary.getHour() : diary.getHour() + "";
-        holder.mEditTimeTV.setText(hour + ":" + minute);
         return convertView;
     }
 
@@ -128,6 +132,23 @@ public class MainAdapter extends BaseAdapter implements AdapterView.OnItemClickL
         b.putSerializable("diary", diary);
         intent.putExtras(b);
         mContext.startActivity(intent);
+    }
+
+    //item视图种类数量
+    @Override
+    public int getViewTypeCount() {
+        return VIEW_TYPE_COUNT;
+    }
+
+    //item视图种类
+    @Override
+    public int getItemViewType(int position) {
+        Diary diary = this.mDataList.get(position);
+        if ("".equals(diary.getContent()) && "".equals(diary.getTitle())) {//日记内容为空
+            return VIEW_EMPTY;
+        } else {
+            return VIEW_DIARY;
+        }
     }
 
 

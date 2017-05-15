@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <LinearLayout
-        android:background="@color/background"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:padding="3dp"
+        android:background="@color/background"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="3dp">
 
         <EditText
-            android:padding="4dp"
             android:id="@+id/searchKey"
+            style="@style/BlackText"
             android:layout_width="0dp"
-            android:layout_weight="1"
-
-            android:background="#00000000"
             android:layout_height="match_parent"
-            android:hint="@string/search_hint" />
+            android:layout_weight="1"
+            android:background="#00000000"
+            android:hint="@string/search_hint"
+            android:maxLines="1"
+            android:padding="4dp"/>
 
         <ImageView
-            android:padding="5dp"
             android:id="@+id/search_close_btn"
-            android:clickable="true"
             android:layout_width="30dp"
-            android:src="@drawable/btn_search_close"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:gravity="center"
+            android:padding="5dp"
+            android:src="@drawable/btn_search_close"
             />
 
     </LinearLayout>

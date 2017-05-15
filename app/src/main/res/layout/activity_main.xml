@@ -39,51 +39,49 @@
 
             <TextView
                 android:id="@+id/year_in_main"
+                style="@style/RedText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="false"
                 android:gravity="center_horizontal"
                 android:text="2015"
-                android:textColor="@color/red"
-                android:textSize="20sp"/>
+                />
 
             <TextView
+                style="@style/BlackText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:clickable="false"
                 android:text="@string/main_year"
-                android:textColor="#000000"
-                android:textSize="20sp"/>
+                />
 
             <TextView
                 android:id="@+id/month_in_main"
+                style="@style/RedText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="false"
+                android:layout_marginStart="6dp"
                 android:text="10"
-                android:textColor="@color/red"
-                android:textSize="20sp"/>
+                />
 
             <TextView
+                style="@style/BlackText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:clickable="false"
                 android:text="@string/main_month"
-                android:textColor="#000000"
-                android:textSize="20sp"/>
+                />
         </LinearLayout>
 
         <Button
             android:id="@+id/write"
-            style="@style/ButtonStyle"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/btn_red"
+            style="@style/RedButtonStyle"
+            android:layout_centerInParent="true"
             android:scaleType="centerInside"
             android:text="@string/main_write"
-            android:textColor="#ffffff"
             />
 
         <LinearLayout
