@@ -26,8 +26,11 @@
     <string name="isNull">isNull</string>
     <string name="footer">已完结</string>
 
+    <string name="settings_back">退</string>
 
     <string name="remind_me">提醒我写日记</string>
+    <string name="delete_all">清空所有日记</string>
+
     <string name="title_activity_start">StartActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>

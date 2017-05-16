@@ -1,6 +1,7 @@
-package com.example.neon.deardiary.activity;
+package com.example.neon.deardiary.settings;
 
 import android.app.AlarmManager;
+import android.app.Fragment;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -9,11 +10,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -25,8 +27,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.neon.deardiary.util.Constant;
 import com.example.neon.deardiary.R;
+import com.example.neon.deardiary.util.Constant;
 import com.example.neon.deardiary.util.CustomTimePickerDialog;
 
 import java.util.ArrayList;
@@ -38,18 +40,21 @@ import java.util.Map;
 
 import static android.app.PendingIntent.getBroadcast;
 
-public class SettingActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+
+public class SettingsFragment extends Fragment implements SettingsContract.View, AdapterView.OnItemClickListener {
+    private SettingsContract.Presenter mPresenter;
     private static final String TAG = "SettingActivity";
     //设置项在ListView中的位置
     private static final int REMIND_ME_TO_WRITE = 0;
-
+    private static final int DELETE_ALL = 1;
     //设置项显示文字对应的id
     private int[] mSettingID = {
-            R.string.remind_me,
+            R.string.remind_me, R.string.delete_all
     };
     //设置项图标对应的id
     private int[] mIconId = {
-            R.drawable.ic_setting_remind,
+            R.drawable.ic_settings_remind,
+            R.drawable.ic_settings_delete
     };
 
     private SharedPreferences mPreferences;
@@ -57,36 +62,49 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
     private String mRemindTime;//用于显示的提醒时间
     private long mTriggerMills;//设置的提醒时间
 
+    private Button btnDone;
+    private TextView tvDiaryCount;
+    private ListView lvSetting;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPreferences = getSharedPreferences(Constant.SHARED_PREFERENCE, Context.MODE_PRIVATE);
-        setContentView(R.layout.activity_setting);
-        initComponent();
+        mPreferences = getActivity().getSharedPreferences(Constant.SHARED_PREFERENCE, Context.MODE_PRIVATE);
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_settings, container, false);
+        btnDone = (Button) root.findViewById(R.id.done_settings);
+        tvDiaryCount = (TextView) root.findViewById(R.id.diary_count);
+        lvSetting = (ListView) root.findViewById(R.id.setting_list);
+        initComponent();
+        return root;
+    }
+
+    @Override
+    public void setPresenter(SettingsContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
 
     /**
      * 初始化组件的
      */
     private void initComponent() {
         //右下角按钮，点击退出当前Activity
-        Button btnDone = (Button) findViewById(R.id.done_settings);
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                getActivity().finish();
             }
         });
         //显示日记天数
-        TextView tvDiaryCount = (TextView) findViewById(R.id.diary_count);
-        int count = mPreferences.getInt(Constant.DIARY_COUNT, 0);
-        String diaryCountStr = String.format(Locale.getDefault(), "%d 天", count);
+        int diaryCount = mPreferences.getInt(Constant.DIARY_COUNT, 0);
+        String diaryCountStr = String.format(Locale.getDefault(), "%d 天", diaryCount);
         tvDiaryCount.setText(diaryCountStr);
 
         //为ListView设置适配器和点击监听
-        ListView lvSetting = (ListView) findViewById(R.id.setting_list);
         List<Map<String, Object>> data = new ArrayList<>();
         for (int i = 0; i < mSettingID.length; i++) {
             Map<String, Object> map = new HashMap<>();
@@ -94,26 +112,12 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
             map.put("icon", mIconId[i]);
             data.add(map);
         }
-        SimpleAdapter adapter = new SimpleAdapter(this, data,
+        SimpleAdapter adapter = new SimpleAdapter(getActivity(), data,
                 R.layout.item_setting_list,
                 new String[]{"text", "icon"},
                 new int[]{R.id.setting_item, R.id.item_icon});
         lvSetting.setAdapter(adapter);
         lvSetting.setOnItemClickListener(this);
-    }
-
-    /**
-     * 相应LisView点击事件
-     */
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (position) {
-            case REMIND_ME_TO_WRITE:
-                //显示对话框,设置提醒
-                showRemindSetDialog();
-                break;
-            default:
-        }
     }
 
 
@@ -123,7 +127,7 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
     private void showRemindSetDialog() {
         View dialogView = getRemindDialogView();
         //弹出对话框
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(getActivity())
                 .setTitle("设置提醒")
                 .setView(dialogView)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -154,9 +158,9 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
                             //把新的remind_id写入配置文件
                             mPreferences.edit().putInt(Constant.REMIND_ID, remindId).apply();
 
-                            AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+                            AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
                             //用于发送广播的PendingIntent
-                            PendingIntent sender = getBroadcast(SettingActivity.this,
+                            PendingIntent sender = getBroadcast(getActivity(),
                                     Constant.REMIND_CODE,
                                     intent,
                                     PendingIntent.FLAG_ONE_SHOT);
@@ -165,7 +169,7 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
 
                             Calendar c = Calendar.getInstance();
                             c.setTimeInMillis(mTriggerMills);
-                            Toast.makeText(SettingActivity.this, "设置成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "设置成功", Toast.LENGTH_SHORT).show();
 
                             Log.d(TAG, "onClick:  remindId:"
                                     + remindId
@@ -178,7 +182,7 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
                                     + c.get(Calendar.SECOND) + "秒");
                         } else {
 
-                            Toast.makeText(SettingActivity.this, "通知已取消", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "通知已取消", Toast.LENGTH_SHORT).show();
 
                         }
 
@@ -198,7 +202,7 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
     @NonNull
     private View getRemindDialogView() {
         //对话框要显示的视图
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_set_remind_time, null);
+        View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_set_remind_time, null);
         //读取 sharedPreference 设置mIsRemind
         mIsRemind = mPreferences.getBoolean(Constant.IS_REMIND, false);
         final LinearLayout llShowRemindTime = (LinearLayout) dialogView.findViewById(R.id.show_remind_time);
@@ -215,7 +219,7 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
                 final Calendar c = Calendar.getInstance();
                 //创建一个时间选择对话框
                 CustomTimePickerDialog chooseTimeDialog = new CustomTimePickerDialog(
-                        SettingActivity.this,
+                        getActivity(),
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -274,4 +278,42 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
         return dialogView;
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        switch (position) {
+            case REMIND_ME_TO_WRITE:
+                //显示对话框,设置提醒
+                showRemindSetDialog();
+                break;
+            case DELETE_ALL:
+                showDeleteConfirmDialog();
+                break;
+
+            default:
+        }
+    }
+
+    private void showDeleteConfirmDialog() {
+        new AlertDialog.Builder(getActivity())
+                .setCancelable(true)
+                .setTitle("确认")
+                .setMessage("确定删除所有日记吗? (该操作不可恢复！)")
+                .setNegativeButton("不了", null)
+                .setPositiveButton("我想好了", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mPresenter.deleteAll();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    @Override
+    public void onDiaryDeleted() {
+        mPreferences.edit().putInt(Constant.DIARY_COUNT, 0).apply();
+        String zero = 0 + " 天";
+        tvDiaryCount.setText(zero);
+        Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
+    }
 }

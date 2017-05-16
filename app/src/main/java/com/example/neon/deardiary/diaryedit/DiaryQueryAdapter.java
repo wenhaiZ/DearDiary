@@ -1,34 +1,35 @@
-package com.example.neon.deardiary.adapter;
+package com.example.neon.deardiary.diaryedit;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.neon.deardiary.activity.EditActivity;
-import com.example.neon.deardiary.dao.Diary;
 import com.example.neon.deardiary.R;
+import com.example.neon.deardiary.data.Diary;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * 搜索页面ListView的适配器
  * Created by Neon on 2016/12/1.
  */
 
-public class SearchAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
+public class DiaryQueryAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<Diary> mDiaryList;
+    private ArrayList<Diary> mDiaryList;
 
-    public SearchAdapter(Context context, List<Diary> diaryList) {
+    public DiaryQueryAdapter(Context context) {
         this.mContext = context;
-        this.mDiaryList = diaryList;
+        this.mDiaryList = new ArrayList<>();
+    }
+
+    public void setData(ArrayList<Diary> data) {
+        mDiaryList = data;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -74,18 +75,6 @@ public class SearchAdapter extends BaseAdapter implements AdapterView.OnItemClic
                         + hour + "时" + minute + "分");
 
         return convertView;
-    }
-
-
-    //监听点击事件
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Diary diary = mDiaryList.get(position);
-        Intent intent = new Intent(mContext, EditActivity.class);
-        Bundle b = new Bundle();
-        b.putSerializable("diary", diary);
-        intent.putExtras(b);
-        mContext.startActivity(intent);
     }
 
     private class ViewHolder {

@@ -10,7 +10,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.neon.deardiary.activity.EditActivity;
+
+import com.example.neon.deardiary.diaryedit.DiaryEditActivity;
 import com.example.neon.deardiary.util.Constant;
 import com.example.neon.deardiary.dao.DaoOpsHelper;
 import com.example.neon.deardiary.dao.Diary;
@@ -58,7 +59,7 @@ public class NotifyReceiver extends BroadcastReceiver {
      */
     private void sendNotification(Context context) {
         //用于启动 EditActivity 的Intent
-        Intent mIntent = new Intent(context, EditActivity.class);
+        Intent mIntent = new Intent(context, DiaryEditActivity.class);
         Bundle b = new Bundle();
         //放入今天日期
         Calendar today = Calendar.getInstance();

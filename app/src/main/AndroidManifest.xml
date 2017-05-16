@@ -11,25 +11,30 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".activity.MainActivity"
+        <activity android:name=".diarylist.DiaryListActivity"
                   android:theme="@style/Activity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.EditActivity"/>
-        <activity android:name=".activity.SearchActivity"/>
-        <activity android:name=".activity.SettingActivity"/>
+        <activity android:name=".diaryedit.DiaryEditActivity">
+        </activity>
+
+        <activity android:name=".diaryquery.DiaryQueryActivity">
+        </activity>
+
+        <activity android:name=".settings.SettingsActivity">
+        </activity>
 
         <receiver
             android:name=".receiver.NotifyReceiver"
             android:enabled="true"
             android:exported="true"
-            android:process=":remote"
-            >
+            android:process=":remote">
             <intent-filter>
                 <action android:name="com.example.neon.deardiary.Receiver"/>
             </intent-filter>

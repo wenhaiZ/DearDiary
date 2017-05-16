@@ -43,8 +43,8 @@
         <LinearLayout
             android:id="@+id/diaryInfo"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
@@ -56,7 +56,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:text="东京生活"
+                android:text="日记标题"
                 />
 
             <TextView
@@ -67,7 +67,7 @@
                 android:maxLines="1"
                 android:paddingEnd="6dp"
                 android:paddingStart="0dp"
-                android:text="日记内功虫年内挡泥"
+                android:text="日记内容概览"
                 android:textSize="14sp"/>
         </LinearLayout>
 

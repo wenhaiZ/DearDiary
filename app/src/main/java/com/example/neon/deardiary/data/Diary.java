@@ -1,24 +1,12 @@
-package com.example.neon.deardiary.dao;
-
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.Id;
+package com.example.neon.deardiary.data;
 
 import java.io.Serializable;
 import java.util.Calendar;
 
-/**
- * 日记实体对象
- *
- * Created by Neon on 2016/11/30.
- */
 
-@Entity
 public class Diary implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    //字段
-    @Id
     private Long id;//数据库id
     private int year;//年
     private int month;//月
@@ -29,8 +17,6 @@ public class Diary implements Serializable {
     private String title;//日记标题
     private String content;//日记内容
 
-
-    @Generated(hash = 455145805)
     public Diary(Long id, int year, int month, int dayOfMonth, int dayOfWeek, int hour,
                  int minute, String title, String content) {
         this.id = id;
@@ -44,9 +30,8 @@ public class Diary implements Serializable {
         this.content = content;
     }
 
+    public Diary(){
 
-    @Generated(hash = 112123061)
-    public Diary() {
     }
 
     public Diary(Calendar c) {
@@ -61,7 +46,14 @@ public class Diary implements Serializable {
     }
 
 
-    //getters and setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public int getYear() {
         return year;
     }
@@ -86,61 +78,43 @@ public class Diary implements Serializable {
         this.dayOfMonth = dayOfMonth;
     }
 
+    public int getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(int dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-
-    public Long getId() {
-        return this.id;
-    }
-
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
-    public int getDayOfWeek() {
-        return this.dayOfWeek;
-    }
-
-
-    public void setDayOfWeek(int dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
-    }
-
-
-    public int getHour() {
-        return this.hour;
-    }
-
-
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
-
-
-    public int getMinute() {
-        return this.minute;
-    }
-
-
-    public void setMinute(int minute) {
-        this.minute = minute;
-    }
-
-
-    public String getTitle() {
-        return this.title;
-    }
-
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 }

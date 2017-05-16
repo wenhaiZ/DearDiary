@@ -10,8 +10,8 @@
         android:id="@+id/item_icon"
         android:layout_gravity="center_vertical"
         android:scaleType="fitCenter"
-        android:layout_width="50dp"
-        android:layout_height="50dp" />
+        android:layout_width="45dp"
+        android:layout_height="45dp" />
 
     <TextView
         android:layout_marginStart="4dp"
@@ -23,15 +23,6 @@
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent" />
-<ImageView
-    android:padding="10dp"
-    android:layout_width="30dp"
-    android:scaleType="fitCenter"
-    android:layout_height="wrap_content"
-    android:src="@drawable/ic_setting_arrow"/>
-
-
-
 
 
 </LinearLayout>

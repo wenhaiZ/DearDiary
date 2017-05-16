@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/diary_title"
+        style="@style/BlackText"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="#00000000"
+        android:gravity="center"
+        android:hint="@string/hint_title"
+        />
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="220dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="8dp"
+        android:background="#000000"
+        android:clickable="false"
+        android:contentDescription="@string/divider"/>
+
+
+    <EditText
+        android:id="@+id/diary_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:gravity="top|start"
+        android:inputType="textMultiLine"
+        android:padding="8dp"/>
+</LinearLayout>
