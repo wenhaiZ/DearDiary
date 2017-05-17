@@ -28,14 +28,13 @@ public interface DataSource {
 
     void updateDiary(Diary diary,UpdateDiaryCallback callback);
 
-    // TODO: 2017/5/16 在设置模块添加清楚所有数据
     void deleteAll();
 
     void queryByDay(Calendar calendar, GetDiaryCallBack callBack);
 
     void queryByMonth(Calendar calendar, LoadDiaryCallBack callBack);
 
-    void queryAddDefaultWhenNull(Calendar calendar, LoadDiaryCallBack callBack);
+    void queryAndAddDefault(Calendar calendar, LoadDiaryCallBack callBack);
 
     void queryByKeyword(String content, LoadDiaryCallBack callBack);
 

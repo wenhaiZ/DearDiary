@@ -32,12 +32,12 @@ import java.util.Locale;
 
 public class DiaryListFragment extends Fragment implements DiaryListContract.View, View.OnClickListener {
 
-    private static final String TAG = "DiaryListFragment";
+    //    private static final String TAG = "DiaryListFragment";
     public static final int REQUEST_EDIT_DIARY = 0x1;
     private DiaryListContract.Presenter mPresenter;
     private Calendar mCalendar;
-    private RecyclerView mListView;
-    private DiaryRecyclerAdapter mListAdapter;
+    private RecyclerView mDiaryList;
+    private DiaryRecyclerAdapter mAdapter;
     private TextView mYearTV;//底部显示年月
     private TextView mMonthTV;
     private int mScrollPos;
@@ -45,60 +45,64 @@ public class DiaryListFragment extends Fragment implements DiaryListContract.Vie
     private boolean isFirstStart;
 
     @Override
+    public void setPresenter(DiaryListContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+
+    @Override
+    public void showDiary(ArrayList<Diary> diaries) {
+        mAdapter.setData(diaries);
+    }
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mListAdapter = new DiaryRecyclerAdapter(getActivity());
+        mAdapter = new DiaryRecyclerAdapter(getActivity());
         mCalendar = Calendar.getInstance();
-
+        isFirstStart = true;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_diary_list, container, false);
-        mListView = (RecyclerView) root.findViewById(R.id.diaryList);
+        mDiaryList = (RecyclerView) root.findViewById(R.id.diaryList);
         initView();
         return root;
     }
 
     private void initView() {
-        isFirstStart = true;
-        mListView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        mListView.setAdapter(mListAdapter);
-        mListView.setVerticalScrollBarEnabled(false);
-        mListView.setItemAnimator(new DefaultItemAnimator());
-        mListAdapter.setOnItemClickListener(new DiaryRecyclerAdapter.OnItemClickListener() {
+        initButton();
+
+        mDiaryList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mDiaryList.setAdapter(mAdapter);
+        mDiaryList.setVerticalScrollBarEnabled(false);
+        mDiaryList.setItemAnimator(new DefaultItemAnimator());
+
+        mAdapter.setOnItemClickListener(new DiaryRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view) {
-                int adapterPos = mListView.getChildAdapterPosition(view);
-                Diary diary = mListAdapter.getItem(adapterPos);
+                int itemPosition = mDiaryList.getChildAdapterPosition(view);
+                Diary diary = mAdapter.getItem(itemPosition);
                 editDiary(diary);
             }
         });
 
-        Button btnEdit = (Button) getActivity().findViewById(R.id.write_today);//主界面“撰”按钮
-        Button btnSearch = (Button) getActivity().findViewById(R.id.search);//主界面“搜”按钮
-        Button btnSetting = (Button) getActivity().findViewById(R.id.settings);//主界面“设”按钮
+        mYearTV = (TextView) getActivity().findViewById(R.id.bottom_year);
+        mMonthTV = (TextView) getActivity().findViewById(R.id.bottom_month);
+        setBottomDate();
+    }
+
+    private void initButton() {
+        Button btnEdit = (Button) getActivity().findViewById(R.id.write_today);
+        Button btnSearch = (Button) getActivity().findViewById(R.id.search);
+        Button btnSetting = (Button) getActivity().findViewById(R.id.settings);
         LinearLayout llChooseDate = (LinearLayout) getActivity().findViewById(R.id.chooseDate);
 
         btnEdit.setOnClickListener(this);
         btnSearch.setOnClickListener(this);
         btnSetting.setOnClickListener(this);
         llChooseDate.setOnClickListener(this);
-
-        //设置显示的日期
-        mYearTV = (TextView) getActivity().findViewById(R.id.bottom_year);
-        mMonthTV = (TextView) getActivity().findViewById(R.id.bottom_month);
-        setBottomDate();
-    }
-
-    @Override
-    public void editDiary(Diary diary) {
-        Bundle data = new Bundle();
-        data.putSerializable(DiaryEditActivity.DATA_DIARY, diary);
-        Intent intent = new Intent(getActivity(), DiaryEditActivity.class);
-        intent.putExtras(data);
-        startActivityForResult(intent, REQUEST_EDIT_DIARY);
     }
 
     public void setBottomDate() {
@@ -107,7 +111,6 @@ public class DiaryListFragment extends Fragment implements DiaryListContract.Vie
         mYearTV.setText(String.format(Locale.getDefault(), "%d", curYear));
         mMonthTV.setText(String.format(Locale.getDefault(), "%d", curMonth));
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -128,8 +131,8 @@ public class DiaryListFragment extends Fragment implements DiaryListContract.Vie
 
     //记录滑动的位置
     private void saveListScrollPosition() {
-//        mScrollPos = mListView.getFirstVisiblePosition();//获取当前可见第一项在listView中的位置
-//        View v1 = mListView.getChildAt(0);//获取当前屏幕可见第一项对应的View
+//        mScrollPos = mDiaryList.getFirstVisiblePosition();//获取当前可见第一项在listView中的位置
+//        View v1 = mDiaryList.getChildAt(0);//获取当前屏幕可见第一项对应的View
 //        mScrollTop = (v1 == null) ? 0 : v1.getTop();//获取当前View顶部距ListView顶部的高度
     }
 
@@ -143,11 +146,11 @@ public class DiaryListFragment extends Fragment implements DiaryListContract.Vie
     //设置ListView显示位置
     private void configList() {
         if (isFirstStart) {
-//            mListView.setSelection(mListView.getCount() - 1);
+//            mDiaryList.setSelection(mDiaryList.getCount() - 1);
             isFirstStart = false;
         } else {
             //恢复到指定位置
-//            mListView.setSelectionFromTop(mScrollPos, mScrollTop);
+//            mDiaryList.setSelectionFromTop(mScrollPos, mScrollTop);
         }
     }
 
@@ -155,14 +158,7 @@ public class DiaryListFragment extends Fragment implements DiaryListContract.Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.write_today:
-                //无论何时按下"撰",都会打开今天日记的编辑页面
-                Calendar today = Calendar.getInstance();
-                Diary diary = mPresenter.getDiary(today);
-                if (diary == null) {
-                    diary = new Diary(today);
-                    mPresenter.insertDiary(diary);
-                }
-                editDiary(diary);
+                editTodayDiary();
                 break;
             case R.id.search:
                 Intent startQuery = new Intent(getActivity(), DiaryQueryActivity.class);
@@ -179,11 +175,31 @@ public class DiaryListFragment extends Fragment implements DiaryListContract.Vie
         }
     }
 
+    private void editTodayDiary() {
+        Calendar today = Calendar.getInstance();
+        Diary diary = mPresenter.getDiary(today);
+        if (diary == null) {
+            diary = new Diary(today);
+            mPresenter.insertDiary(diary);
+        }
+        editDiary(diary);
+    }
+
+    @Override
+    public void editDiary(Diary diary) {
+        Bundle data = new Bundle();
+        data.putSerializable(DiaryEditActivity.DATA_DIARY, diary);
+
+        Intent intent = new Intent(getActivity(), DiaryEditActivity.class);
+        intent.putExtras(data);
+
+        startActivityForResult(intent, REQUEST_EDIT_DIARY);
+    }
+
     private void showDatePickDialog() {
-        final CustomDatePickerDialog datePicker = new CustomDatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                //根据所选日期更新ListView和主页面时间
                 mCalendar.set(Calendar.YEAR, year);
                 mCalendar.set(Calendar.MONTH, monthOfYear);
                 mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -191,7 +207,7 @@ public class DiaryListFragment extends Fragment implements DiaryListContract.Vie
                 Calendar now = Calendar.getInstance();
                 if (mCalendar.before(now)) {
                     mPresenter.loadDiaries(mCalendar);
-//                    mListView.setSelection(dayOfMonth - 1);
+                    mDiaryList.scrollToPosition(dayOfMonth - 1);
                 } else {//如果所选为当前月份或超前，跳到当前月份
                     mCalendar = now;
                     mPresenter.loadDiaries(mCalendar);
@@ -199,19 +215,10 @@ public class DiaryListFragment extends Fragment implements DiaryListContract.Vie
                 }
                 setBottomDate();
             }
-        }, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
+        };
+
+        CustomDatePickerDialog datePicker = new CustomDatePickerDialog(getActivity(), listener, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
         datePicker.show();
     }
 
-
-    @Override
-    public void setPresenter(DiaryListContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
-
-
-    @Override
-    public void showDiary(ArrayList<Diary> diaries) {
-        mListAdapter.setData(diaries);
-    }
 }

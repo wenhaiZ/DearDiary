@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.neon.deardiary.R;
 import com.example.neon.deardiary.data.Diary;
+import com.example.neon.deardiary.util.Strings;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -17,9 +18,7 @@ import java.util.Locale;
 
 class DiaryRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
 
-    private final String[] DAY_OF_WEEK = {"", "Sun", "Mon",
-            "Tue", "Wed", "Thu",
-            "Fri", "Sat"};
+    private final String[] DAY_OF_WEEK = {"", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
     private static final int VIEW_TYPE_DIARY = 0;
     private static final int VIEW_TYPE_EMPTY = 1;
 
@@ -27,25 +26,33 @@ class DiaryRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private Context mContext;
     private OnItemClickListener mClickListener;
 
+    interface OnItemClickListener {
+        void onItemClick(View view);
+    }
+
     DiaryRecyclerAdapter(Context context) {
         mContext = context;
         mDiaries = new ArrayList<>();
     }
 
+    void setOnItemClickListener(OnItemClickListener listener) {
+        mClickListener = listener;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int layoutId = viewType == VIEW_TYPE_DIARY ? R.layout.item_main_list : R.layout.item_main_list_null;
+        int layoutId = (viewType == VIEW_TYPE_DIARY) ? R.layout.item_main_list : R.layout.item_main_list_null;
         View itemView = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
+
+        //添加点击效果
         TypedValue value = new TypedValue();
-        mContext.getTheme().resolveAttribute(R.attr.selectableItemBackground,value,true);
+        mContext.getTheme().resolveAttribute(R.attr.selectableItemBackground, value, true);
         itemView.setBackgroundResource(value.resourceId);
+
         itemView.setOnClickListener(this);
         return viewType == VIEW_TYPE_DIARY ? new DiaryViewHolder(itemView) : new EmptyViewHolder(itemView);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        mClickListener = listener;
-    }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
@@ -55,15 +62,14 @@ class DiaryRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         if (holder instanceof DiaryViewHolder) {
             DiaryViewHolder diaryViewHolder = (DiaryViewHolder) holder;
+
             diaryViewHolder.mDayOfMonthTV.setText(String.format(Locale.getDefault(), "%d", diary.getDayOfMonth()));
             diaryViewHolder.mDayOfWeekTV.setText(DAY_OF_WEEK[dayOfWeek]);
             diaryViewHolder.mTitleTV.setText(diary.getTitle());
             diaryViewHolder.mContentTV.setText(diary.getContent());
-            //分钟小于0，前面加个0
-            String minute = diary.getMinute() < 10 ? "0" + diary.getMinute() : diary.getMinute() + "";
-            String hour = diary.getHour() < 10 ? "0" + diary.getHour() : diary.getHour() + "";
+            String hour = Strings.formatNumber(diary.getHour());
+            String minute = Strings.formatNumber(diary.getMinute());
             diaryViewHolder.mEditTimeTV.setText(hour + ":" + minute);
-
         } else if (holder instanceof EmptyViewHolder) {
             EmptyViewHolder emptyViewHolder = (EmptyViewHolder) holder;
             //周六和周日文本显示红色
@@ -71,9 +77,7 @@ class DiaryRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 emptyViewHolder.mNullText.setTextColor(mContext.getResources().getColor(R.color.
                         colorPrimary));
             }
-
         }
-
     }
 
 
@@ -133,7 +137,4 @@ class DiaryRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
 
-    interface OnItemClickListener {
-        void onItemClick(View view);
-    }
 }

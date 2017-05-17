@@ -1,4 +1,4 @@
-package com.example.neon.deardiary.diaryedit;
+package com.example.neon.deardiary.diaryquery;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,20 +9,15 @@ import android.widget.TextView;
 
 import com.example.neon.deardiary.R;
 import com.example.neon.deardiary.data.Diary;
+import com.example.neon.deardiary.util.Strings;
 
 import java.util.ArrayList;
 
-/**
- * 搜索页面ListView的适配器
- * Created by Neon on 2016/12/1.
- */
-
-public class DiaryQueryAdapter extends BaseAdapter {
-
+class DiaryQueryAdapter extends BaseAdapter {
     private Context mContext;
     private ArrayList<Diary> mDiaryList;
 
-    public DiaryQueryAdapter(Context context) {
+    DiaryQueryAdapter(Context context) {
         this.mContext = context;
         this.mDiaryList = new ArrayList<>();
     }
@@ -50,6 +45,7 @@ public class DiaryQueryAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
+        Diary diary = mDiaryList.get(position);
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             convertView = inflater.inflate(R.layout.item_search_list, null);
@@ -59,20 +55,18 @@ public class DiaryQueryAdapter extends BaseAdapter {
             holder.mTitleTV = (TextView) convertView.findViewById(R.id.result_title);
             convertView.setTag(holder);
         }
-
         holder = (ViewHolder) convertView.getTag();
-        Diary diary = mDiaryList.get(position);
-        holder.mContentTV.setText(diary.getContent());
-        holder.mTitleTV.setText(diary.getTitle());
+
         String year = diary.getYear() + "";
         String month = diary.getMonth() + "";
         String dayOfMonth = diary.getDayOfMonth() + "";
-        //设置分钟
-        String minute = diary.getMinute() < 10 ? "0" + diary.getMinute() : diary.getMinute() + "";
-        String hour = diary.getHour() < 10 ? "0" + diary.getHour() : diary.getHour() + "";
-        holder.mDateTV.setText(
-                year + "年" + month + "月" + dayOfMonth + "日 "
-                        + hour + "时" + minute + "分");
+        String hour = Strings.formatNumber(diary.getHour());
+        String minute = Strings.formatNumber(diary.getMinute());
+        String time = year + "年" + month + "月" + dayOfMonth + "日 "
+                + hour + "时" + minute + "分";
+        holder.mTitleTV.setText(diary.getTitle());
+        holder.mContentTV.setText(diary.getContent());
+        holder.mDateTV.setText(time);
 
         return convertView;
     }
@@ -81,7 +75,6 @@ public class DiaryQueryAdapter extends BaseAdapter {
         private TextView mDateTV;
         private TextView mTitleTV;
         private TextView mContentTV;
-
     }
 
 

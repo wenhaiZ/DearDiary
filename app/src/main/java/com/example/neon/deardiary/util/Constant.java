@@ -17,6 +17,6 @@ public class Constant {
     public static final String DIARY_COUNT = "diary_count";//日记数量
     public static final int REMIND_CODE = 0x123;
     public static final String LAST_TIME = "lastTime";
-    public static final String PUSH_ACTION= "com.example.neon.deardiary.Receiver";
+    public static final String REMIND_ACTION= "com.example.neon.deardiary.Receiver";
     public static final String DIARY = "diary";
 }

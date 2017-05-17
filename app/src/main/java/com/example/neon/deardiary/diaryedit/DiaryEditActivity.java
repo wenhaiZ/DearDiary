@@ -26,7 +26,7 @@ public class DiaryEditActivity extends AppCompatActivity {
         Bundle data = new Bundle();
         data.putSerializable(DATA_DIARY, diary);
         diaryEditFragment.setArguments(data);
-
+        //create dataSource
         DiaryLocalDataSource dataSource = DiaryLocalDataSource.getInstance(this);
         //create presenter
         new DiaryEditPresenter(dataSource, diaryEditFragment);

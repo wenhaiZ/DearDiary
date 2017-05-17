@@ -20,7 +20,8 @@ public class DiaryQueryActivity extends AppCompatActivity {
             ActivityUtils.addFragmentToActivity(getFragmentManager(), diaryQueryFragment, R.id.query_container);
         }
         DataSource dataSource = DiaryLocalDataSource.getInstance(this);
-        DiaryQueryContract.Presenter presenter = new DiaryQueryPresenter(diaryQueryFragment, dataSource);
+        //create presenter
+        new DiaryQueryPresenter(diaryQueryFragment, dataSource);
 
     }
 }

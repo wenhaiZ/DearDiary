@@ -27,7 +27,7 @@ class DiaryListPresenter implements DiaryListContract.Presenter {
     }
 
     public void loadDiaries(Calendar c) {
-        mDataSource.queryAddDefaultWhenNull(c, new DataSource.LoadDiaryCallBack() {
+        mDataSource.queryAndAddDefault(c, new DataSource.LoadDiaryCallBack() {
             @Override
             public void onDiaryLoaded(ArrayList<Diary> diaryList) {
                 mView.showDiary(diaryList);

@@ -20,6 +20,7 @@ public class SettingsActivity extends AppCompatActivity {
             ActivityUtils.addFragmentToActivity(getFragmentManager(),settingsFragment,R.id.settings_container);
         }
         DataSource dataSource = DiaryLocalDataSource.getInstance(this);
-        SettingsContract.Presenter presenter = new SettingsPresenter(dataSource,settingsFragment);
+        //create the presenter
+        new SettingsPresenter(dataSource,settingsFragment);
     }
 }

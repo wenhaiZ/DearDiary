@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,50 +18,32 @@ import android.widget.ListView;
 import com.example.neon.deardiary.R;
 import com.example.neon.deardiary.data.Diary;
 import com.example.neon.deardiary.diaryedit.DiaryEditActivity;
-import com.example.neon.deardiary.diaryedit.DiaryQueryAdapter;
 
 import java.util.ArrayList;
 
 
 public class DiaryQueryFragment extends Fragment implements DiaryQueryContract.View {
 
+    private static final String TAG = "DiaryQueryFragment";
     private DiaryQueryContract.Presenter mPresenter;
     private ListView mResultLV;
     private DiaryQueryAdapter mAdapter;
     private EditText mEtQuery;
+    private ImageView mIvClose;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_diary_query, container, false);
-        ImageView ivClose = (ImageView) root.findViewById(R.id.search_close_btn);
+        mIvClose = (ImageView) root.findViewById(R.id.search_close_btn);
         mResultLV = (ListView) root.findViewById(R.id.search_result_list);
         mResultLV.setDividerHeight(0);
-        ivClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        });
         mEtQuery = (EditText) root.findViewById(R.id.searchKey);
-        mEtQuery.addTextChangedListener(new TextWatcher() {
+        setListeners();
+        return root;
+    }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                String keyword = s.toString();
-                beginQuery(keyword);
-
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-        });
+    private void setListeners() {
         mResultLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -72,7 +55,29 @@ public class DiaryQueryFragment extends Fragment implements DiaryQueryContract.V
                 startActivity(intent);
             }
         });
-        return root;
+        mEtQuery.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String keyword = s.toString();
+                beginQuery(keyword);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+        });
+        mIvClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
     }
 
     private void beginQuery(String keyword) {
@@ -84,7 +89,6 @@ public class DiaryQueryFragment extends Fragment implements DiaryQueryContract.V
             }
             mPresenter.diaryQueryByKeyword(keyword);
         } else {
-            //若输入为空,则隐藏mResultLV
             mResultLV.setVisibility(View.INVISIBLE);
         }
     }
@@ -108,6 +112,6 @@ public class DiaryQueryFragment extends Fragment implements DiaryQueryContract.V
 
     @Override
     public void queryFailed() {
-
+        Log.e(TAG, "queryFailed: 查询失败");
     }
 }
