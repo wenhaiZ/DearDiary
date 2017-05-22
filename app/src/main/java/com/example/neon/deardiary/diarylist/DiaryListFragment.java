@@ -54,6 +54,7 @@ public class DiaryListFragment extends Fragment implements DiaryListContract.Vie
     public void showDiary(ArrayList<Diary> diaries) {
         mAdapter.setData(diaries);
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -189,10 +190,8 @@ public class DiaryListFragment extends Fragment implements DiaryListContract.Vie
     public void editDiary(Diary diary) {
         Bundle data = new Bundle();
         data.putSerializable(DiaryEditActivity.DATA_DIARY, diary);
-
         Intent intent = new Intent(getActivity(), DiaryEditActivity.class);
         intent.putExtras(data);
-
         startActivityForResult(intent, REQUEST_EDIT_DIARY);
     }
 
