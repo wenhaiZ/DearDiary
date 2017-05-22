@@ -18,7 +18,7 @@ import java.util.Locale;
 
 class DiaryRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
 
-    private final String[] DAY_OF_WEEK = {"", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+    private static final String[] DAY_OF_WEEK = {"", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
     private static final int VIEW_TYPE_DIARY = 0;
     private static final int VIEW_TYPE_EMPTY = 1;
 
@@ -56,13 +56,11 @@ class DiaryRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        //获得当前位置的Diary
         Diary diary = mDiaries.get(position);
         int dayOfWeek = diary.getDayOfWeek();
 
         if (holder instanceof DiaryViewHolder) {
             DiaryViewHolder diaryViewHolder = (DiaryViewHolder) holder;
-
             diaryViewHolder.mDayOfMonthTV.setText(String.format(Locale.getDefault(), "%d", diary.getDayOfMonth()));
             diaryViewHolder.mDayOfWeekTV.setText(DAY_OF_WEEK[dayOfWeek]);
             diaryViewHolder.mTitleTV.setText(diary.getTitle());
@@ -74,12 +72,19 @@ class DiaryRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             EmptyViewHolder emptyViewHolder = (EmptyViewHolder) holder;
             //周六和周日文本显示红色
             if (dayOfWeek == 1 || dayOfWeek == 7) {
-                emptyViewHolder.mNullText.setTextColor(mContext.getResources().getColor(R.color.
-                        colorPrimary));
+                emptyViewHolder.mNullText.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
             }
         }
     }
 
+    @Override
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        if (holder instanceof EmptyViewHolder){
+            EmptyViewHolder viewHolder = (EmptyViewHolder) holder;
+            viewHolder.resetColor();
+        }
+    }
 
     @Override
     public int getItemCount() {
@@ -133,6 +138,10 @@ class DiaryRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         EmptyViewHolder(View itemView) {
             super(itemView);
             mNullText = (TextView) itemView.findViewById(R.id.null_content);
+        }
+
+        public void resetColor(){
+            mNullText.setTextColor(mContext.getResources().getColor(R.color.black));
         }
     }
 
