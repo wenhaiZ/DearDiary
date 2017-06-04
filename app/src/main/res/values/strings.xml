@@ -22,23 +22,28 @@
     <string name="search_close">X</string>
     <string name="search_hint">搜索</string>
 
-
-    <string name="isNull">isNull</string>
     <string name="footer">已完结</string>
 
     <string name="settings_back">退</string>
 
-    <string name="remind_me">提醒我写日记</string>
-    <string name="delete_all">清空所有日记</string>
-
     <string name="title_activity_start">StartActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="setting_dialog_tip">开启提醒需要您允许应用自启</string>
-    <string name="setting_dialog_set_remind">开启提醒</string>
-    <string name="setting_dialog_remind_time">提醒时间</string>
     <string name="hint_title">日记标题</string>
     <string name="divider">divider</string>
+
+    <!--settings-->
+    <string name="diary_count">已累计写日记天数</string>
+    <string name="default_sum">5天</string>
+    <string name="set_remind">设置每日提醒</string>
+    <string name="remind_me">提醒我写日记</string>
+    <string name="remind_off">每日提醒已关闭</string>
+    <string name="remind_on">每日提醒已开启</string>
+    <string name="remind">提醒</string>
+    <string name="remind_time">提醒时间</string>
+    <string name="default_time_sum">每天 00: 00</string>
+    <string name="delete_sum">删除所有日记，不可恢复</string>
+    <string name="delete_all">清空所有日记</string>
 
 
 </resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <Preference
+        android:defaultValue="0"
+        android:icon="@drawable/ic_settings_count"
+        android:key="diary_count"
+        android:summary="@string/default_sum"
+        android:title="@string/diary_count"
+        />
+
+    <PreferenceScreen
+        android:icon="@drawable/ic_settings_remind"
+        android:key="remind_parent"
+        android:summary="@string/set_remind"
+        android:title="@string/remind_me">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="remind_set"
+            android:summaryOff="@string/remind_off"
+            android:summaryOn="@string/remind_on"
+            android:title="@string/remind"
+            />
+        <Preference
+            android:dependency="remind_set"
+            android:key="remind_time"
+            android:summary="@string/default_time_sum"
+            android:title="@string/remind_time"
+            />
+
+    </PreferenceScreen>
+    <Preference
+        android:defaultValue="0"
+        android:icon="@drawable/ic_settings_delete"
+        android:key="delete_all"
+        android:summary="@string/delete_sum"
+        android:title="@string/delete_all"
+        />
+
+</PreferenceScreen>

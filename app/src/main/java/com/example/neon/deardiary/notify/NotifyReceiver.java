@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.example.neon.deardiary.R;
@@ -16,6 +17,7 @@ import com.example.neon.deardiary.data.Diary;
 import com.example.neon.deardiary.data.source.DataSource;
 import com.example.neon.deardiary.data.source.local.originaldb.DiaryLocalDataSource;
 import com.example.neon.deardiary.diaryedit.DiaryEditActivity;
+import com.example.neon.deardiary.settings.SettingsFragment;
 import com.example.neon.deardiary.util.Constant;
 
 import java.util.Calendar;
@@ -35,10 +37,10 @@ public class NotifyReceiver extends BroadcastReceiver implements NotifyContract.
         DataSource dataSource = DiaryLocalDataSource.getInstance(context);
         mPresenter = new NotifyPresenter(dataSource, this);
 
-        SharedPreferences preferences = context.getSharedPreferences(Constant.SHARED_PREFERENCE, Context.MODE_PRIVATE);
-        boolean isRemindSet = preferences.getBoolean(Constant.IS_REMIND, false);
-        int remindIdFromPreference = preferences.getInt(Constant.REMIND_ID, 65535);
-        int remindIdFromIntent = intent.getIntExtra(Constant.REMIND_ID, 0);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean isRemindSet = preferences.getBoolean(SettingsFragment.KEY_REMIND_SET, false);
+        int remindIdFromPreference = preferences.getInt(SettingsFragment.KEY_REMIND_ID, 65535);
+        int remindIdFromIntent = intent.getIntExtra(SettingsFragment.KEY_REMIND_ID, 0);
 
         Log.d(TAG, "onReceive: isRemind?" + isRemindSet + " remindIdFromPreference:"
                 + remindIdFromPreference + ",remindIdFromIntent: " + remindIdFromIntent);
@@ -79,18 +81,18 @@ public class NotifyReceiver extends BroadcastReceiver implements NotifyContract.
 
 
     private void setNextBroadCastTime(Context context, Intent intent) {
-        long lastTime = intent.getLongExtra(Constant.LAST_TIME, 0);
-        long nextTime = lastTime + Constant.INTERVAL_DAY;
+        long lastTime = intent.getLongExtra(SettingsFragment.KEY_LAST_TIME, 0);
+        long nextTime = lastTime + SettingsFragment.INTERVAL_DAY;
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(nextTime);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         //复用上次的Intent，更改 lastTime 的数据,确保remindId不变，可以进行重复通知
-        intent.putExtra(Constant.LAST_TIME, nextTime);
+        intent.putExtra(SettingsFragment.KEY_LAST_TIME, nextTime);
         //用于发送广播的PendingIntent
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, Constant.REMIND_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, SettingsFragment.REMIND_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         am.setExact(AlarmManager.RTC_WAKEUP, nextTime, alarmIntent);
         //log信息
-        Log.d(TAG, "onClick:"+ ",下次通知时间：" + calendar.get(Calendar.YEAR) + "年" + (calendar.get(Calendar.MONTH) + 1) + "月"
+        Log.d(TAG, "onClick:" + ",下次通知时间：" + calendar.get(Calendar.YEAR) + "年" + (calendar.get(Calendar.MONTH) + 1) + "月"
                 + calendar.get(Calendar.DAY_OF_MONTH) + "日" + calendar.get(Calendar.HOUR_OF_DAY) + "时" + calendar.get(Calendar.MINUTE) + "分" + calendar.get(Calendar.SECOND) + "秒");
     }
 

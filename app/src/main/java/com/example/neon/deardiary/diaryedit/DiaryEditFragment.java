@@ -3,6 +3,7 @@ package com.example.neon.deardiary.diaryedit;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +15,9 @@ import android.widget.Toast;
 
 import com.example.neon.deardiary.R;
 import com.example.neon.deardiary.data.Diary;
-import com.example.neon.deardiary.util.Constant;
+import com.example.neon.deardiary.settings.SettingsFragment;
 
 import java.util.Calendar;
-
-import static android.content.Context.MODE_PRIVATE;
 
 
 public class DiaryEditFragment extends Fragment implements DiaryEditContract.View, View.OnClickListener {
@@ -127,10 +126,9 @@ public class DiaryEditFragment extends Fragment implements DiaryEditContract.Vie
     //更新有效日记数量并写入sp
     private void updateValidDiaryCount() {
         int diaryCount = mPresenter.getValidDiaryCount();
-        getActivity()
-                .getSharedPreferences(Constant.SHARED_PREFERENCE, MODE_PRIVATE)
+        PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .edit()
-                .putInt(Constant.DIARY_COUNT, diaryCount)
+                .putString(SettingsFragment.KEY_DIARY_COUNT,diaryCount+"")
                 .apply();
     }
 
