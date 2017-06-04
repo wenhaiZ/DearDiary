@@ -73,16 +73,9 @@ class DiaryRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             //周六和周日文本显示红色
             if (dayOfWeek == 1 || dayOfWeek == 7) {
                 emptyViewHolder.mNullText.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+            } else {
+                emptyViewHolder.mNullText.setTextColor(mContext.getResources().getColor(R.color.black));
             }
-        }
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-        if (holder instanceof EmptyViewHolder){
-            EmptyViewHolder viewHolder = (EmptyViewHolder) holder;
-            viewHolder.resetColor();
         }
     }
 
@@ -138,10 +131,6 @@ class DiaryRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         EmptyViewHolder(View itemView) {
             super(itemView);
             mNullText = (TextView) itemView.findViewById(R.id.null_content);
-        }
-
-        public void resetColor(){
-            mNullText.setTextColor(mContext.getResources().getColor(R.color.black));
         }
     }
 
