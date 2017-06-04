@@ -6,14 +6,12 @@ import com.example.neon.deardiary.data.source.DataSource;
 import java.util.Calendar;
 
 
-public class NotifyPresenter implements NotifyContract.Presenter {
+class NotifyPresenter implements NotifyContract.Presenter {
     private DataSource mDataSource;
-    private NotifyContract.View mView;
 
     NotifyPresenter(DataSource dataSource, NotifyContract.View view) {
         mDataSource = dataSource;
-        mView = view;
-        mView.setPresenter(this);
+        view.setPresenter(this);
     }
 
     @Override

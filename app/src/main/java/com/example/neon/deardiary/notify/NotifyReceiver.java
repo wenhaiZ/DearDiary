@@ -44,10 +44,8 @@ public class NotifyReceiver extends BroadcastReceiver implements NotifyContract.
                 + remindIdFromPreference + ",remindIdFromIntent: " + remindIdFromIntent);
 
         if (isRemindSet && (remindIdFromIntent == remindIdFromPreference)) {
-            setNextBroadCastTime(context, intent);
             sendNotification(context);
-        } else {
-            //广播中断
+            setNextBroadCastTime(context, intent);
         }
 
     }
@@ -82,19 +80,17 @@ public class NotifyReceiver extends BroadcastReceiver implements NotifyContract.
 
     private void setNextBroadCastTime(Context context, Intent intent) {
         long lastTime = intent.getLongExtra(Constant.LAST_TIME, 0);
-        long nextTime = lastTime + Constant.INTERVAL;
+        long nextTime = lastTime + Constant.INTERVAL_DAY;
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(nextTime);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         //复用上次的Intent，更改 lastTime 的数据,确保remindId不变，可以进行重复通知
         intent.putExtra(Constant.LAST_TIME, nextTime);
         //用于发送广播的PendingIntent
-        PendingIntent sender = PendingIntent.getBroadcast(context, Constant.REMIND_CODE, intent, PendingIntent.FLAG_ONE_SHOT);
-        am.setExact(AlarmManager.RTC, nextTime, sender);
-
-        int remind_id = intent.getIntExtra(Constant.REMIND_ID, 0);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, Constant.REMIND_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        am.setExact(AlarmManager.RTC_WAKEUP, nextTime, alarmIntent);
         //log信息
-        Log.d(TAG, "onClick:  remindId:" + remind_id + ",下次通知时间：" + calendar.get(Calendar.YEAR) + "年" + (calendar.get(Calendar.MONTH) + 1) + "月"
+        Log.d(TAG, "onClick:"+ ",下次通知时间：" + calendar.get(Calendar.YEAR) + "年" + (calendar.get(Calendar.MONTH) + 1) + "月"
                 + calendar.get(Calendar.DAY_OF_MONTH) + "日" + calendar.get(Calendar.HOUR_OF_DAY) + "时" + calendar.get(Calendar.MINUTE) + "分" + calendar.get(Calendar.SECOND) + "秒");
     }
 

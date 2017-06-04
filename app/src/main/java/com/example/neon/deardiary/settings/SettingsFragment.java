@@ -256,13 +256,13 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
             intent.putExtra(Constant.REMIND_ID, newRemindId);
 
             //用于发送广播的PendingIntent
-            PendingIntent remindBroadcast = getBroadcast(getActivity(),
+            PendingIntent alarmIntent = getBroadcast(getActivity(),
                     Constant.REMIND_CODE,
                     intent,
-                    PendingIntent.FLAG_ONE_SHOT);
-            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-            alarmManager.setExact(AlarmManager.RTC, mTriggerMills, remindBroadcast);
+                    PendingIntent.FLAG_UPDATE_CURRENT);
 
+            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, mTriggerMills, alarmIntent);
             printLog(newRemindId);
         }
 
@@ -298,7 +298,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
             mTriggerMills = trigger.getTimeInMillis();
             //如果设置时间小于当前时间，则加上一个周期(即明天的这个时刻)
             if (mTriggerMills < System.currentTimeMillis()) {
-                mTriggerMills += Constant.INTERVAL;
+                mTriggerMills += Constant.INTERVAL_DAY;
             }
         }
     }

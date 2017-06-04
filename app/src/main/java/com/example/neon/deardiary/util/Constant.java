@@ -6,7 +6,7 @@ package com.example.neon.deardiary.util;
  */
 
 public class Constant {
-    public static final long INTERVAL =24*60*60*1000;//发送通知的间隔24小时
+    public static final long INTERVAL_DAY =24*60*60*1000;//发送通知的间隔24小时
     public static final String SHARED_PREFERENCE = "activity_setting";
     public static final String IS_REMIND = "is_remind";//是否设置提醒
     public static final String REMIND_ID = "remind_id";//用于标识当前设置的提醒，供BroadcastReceiver进行判断，是否相应
