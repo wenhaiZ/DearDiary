@@ -4,8 +4,6 @@
     <color name="colorPrimaryDark">#9b1717</color>
     <color name="colorAccent">#f1161a</color>
     <color name="background">#e6e5e5</color>
-    <color name="weekday_default">#505050</color>
-    <color name="black_overlay">#66000000</color>
+    <color name="black">#000000</color>
     <color name="white">#ffffff</color>
-
 </resources>
