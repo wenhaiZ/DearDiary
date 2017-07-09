@@ -3,14 +3,14 @@
     >
     <Preference
         android:defaultValue="0"
-        android:icon="@drawable/ic_settings_count"
+        android:icon="@mipmap/ic_settings_count"
         android:key="diary_count"
         android:summary="@string/default_sum"
         android:title="@string/diary_count"
         />
 
     <PreferenceScreen
-        android:icon="@drawable/ic_settings_remind"
+        android:icon="@mipmap/ic_settings_remind"
         android:key="remind_parent"
         android:summary="@string/set_remind"
         android:title="@string/remind_me">
@@ -31,7 +31,7 @@
     </PreferenceScreen>
     <Preference
         android:defaultValue="0"
-        android:icon="@drawable/ic_settings_delete"
+        android:icon="@mipmap/ic_settings_delete"
         android:key="delete_all"
         android:summary="@string/delete_sum"
         android:title="@string/delete_all"

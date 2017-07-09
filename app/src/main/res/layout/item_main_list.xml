@@ -13,7 +13,6 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/dateInfo"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -41,7 +40,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/diaryInfo"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"

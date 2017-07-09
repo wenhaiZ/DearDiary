@@ -30,7 +30,7 @@
             android:clickable="true"
             android:gravity="center"
             android:padding="5dp"
-            android:src="@drawable/btn_search_close"
+            android:src="@mipmap/btn_search_close"
             />
 
     </LinearLayout>
