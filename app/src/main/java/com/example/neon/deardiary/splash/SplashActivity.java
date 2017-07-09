@@ -13,16 +13,21 @@ import android.widget.TextView;
 import com.example.neon.deardiary.R;
 import com.example.neon.deardiary.diarylist.DiaryListActivity;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SplashActivity extends AppCompatActivity {
 
     private static final int SPLASH_DURATION = 1500;
+    @BindView(R.id.tv_version)
+    TextView mTvVersion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        ButterKnife.bind(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        TextView tvVersion = (TextView) findViewById(R.id.tv_version);
         PackageInfo packageInfo = null;
         try {
             packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -32,7 +37,7 @@ public class SplashActivity extends AppCompatActivity {
         if (packageInfo != null) {
             String versionName = packageInfo.versionName;
             String showVersionName = "V "+versionName;
-            tvVersion.setText(showVersionName);
+            mTvVersion.setText(showVersionName);
         }
 
         Handler handler = new Handler();

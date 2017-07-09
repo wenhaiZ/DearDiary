@@ -13,7 +13,6 @@ public class DiaryListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_diary_list);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);

@@ -17,34 +17,4 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/bottom_height"
-        android:gravity="center_vertical">
-
-        <Button
-            android:id="@+id/appendTime"
-            style="@style/RedButtonStyle"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="3dp"
-            android:text="@string/edit_appendTime"
-            />
-
-        <TextView
-            android:id="@+id/titleTime"
-            style="@style/BlackText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="2016年12月3日"
-            />
-
-        <Button
-            android:id="@+id/done_write"
-            style="@style/RedButtonStyle"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="3dp"
-            android:text="@string/edit_done"
-            />
-    </RelativeLayout>
 </LinearLayout>

@@ -7,6 +7,91 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/diaryList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
     </android.support.v7.widget.RecyclerView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_height"
+        android:layout_gravity="bottom"
+        android:background="#ffffff"
+        >
+
+
+        <LinearLayout
+            android:id="@+id/chooseDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/bottom_year"
+                style="@style/RedText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:gravity="center_horizontal"
+                android:text="2015"
+                />
+
+            <TextView
+                style="@style/BlackText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:clickable="false"
+                android:text="@string/main_year"
+                />
+
+            <TextView
+                android:id="@+id/bottom_month"
+                style="@style/RedText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:clickable="false"
+                android:text="10"
+                />
+
+            <TextView
+                style="@style/BlackText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:clickable="false"
+                android:text="@string/main_month"
+                />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/write_today"
+            style="@style/RedButtonStyle"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:text="@string/main_write"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true">
+
+            <Button
+                android:id="@+id/search"
+                style="@style/ButtonStyle"
+                android:layout_gravity="end"
+                android:text="@string/main_search"/>
+
+            <Button
+                android:id="@+id/settings"
+                style="@style/ButtonStyle"
+                android:layout_gravity="end"
+                android:text="@string/main_settings"/>
+        </LinearLayout>
+
+    </RelativeLayout>
 </LinearLayout>

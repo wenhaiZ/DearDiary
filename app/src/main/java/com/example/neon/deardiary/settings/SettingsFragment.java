@@ -40,7 +40,8 @@ public class SettingsFragment extends PreferenceFragment implements SettingsCont
     public static final String KEY_REMIND_ID = "remind_id";
     public static final String KEY_LAST_TIME = "lastTime";
 
-    public static final long INTERVAL_DAY = 24 * 60 * 60 * 1000;//发送通知的间隔24小时
+    //发送通知的间隔24小时
+    public static final long INTERVAL_DAY = 24 * 60 * 60 * 1000;
     public static final int REMIND_CODE = 0x123;
     public static final String REMIND_ACTION = "com.example.neon.deardiary.Receiver";
 
@@ -53,12 +54,6 @@ public class SettingsFragment extends PreferenceFragment implements SettingsCont
         addPreferencesFromResource(R.xml.preferences);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         initPreferences();
-    }
-
-
-    @Override
-    public void setPresenter(SettingsContract.Presenter presenter) {
-        mPresenter = presenter;
     }
 
     private void initPreferences() {
@@ -104,6 +99,7 @@ public class SettingsFragment extends PreferenceFragment implements SettingsCont
         });
     }
 
+
     private void showDeleteConfirmDialog() {
         new AlertDialog.Builder(getActivity())
                 .setCancelable(true)
@@ -118,27 +114,6 @@ public class SettingsFragment extends PreferenceFragment implements SettingsCont
                 })
                 .create()
                 .show();
-    }
-
-    @Override
-    public void onDiaryDeleted() {
-        mPreferences.edit()
-                .putString(KEY_DIARY_COUNT, "0").apply();
-        String zero = 0 + " 天";
-        findPreference(KEY_DIARY_COUNT).setSummary(zero);
-        Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
-    }
-
-
-    private void showTimePicker() {
-        Calendar c = Calendar.getInstance();
-        CustomTimePickerDialog chooseTimeDialog = new CustomTimePickerDialog(getActivity(),
-                new RemindTimeSetListener(),
-                c.get(Calendar.HOUR_OF_DAY),
-                c.get(Calendar.MINUTE),
-                true);
-        chooseTimeDialog.setTitle("设置提醒时间");
-        chooseTimeDialog.show();
     }
 
     private void setRemind() {
@@ -187,6 +162,32 @@ public class SettingsFragment extends PreferenceFragment implements SettingsCont
             mTriggerMills += INTERVAL_DAY;
         }
     }
+
+    private void showTimePicker() {
+        Calendar c = Calendar.getInstance();
+        CustomTimePickerDialog chooseTimeDialog = new CustomTimePickerDialog(getActivity(),
+                new RemindTimeSetListener(),
+                c.get(Calendar.HOUR_OF_DAY),
+                c.get(Calendar.MINUTE),
+                true);
+        chooseTimeDialog.setTitle("设置提醒时间");
+        chooseTimeDialog.show();
+    }
+
+    @Override
+    public void setPresenter(SettingsContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public void onDiaryDeleted() {
+        mPreferences.edit()
+                .putString(KEY_DIARY_COUNT, "0").apply();
+        String zero = 0 + " 天";
+        findPreference(KEY_DIARY_COUNT).setSummary(zero);
+        Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
+    }
+
 
     private void printLog(int newRemindId) {
         Calendar c = Calendar.getInstance();

@@ -29,31 +29,32 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnItemClick;
+import butterknife.Unbinder;
 
-public class DiaryListFragment extends Fragment implements DiaryListContract.View, View.OnClickListener {
+
+public class DiaryListFragment extends Fragment implements DiaryListContract.View {
 
     //    private static final String TAG = "DiaryListFragment";
     public static final int REQUEST_EDIT_DIARY = 0x1;
+    @BindView(R.id.diaryList)
+    RecyclerView mDiaryList;
+    @BindView(R.id.bottom_year)
+    TextView mTvYear;
+    @BindView(R.id.bottom_month)
+    TextView mTvMonth;
+
     private DiaryListContract.Presenter mPresenter;
     private Calendar mCalendar;
-    private RecyclerView mDiaryList;
     private DiaryRecyclerAdapter mAdapter;
-    private TextView mYearTV;//底部显示年月
-    private TextView mMonthTV;
     private int mScrollPos;
     private int mScrollTop;
     private boolean isFirstStart;
+    private Unbinder mUnbinder;
 
-    @Override
-    public void setPresenter(DiaryListContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
-
-
-    @Override
-    public void showDiary(ArrayList<Diary> diaries) {
-        mAdapter.setData(diaries);
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,19 +68,16 @@ public class DiaryListFragment extends Fragment implements DiaryListContract.Vie
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_diary_list, container, false);
-        mDiaryList = (RecyclerView) root.findViewById(R.id.diaryList);
+        mUnbinder = ButterKnife.bind(this, root);
         initView();
         return root;
     }
 
     private void initView() {
-        initButton();
-
         mDiaryList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mDiaryList.setAdapter(mAdapter);
         mDiaryList.setVerticalScrollBarEnabled(false);
         mDiaryList.setItemAnimator(new DefaultItemAnimator());
-
         mAdapter.setOnItemClickListener(new DiaryRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view) {
@@ -88,29 +86,14 @@ public class DiaryListFragment extends Fragment implements DiaryListContract.Vie
                 editDiary(diary);
             }
         });
-
-        mYearTV = (TextView) getActivity().findViewById(R.id.bottom_year);
-        mMonthTV = (TextView) getActivity().findViewById(R.id.bottom_month);
         setBottomDate();
-    }
-
-    private void initButton() {
-        Button btnEdit = (Button) getActivity().findViewById(R.id.write_today);
-        Button btnSearch = (Button) getActivity().findViewById(R.id.search);
-        Button btnSetting = (Button) getActivity().findViewById(R.id.settings);
-        LinearLayout llChooseDate = (LinearLayout) getActivity().findViewById(R.id.chooseDate);
-
-        btnEdit.setOnClickListener(this);
-        btnSearch.setOnClickListener(this);
-        btnSetting.setOnClickListener(this);
-        llChooseDate.setOnClickListener(this);
     }
 
     public void setBottomDate() {
         int curYear = mCalendar.get(Calendar.YEAR);
         int curMonth = mCalendar.get(Calendar.MONTH) + 1;
-        mYearTV.setText(String.format(Locale.getDefault(), "%d", curYear));
-        mMonthTV.setText(String.format(Locale.getDefault(), "%d", curMonth));
+        mTvYear.setText(String.format(Locale.getDefault(), "%d", curYear));
+        mTvMonth.setText(String.format(Locale.getDefault(), "%d", curMonth));
     }
 
     @Override
@@ -121,6 +104,18 @@ public class DiaryListFragment extends Fragment implements DiaryListContract.Vie
                 Toast.makeText(getActivity(), "日记已保存", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+
+    @Override
+    public void setPresenter(DiaryListContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+
+    @Override
+    public void showDiary(ArrayList<Diary> diaries) {
+        mAdapter.setData(diaries);
     }
 
 
@@ -155,7 +150,7 @@ public class DiaryListFragment extends Fragment implements DiaryListContract.Vie
         }
     }
 
-    @Override
+    @OnClick({R.id.write_today, R.id.search, R.id.settings, R.id.chooseDate})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.write_today:
@@ -220,4 +215,9 @@ public class DiaryListFragment extends Fragment implements DiaryListContract.Vie
         datePicker.show();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
+    }
 }

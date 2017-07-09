@@ -19,13 +19,24 @@ import com.example.neon.deardiary.settings.SettingsFragment;
 
 import java.util.Calendar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
-public class DiaryEditFragment extends Fragment implements DiaryEditContract.View, View.OnClickListener {
+
+public class DiaryEditFragment extends Fragment implements DiaryEditContract.View {
+
+    @BindView(R.id.diary_content)
+    EditText mEtDiaryContent;
+    @BindView(R.id.diary_title)
+    EditText mEtDiaryTitle;
+    @BindView(R.id.titleTime)
+    TextView mTvTitleTime;
 
     private Diary mDiary;
-    private EditText mDiaryContentET;
-    private EditText mDiaryTitleET;
     private DiaryEditContract.Presenter mPresenter;
+    private Unbinder mUnbinder;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,32 +53,24 @@ public class DiaryEditFragment extends Fragment implements DiaryEditContract.Vie
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_diary_edit, container, false);
-        mDiaryTitleET = (EditText) root.findViewById(R.id.diary_title);
-        mDiaryContentET = (EditText) root.findViewById(R.id.diary_content);
+        mUnbinder = ButterKnife.bind(this, root);
         initView();
         return root;
     }
 
     private void initView() {
-        mDiaryTitleET.setText(mDiary.getTitle());
-        mDiaryContentET.setText(mDiary.getContent());
+        mEtDiaryTitle.setText(mDiary.getTitle());
+        mEtDiaryContent.setText(mDiary.getContent());
         if ("".equals(mDiary.getTitle())) {
-            mDiaryTitleET.requestFocus();
+            mEtDiaryTitle.requestFocus();
         } else {
-            mDiaryContentET.requestFocus();
-            mDiaryContentET.setSelection(mDiaryContentET.getText().length());
+            mEtDiaryContent.requestFocus();
+            mEtDiaryContent.setSelection(mEtDiaryContent.getText().length());
         }
-
-        Button btnAppendTime = (Button) getActivity().findViewById(R.id.appendTime);
-        Button btnDone = (Button) getActivity().findViewById(R.id.done_write);
-        btnDone.setOnClickListener(this);
-        btnAppendTime.setOnClickListener(this);
-
-        TextView tvTitleTime = (TextView) getActivity().findViewById(R.id.titleTime);
         String date = mDiary.getYear() + "年"
                 + mDiary.getMonth() + "月"
                 + mDiary.getDayOfMonth() + "日";
-        tvTitleTime.setText(date);
+        mTvTitleTime.setText(date);
     }
 
     @Override
@@ -75,8 +78,9 @@ public class DiaryEditFragment extends Fragment implements DiaryEditContract.Vie
         mPresenter = presenter;
     }
 
-    @Override
-    public void onClick(View v) {
+
+    @OnClick({R.id.appendTime, R.id.done_write})
+    public void onButtonClick(View v) {
         switch (v.getId()) {
             case R.id.appendTime:
                 appendTimeInContent();
@@ -85,6 +89,7 @@ public class DiaryEditFragment extends Fragment implements DiaryEditContract.Vie
                 updateDiaryIfNeeded();
                 break;
             default:
+                break;
         }
     }
 
@@ -92,24 +97,22 @@ public class DiaryEditFragment extends Fragment implements DiaryEditContract.Vie
         Calendar now = Calendar.getInstance();
         int hour = now.get(Calendar.HOUR_OF_DAY);
         int minute = now.get(Calendar.MINUTE);
-        mDiaryContentET.append(hour + "时" + minute + "分");
+        mEtDiaryContent.append(hour + "时" + minute + "分");
     }
 
     private void updateDiaryIfNeeded() {
-        String newContent = mDiaryContentET.getText().toString();
-        String newTitle = mDiaryTitleET.getText().toString();
+        String newContent = mEtDiaryContent.getText().toString();
+        String newTitle = mEtDiaryTitle.getText().toString();
         //如果标题或内容变化进行更新数据
         if (!newContent.equals(mDiary.getContent())
                 || !newTitle.equals(mDiary.getTitle())) {
             mDiary.setContent(newContent);
             mDiary.setTitle(newTitle);
-
             Calendar c = Calendar.getInstance();
             int updateHour = c.get(Calendar.HOUR_OF_DAY);
             int updateMinute = c.get(Calendar.MINUTE);
             mDiary.setHour(updateHour);
             mDiary.setMinute(updateMinute);
-
             mPresenter.saveDiary(mDiary);
         } else {
             getActivity().finish();
@@ -123,12 +126,12 @@ public class DiaryEditFragment extends Fragment implements DiaryEditContract.Vie
         getActivity().finish();
     }
 
-    //更新有效日记数量并写入sp
+
     private void updateValidDiaryCount() {
         int diaryCount = mPresenter.getValidDiaryCount();
         PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .edit()
-                .putString(SettingsFragment.KEY_DIARY_COUNT,diaryCount+"")
+                .putString(SettingsFragment.KEY_DIARY_COUNT, diaryCount + "")
                 .apply();
     }
 
@@ -137,4 +140,9 @@ public class DiaryEditFragment extends Fragment implements DiaryEditContract.Vie
         Toast.makeText(getActivity(), "日记更新失败,请重试", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
+    }
 }

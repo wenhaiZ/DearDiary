@@ -21,40 +21,32 @@ import com.example.neon.deardiary.diaryedit.DiaryEditActivity;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnItemClick;
+import butterknife.Unbinder;
+
 
 public class DiaryQueryFragment extends Fragment implements DiaryQueryContract.View {
 
     private static final String TAG = "DiaryQueryFragment";
+
+    @BindView(R.id.search_result_list)
+    ListView mLvResult;
+    @BindView(R.id.searchKey)
+    EditText mEtQuery;
+
     private DiaryQueryContract.Presenter mPresenter;
-    private ListView mResultLV;
     private DiaryQueryAdapter mAdapter;
-    private EditText mEtQuery;
-    private ImageView mIvClose;
+    private Unbinder mUnbinder;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_diary_query, container, false);
-        mIvClose = (ImageView) root.findViewById(R.id.search_close_btn);
-        mResultLV = (ListView) root.findViewById(R.id.search_result_list);
-        mResultLV.setDividerHeight(0);
-        mEtQuery = (EditText) root.findViewById(R.id.searchKey);
-        setListeners();
-        return root;
-    }
-
-    private void setListeners() {
-        mResultLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Diary diary = (Diary) mAdapter.getItem(position);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(DiaryEditActivity.DATA_DIARY, diary);
-                Intent intent = new Intent(getActivity(), DiaryEditActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
+        mUnbinder = ButterKnife.bind(this, root);
+        mLvResult.setDividerHeight(0);
         mEtQuery.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -72,24 +64,35 @@ public class DiaryQueryFragment extends Fragment implements DiaryQueryContract.V
 
             }
         });
-        mIvClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        });
+        return root;
+    }
+
+    @OnItemClick(R.id.search_result_list)
+    public void onItemClick(int position){
+        Diary diary = (Diary) mAdapter.getItem(position);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(DiaryEditActivity.DATA_DIARY, diary);
+        Intent intent = new Intent(getActivity(), DiaryEditActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
+
+    }
+
+    @OnClick(R.id.search_close_btn)
+    public void close(){
+        getActivity().finish();
     }
 
     private void beginQuery(String keyword) {
         if (!"".equals(keyword)) {
-            mResultLV.setVisibility(View.VISIBLE);
+            mLvResult.setVisibility(View.VISIBLE);
             if (mAdapter == null) {
                 mAdapter = new DiaryQueryAdapter(getActivity());
-                mResultLV.setAdapter(mAdapter);
+                mLvResult.setAdapter(mAdapter);
             }
             mPresenter.diaryQueryByKeyword(keyword);
         } else {
-            mResultLV.setVisibility(View.INVISIBLE);
+            mLvResult.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -102,7 +105,6 @@ public class DiaryQueryFragment extends Fragment implements DiaryQueryContract.V
     public void onResume() {
         super.onResume();
         beginQuery(mEtQuery.getText().toString());
-
     }
 
     @Override
@@ -113,5 +115,11 @@ public class DiaryQueryFragment extends Fragment implements DiaryQueryContract.V
     @Override
     public void queryFailed() {
         Log.e(TAG, "queryFailed: 查询失败");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 }
