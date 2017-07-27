@@ -6,9 +6,12 @@
     <string name="main_search">搜</string>
     <string name="main_year">年</string>
     <string name="main_month">月</string>
+    <string name="day_of_month">日</string>
 
     <string name="edit_appendTime">时</string>
     <string name="edit_done">完</string>
+    <string name="hour">时</string>
+    <string name="minute">分</string>
 
     <string name="search_hint">搜索</string>
 
@@ -27,6 +30,19 @@
     <string name="default_time_sum">每天 00: 00</string>
     <string name="delete_sum">删除所有日记，不可恢复</string>
     <string name="delete_all">清空所有日记</string>
+    <string name="time_write_diary">该写日记了</string>
+    <string name="choose_date_reach_limit">只能选到今天</string>
+    <string name="diary_saved">日记已保存</string>
+    <string name="confirm">确认</string>
+    <string name="no">不了</string>
+    <string name="ok">我想好了</string>
+    <string name="ask_to_delete_all">确定删除所有日记吗? (该操作不可恢复！)</string>
+    <string name="setting_success">设置成功</string>
+    <string name="every_day">每天</string>
+    <string name="delete_success">删除成功</string>
+    <string name="day">天</string>
+    <string name="set_remind_time">设置提醒时间</string>
+    <string name="update_failed">日记更新失败,请重试</string>
 
 
 </resources>

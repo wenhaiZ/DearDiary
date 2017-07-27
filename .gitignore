@@ -1,5 +1,7 @@
 *.iml
 .gradle
+.idea
+*.class
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
@@ -7,3 +9,8 @@
 /build
 /captures
 .externalNativeBuild
+# Test File
+app/src/androidTest
+app/src/test/
+gradlew
+gradlew.bat
