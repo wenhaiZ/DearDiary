@@ -21,7 +21,7 @@ internal class DiaryListPresenter(dataSource: DiaryLocalDataSource, private val 
     }
 
     override fun loadDiaries(c: Calendar) {
-        mDataSource.queryAndAddDefault(c, object : DataSource.LoadDiaryCallBack {
+        mDataSource.queryAndAddDefault(c, object : DataSource.LoadDiariesCallBack {
             override fun onDiaryLoaded(diaryList: ArrayList<Diary>) {
                 mView.showDiary(diaryList)
             }
@@ -35,7 +35,7 @@ internal class DiaryListPresenter(dataSource: DiaryLocalDataSource, private val 
 
     override fun getDiary(c: Calendar): Diary? {
         var foundDiary: Diary? = null
-        mDataSource.queryByDay(c, object : DataSource.GetDiaryCallBack {
+        mDataSource.queryByDay(c, object : DataSource.LoadDiaryCallBack {
             override fun onDiaryGot(diary: Diary) {
                 foundDiary = diary
             }

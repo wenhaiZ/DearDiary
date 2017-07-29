@@ -17,8 +17,8 @@ internal class NotifyPresenter(private val mDataSource: DataSource?, view: Notif
     }
 
     override fun getDiary(c: Calendar): Diary? {
-        var foundDiary:Diary? = null
-        mDataSource!!.queryByDay(c, object : DataSource.GetDiaryCallBack {
+        var foundDiary: Diary? = null
+        mDataSource !!.queryByDay(c, object : DataSource.LoadDiaryCallBack {
             override fun onDiaryGot(diary: Diary) {
                 foundDiary = diary
             }
@@ -31,7 +31,7 @@ internal class NotifyPresenter(private val mDataSource: DataSource?, view: Notif
     }
 
     override fun insertDiary(diary: Diary) {
-        mDataSource!!.insertDiary(diary)
+        mDataSource !!.insertDiary(diary)
 
     }
 }

@@ -5,7 +5,6 @@ import java.util.Calendar
 
 
 class Diary : Serializable {
-
     var id: Long? = null//数据库id
     var year: Int = 0//年
     var month: Int = 0//月
@@ -29,17 +28,22 @@ class Diary : Serializable {
         this.content = content
     }
 
-    constructor()
+    constructor() {
+        this.content = ""
+        this.title = ""
+        this.year = 0
+        this.minute = 0
+        this.hour = 0
+        this.dayOfMonth = 0
+        this.dayOfWeek = 0
+        this.month = 0
+    }
 
-    constructor(c: Calendar) {
+    constructor(c: Calendar) : this() {
         this.year = c.get(Calendar.YEAR)
         this.month = c.get(Calendar.MONTH) + 1
         this.dayOfMonth = c.get(Calendar.DAY_OF_MONTH)
         this.dayOfWeek = c.get(Calendar.DAY_OF_WEEK)
-        this.content = ""
-        this.title = ""
-        this.hour = 0
-        this.minute = 0
     }
 
     companion object {

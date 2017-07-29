@@ -7,7 +7,7 @@ import com.example.neon.deardiary.data.Diary
 import java.util.ArrayList
 
 
-interface DiaryQueryContract {
+internal interface DiaryQueryContract {
     interface View : BaseView<Presenter> {
         fun querySuccessfully(diaries: ArrayList<Diary>)
         fun queryFailed()

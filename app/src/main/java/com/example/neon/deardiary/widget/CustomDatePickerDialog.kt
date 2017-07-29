@@ -8,7 +8,7 @@ import android.content.Context
  * Created by Neon on 2016/12/5.
  */
 
-class CustomDatePickerDialog(context: Context, callBack: DatePickerDialog.OnDateSetListener, year: Int, monthOfYear: Int, dayOfMonth: Int) : DatePickerDialog(context, callBack, year, monthOfYear, dayOfMonth) {
+internal class CustomDatePickerDialog(context: Context, callBack: DatePickerDialog.OnDateSetListener, year: Int, monthOfYear: Int, dayOfMonth: Int) : DatePickerDialog(context, callBack, year, monthOfYear, dayOfMonth) {
 
     override fun onStop() {
         //super.onStop();

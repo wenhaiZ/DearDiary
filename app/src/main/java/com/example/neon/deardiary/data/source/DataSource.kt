@@ -6,13 +6,13 @@ import java.util.ArrayList
 import java.util.Calendar
 
 interface DataSource {
-    interface LoadDiaryCallBack {
+    interface LoadDiariesCallBack {
         fun onDiaryLoaded(diaryList: ArrayList<Diary>)
 
         fun onDataNotAvailable()
     }
 
-    interface GetDiaryCallBack {
+    interface LoadDiaryCallBack {
         fun onDiaryGot(diary: Diary)
 
         fun onDataNotAvailable()
@@ -29,13 +29,13 @@ interface DataSource {
 
     fun deleteAll()
 
-    fun queryByDay(calendar: Calendar, callBack: GetDiaryCallBack)
+    fun queryByDay(calendar: Calendar, callBack: LoadDiaryCallBack)
 
-    fun queryByMonth(calendar: Calendar, callBack: LoadDiaryCallBack)
+    fun queryByMonth(calendar: Calendar, callBack: LoadDiariesCallBack)
 
-    fun queryAndAddDefault(calendar: Calendar, callBack: LoadDiaryCallBack)
+    fun queryAndAddDefault(calendar: Calendar, callBack: LoadDiariesCallBack)
 
-    fun queryByKeyword(keyword: String, callBack: LoadDiaryCallBack)
+    fun queryByKeyword(keyword: String, callBack: LoadDiariesCallBack)
 
     fun validDairyCount(): Int
 }
