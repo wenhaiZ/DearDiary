@@ -18,7 +18,7 @@ import com.example.neon.deardiary.settings.SettingsFragment
 import com.example.neon.deardiary.utils.Constant
 import java.util.Calendar
 
-class NotifyReceiver : BroadcastReceiver(), NotifyContract.View {
+internal class NotifyReceiver : BroadcastReceiver(), NotifyContract.View {
 
     private lateinit var mPresenter: NotifyContract.Presenter
 

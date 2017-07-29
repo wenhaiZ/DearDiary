@@ -17,7 +17,7 @@ internal class DiaryQueryPresenter(private val mView: DiaryQueryContract.View, p
     }
 
     override fun diaryQueryByKeyword(keyword: String) {
-        mDataSource!!.queryByKeyword(keyword, object : DataSource.LoadDiaryCallBack {
+        mDataSource!!.queryByKeyword(keyword, object : DataSource.LoadDiariesCallBack {
             override fun onDiaryLoaded(diaryList: ArrayList<Diary>) {
                 mView.querySuccessfully(diaryList)
             }

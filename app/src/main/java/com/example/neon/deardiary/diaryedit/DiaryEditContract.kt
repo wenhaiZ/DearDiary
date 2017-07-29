@@ -5,7 +5,7 @@ import com.example.neon.deardiary.base.BaseView
 import com.example.neon.deardiary.data.Diary
 
 
-interface DiaryEditContract {
+internal interface DiaryEditContract {
     interface View : BaseView<Presenter> {
         fun onDiaryUpdated()
 
@@ -15,8 +15,7 @@ interface DiaryEditContract {
     interface Presenter : BasePresenter {
         fun saveDiary(diary: Diary)
 
-        val validDiaryCount: Int
-
+        fun validDiaryCount(): Int
     }
 
 

@@ -8,7 +8,7 @@ import java.util.ArrayList
 import java.util.Calendar
 
 
-interface DiaryListContract {
+internal interface DiaryListContract {
     interface View : BaseView<Presenter> {
         fun showDiary(diaries: ArrayList<Diary>)
 

@@ -8,7 +8,7 @@ import android.content.Context
  * Created by Neon on 2016/12/5.
  */
 
-class CustomTimePickerDialog(context: Context, listener: TimePickerDialog.OnTimeSetListener, hourOfDay: Int, minute: Int, is24HourView: Boolean) : TimePickerDialog(context, listener, hourOfDay, minute, is24HourView) {
+internal class CustomTimePickerDialog(context: Context, listener: TimePickerDialog.OnTimeSetListener, hourOfDay: Int, minute: Int, is24HourView: Boolean) : TimePickerDialog(context, listener, hourOfDay, minute, is24HourView) {
 
     override fun onStop() {
         //super.onStop();

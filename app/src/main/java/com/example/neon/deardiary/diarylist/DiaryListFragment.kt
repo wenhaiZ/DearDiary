@@ -27,7 +27,7 @@ import java.util.Calendar
 import java.util.Locale
 
 
-class DiaryListFragment : Fragment(), DiaryListContract.View {
+internal class DiaryListFragment : Fragment(), DiaryListContract.View {
 
     @BindView(R.id.diaryList)
     internal lateinit var mDiaryList: RecyclerView
@@ -168,11 +168,13 @@ class DiaryListFragment : Fragment(), DiaryListContract.View {
 
     private fun showDatePickDialog() {
         val listener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+
             mCalendar.set(Calendar.YEAR, year)
             mCalendar.set(Calendar.MONTH, monthOfYear)
             mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
             val now = Calendar.getInstance()
+
             if (mCalendar.before(now)) {
                 mPresenter.loadDiaries(mCalendar)
                 mDiaryList.scrollToPosition(dayOfMonth - 1)

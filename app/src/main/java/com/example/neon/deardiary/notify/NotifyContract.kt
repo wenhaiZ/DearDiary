@@ -6,7 +6,7 @@ import com.example.neon.deardiary.data.Diary
 
 import java.util.Calendar
 
-interface NotifyContract {
+internal interface NotifyContract {
     interface Presenter : BasePresenter {
         fun getDiary(c: Calendar): Diary?
 

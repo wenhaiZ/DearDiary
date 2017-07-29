@@ -21,7 +21,7 @@ import com.example.neon.deardiary.utils.StringUtil
 import java.util.Calendar
 
 
-class SettingsFragment : PreferenceFragment(), SettingsContract.View {
+internal class SettingsFragment : PreferenceFragment(), SettingsContract.View {
     private lateinit var mPresenter: SettingsContract.Presenter
     private lateinit var mPreferences: SharedPreferences
     private var mTriggerMills: Long = 0//设置的提醒时间

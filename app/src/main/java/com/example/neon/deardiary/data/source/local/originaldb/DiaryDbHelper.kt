@@ -20,13 +20,13 @@ internal class DiaryDbHelper(context: Context) : SQLiteOpenHelper(context, DB_NA
         private val DB_VERSION = 1
 
         val TABLE_NAME = "diary"
-        val TEXT_TYPE = " TEXT "
-        val INT_TYPE = " INTEGER "
-        val OPERATOR_EQUAL = " = "
-        val OPERATOR_NOT_EQUAL = " != "
-        val OPERATOR_LIKE = " LIKE "
-        val OPERATOR_AND = " AND "
-        val OPERATOR_OR = " OR "
+        val TEXT_TYPE = "TEXT"
+        val INT_TYPE = "INTEGER"
+        val OPERATOR_EQUAL = "="
+        val OPERATOR_NOT_EQUAL = "!="
+        val OPERATOR_LIKE = "LIKE"
+        val OPERATOR_AND = "AND"
+        val OPERATOR_OR = "OR"
         val OPERATOR_ARGUMENT = "?"
 
         val COLUMN_ID = "id"
@@ -39,6 +39,6 @@ internal class DiaryDbHelper(context: Context) : SQLiteOpenHelper(context, DB_NA
         val COLUMN_TITLE = "title"
         val COLUMN_CONTENT = "content"
 
-        private val CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS $TABLE_NAME ("+ COLUMN_ID + TEXT_TYPE + "PRIMARY kEY," + COLUMN_YEAR + INT_TYPE + "," + COLUMN_MONTH + INT_TYPE + "," + COLUMN_DAY_OF_MONTH + INT_TYPE + "," + COLUMN_DAY_OF_WEEK + INT_TYPE + "," + COLUMN_HOUR + INT_TYPE + "," + COLUMN_MINUTE + INT_TYPE + "," + COLUMN_TITLE + TEXT_TYPE + "," + COLUMN_CONTENT + TEXT_TYPE + ")"
+        private val CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS $TABLE_NAME ($COLUMN_ID $TEXT_TYPE PRIMARY kEY AUTOINCREMENT,$COLUMN_YEAR $INT_TYPE,$COLUMN_MONTH $INT_TYPE,$COLUMN_DAY_OF_MONTH $INT_TYPE,$COLUMN_DAY_OF_WEEK $INT_TYPE,$COLUMN_HOUR $INT_TYPE,$COLUMN_MINUTE $INT_TYPE,$COLUMN_TITLE $TEXT_TYPE,$COLUMN_CONTENT $TEXT_TYPE)"
     }
 }

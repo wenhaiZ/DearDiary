@@ -6,7 +6,7 @@ import com.example.neon.deardiary.R
 import com.example.neon.deardiary.data.source.local.originaldb.DiaryLocalDataSource
 import com.example.neon.deardiary.utils.ActivityUtil
 
-class SettingsActivity : AppCompatActivity() {
+internal class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

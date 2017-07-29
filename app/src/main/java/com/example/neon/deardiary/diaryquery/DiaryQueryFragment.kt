@@ -22,7 +22,7 @@ import com.example.neon.deardiary.diaryedit.DiaryEditActivity
 import java.util.ArrayList
 
 
-class DiaryQueryFragment : Fragment(), DiaryQueryContract.View {
+internal class DiaryQueryFragment : Fragment(), DiaryQueryContract.View {
 
     @BindView(R.id.search_result_list)
     internal lateinit var mLvResult: ListView

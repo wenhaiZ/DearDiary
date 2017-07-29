@@ -5,8 +5,6 @@ import com.example.neon.deardiary.data.source.DataSource
 
 
 internal class DiaryEditPresenter(private val mDataSource: DataSource?, private val mView: DiaryEditContract.View) : DiaryEditContract.Presenter {
-    override val validDiaryCount: Int
-        get() = mDataSource!!.validDairyCount()
 
     init {
         mView.setPresenter(this)
@@ -16,8 +14,10 @@ internal class DiaryEditPresenter(private val mDataSource: DataSource?, private 
 
     }
 
+    override fun validDiaryCount(): Int = mDataSource !!.validDairyCount()
+
     override fun saveDiary(diary: Diary) {
-        mDataSource!!.updateDiary(diary, object : DataSource.UpdateDiaryCallback {
+        mDataSource !!.updateDiary(diary, object : DataSource.UpdateDiaryCallback {
             override fun onDiaryUpdated() {
                 mView.onDiaryUpdated()
             }

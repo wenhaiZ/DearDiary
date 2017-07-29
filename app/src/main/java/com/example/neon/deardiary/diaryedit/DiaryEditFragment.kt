@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Fragment
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +24,7 @@ import butterknife.OnClick
 import butterknife.Unbinder
 
 
-class DiaryEditFragment : Fragment(), DiaryEditContract.View {
+internal class DiaryEditFragment : Fragment(), DiaryEditContract.View {
 
     @BindView(R.id.diary_content)
     internal lateinit var mEtDiaryContent: EditText
@@ -113,7 +114,7 @@ class DiaryEditFragment : Fragment(), DiaryEditContract.View {
 
 
     private fun updateValidDiaryCount() {
-        val diaryCount = mPresenter.validDiaryCount
+        val diaryCount = mPresenter.validDiaryCount()
         PreferenceManager.getDefaultSharedPreferences(activity)
                 .edit()
                 .putString(SettingsFragment.KEY_DIARY_COUNT, diaryCount.toString() + "")

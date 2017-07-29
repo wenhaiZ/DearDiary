@@ -4,7 +4,7 @@ import com.example.neon.deardiary.base.BasePresenter
 import com.example.neon.deardiary.base.BaseView
 
 
-interface SettingsContract {
+internal interface SettingsContract {
     interface View : BaseView<Presenter> {
         fun onDiaryDeleted()
     }
