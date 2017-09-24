@@ -1,14 +1,9 @@
 *.iml
-.gradle
-.idea
-*.class
-/local.properties
+/.idea
+local.properties
 .DS_Store
 /build
-/captures
 .externalNativeBuild
-# Test File
 app/src/androidTest
 app/src/test/
-gradlew
-gradlew.bat
+app/build

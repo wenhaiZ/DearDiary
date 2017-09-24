@@ -5,6 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.neon.deardiary.settings.SettingsActivity">
+    tools:context="com.wenhaiz.deardiary.settings.SettingsActivity">
 
 </LinearLayout>

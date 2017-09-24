@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.neon.deardiary.diarylist.DiaryListActivity">
+    tools:context="com.wenhaiz.deardiary.diarylist.DiaryListActivity">
 
     <LinearLayout
         android:id="@+id/list_container"

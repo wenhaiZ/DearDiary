@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.neon.deardiary.diaryedit.DiaryEditActivity">
+    tools:context="com.wenhaiz.deardiary.diaryedit.DiaryEditActivity">
 
     <LinearLayout
         android:id="@+id/edit_container"
