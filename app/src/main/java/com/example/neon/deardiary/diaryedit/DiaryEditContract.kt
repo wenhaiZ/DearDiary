@@ -1,6 +1,5 @@
 package com.example.neon.deardiary.diaryedit
 
-import com.example.neon.deardiary.base.BasePresenter
 import com.example.neon.deardiary.base.BaseView
 import com.example.neon.deardiary.data.Diary
 
@@ -12,7 +11,7 @@ internal interface DiaryEditContract {
         fun onDiaryUpdateFailed()
     }
 
-    interface Presenter : BasePresenter {
+    interface Presenter {
         fun saveDiary(diary: Diary)
 
         fun validDiaryCount(): Int

@@ -1,13 +1,10 @@
-package com.example.neon.deardiary.data.source.local.originaldb
+package com.example.neon.deardiary.data
 
-import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
+import android.database.AbstractWindowedCursor
 import android.database.Cursor
-
-import com.example.neon.deardiary.data.Diary
-import com.example.neon.deardiary.data.source.DataSource
-
+import com.example.neon.deardiary.utils.LogUtil
 import java.util.ArrayList
 import java.util.Calendar
 
@@ -15,23 +12,23 @@ import java.util.Calendar
  * 本地 SQLite 数据源
  */
 
-class DiaryLocalDataSource private constructor(context: Context) : DataSource {
-    private val mDbHelper: DiaryDbHelper = DiaryDbHelper(context)
+class LocalDataSource private constructor(context: Context) : DataSource {
+    private var mDbHelper: DiaryDbHelper = DiaryDbHelper(context)
+
     override fun updateDiary(diary: Diary, callback: DataSource.UpdateDiaryCallback) {
-
         val db = mDbHelper.writableDatabase
-
-        val values = ContentValues()
-        values.put(DiaryDbHelper.COLUMN_MINUTE, diary.minute)
-        values.put(DiaryDbHelper.COLUMN_HOUR, diary.hour)
-        values.put(DiaryDbHelper.COLUMN_TITLE, diary.title)
-        values.put(DiaryDbHelper.COLUMN_CONTENT, diary.content)
-
-        val whereClause = "${DiaryDbHelper.COLUMN_YEAR} ${DiaryDbHelper.OPERATOR_EQUAL} ${DiaryDbHelper.OPERATOR_ARGUMENT} ${DiaryDbHelper.OPERATOR_AND} ${DiaryDbHelper.COLUMN_MONTH} ${DiaryDbHelper.OPERATOR_EQUAL} ${DiaryDbHelper.OPERATOR_ARGUMENT} ${DiaryDbHelper.OPERATOR_AND}  ${DiaryDbHelper.COLUMN_DAY_OF_MONTH} ${DiaryDbHelper.OPERATOR_EQUAL} ${DiaryDbHelper.OPERATOR_ARGUMENT}"
+        val values = ContentValues().apply {
+            put(DiaryDbHelper.COLUMN_MINUTE, diary.minute)
+            put(DiaryDbHelper.COLUMN_HOUR, diary.hour)
+            put(DiaryDbHelper.COLUMN_TITLE, diary.title)
+            put(DiaryDbHelper.COLUMN_CONTENT, diary.content)
+        }
+        val whereClause = "${DiaryDbHelper.COLUMN_YEAR} ${DiaryDbHelper.OPERATOR_EQUAL} ${DiaryDbHelper.OPERATOR_ARGUMENT} ${DiaryDbHelper.OPERATOR_AND} " +
+                "${DiaryDbHelper.COLUMN_MONTH} ${DiaryDbHelper.OPERATOR_EQUAL} ${DiaryDbHelper.OPERATOR_ARGUMENT} ${DiaryDbHelper.OPERATOR_AND}  " +
+                "${DiaryDbHelper.COLUMN_DAY_OF_MONTH} ${DiaryDbHelper.OPERATOR_EQUAL} ${DiaryDbHelper.OPERATOR_ARGUMENT}"
         val whereArgs = arrayOf(diary.year.toString(), diary.month.toString(), diary.dayOfMonth.toString())
 
         val result = db.update(DiaryDbHelper.TABLE_NAME, values, whereClause, whereArgs)
-
         if (result > 0) {
             callback.onDiaryUpdated()
         } else {
@@ -45,18 +42,31 @@ class DiaryLocalDataSource private constructor(context: Context) : DataSource {
         db.delete(DiaryDbHelper.TABLE_NAME, null, null)
     }
 
-
     private fun getDiaryFromCursor(cursor: Cursor): Diary {
-        val diary = Diary()
-        diary.year = cursor.getInt(cursor.getColumnIndex(DiaryDbHelper.COLUMN_YEAR))
-        diary.month = cursor.getInt(cursor.getColumnIndex(DiaryDbHelper.COLUMN_MONTH))
-        diary.dayOfMonth = cursor.getInt(cursor.getColumnIndex(DiaryDbHelper.COLUMN_DAY_OF_MONTH))
-        diary.dayOfWeek = cursor.getInt(cursor.getColumnIndex(DiaryDbHelper.COLUMN_DAY_OF_WEEK))
-        diary.minute = cursor.getInt(cursor.getColumnIndex(DiaryDbHelper.COLUMN_MINUTE))
-        diary.hour = cursor.getInt(cursor.getColumnIndex(DiaryDbHelper.COLUMN_HOUR))
-        diary.title = cursor.getString(cursor.getColumnIndex(DiaryDbHelper.COLUMN_TITLE))
-        diary.content = cursor.getString(cursor.getColumnIndex(DiaryDbHelper.COLUMN_CONTENT))
-        return diary
+        return Diary().apply {
+            try {
+                val yearIndex = cursor.getColumnIndex(DiaryDbHelper.COLUMN_YEAR)
+                val monthIndex = cursor.getColumnIndex(DiaryDbHelper.COLUMN_MONTH)
+                val dayIndex = cursor.getColumnIndex(DiaryDbHelper.COLUMN_DAY_OF_MONTH)
+                val weekIndex = cursor.getColumnIndex(DiaryDbHelper.COLUMN_DAY_OF_WEEK)
+                val minuteIndex = cursor.getColumnIndex(DiaryDbHelper.COLUMN_MINUTE)
+                val hourIndex = cursor.getColumnIndex(DiaryDbHelper.COLUMN_HOUR)
+                val titleIndex = cursor.getColumnIndex(DiaryDbHelper.COLUMN_TITLE)
+                val contentIndex = cursor.getColumnIndex(DiaryDbHelper.COLUMN_CONTENT)
+                LogUtil.d("test", "yearIndex=$yearIndex,monthIndex=$monthIndex,dayIndex=$dayIndex,weekIndex=$weekIndex")
+                LogUtil.d("test", "minuteIndex=$minuteIndex,hourIndex=$hourIndex,titleIndex=$titleIndex,contentIndex=$contentIndex")
+                year = cursor.getInt(yearIndex)
+                month = cursor.getInt(monthIndex)
+                dayOfMonth = cursor.getInt(dayIndex)
+                dayOfWeek = cursor.getInt(weekIndex)
+                minute = cursor.getInt(minuteIndex)
+                hour = cursor.getInt(hourIndex)
+                title = cursor.getString(titleIndex)
+                content = cursor.getString(contentIndex)
+            } catch (e: Exception) {
+                LogUtil.e("exception", e.localizedMessage)
+            }
+        }
     }
 
     private fun getDiariesFromCursor(cursor: Cursor): ArrayList<Diary> {
@@ -66,16 +76,18 @@ class DiaryLocalDataSource private constructor(context: Context) : DataSource {
             diaries.add(diary)
         }
         return diaries
-
     }
 
+    //按月查询时，如果有记录为空，就添加一个默认的日记记录
     override fun queryAndAddDefault(calendar: Calendar, callBack: DataSource.LoadDiariesCallBack) {
         val isBefore = isBefore(calendar)
         //设置查询边界
         val diaryNumbers =
                 if (isBefore)
+                //获取当月最大天数
                     calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
                 else
+                //获取当前日期
                     calendar.get(Calendar.DAY_OF_MONTH)
 
         queryByMonth(calendar, object : DataSource.LoadDiariesCallBack {
@@ -95,6 +107,7 @@ class DiaryLocalDataSource private constructor(context: Context) : DataSource {
         })
     }
 
+    //检查给定日期是否早于当前时间
     private fun isBefore(calendar: Calendar): Boolean {
         val now = Calendar.getInstance()//获取当前日期
         return calendar.get(Calendar.YEAR) < now.get(Calendar.YEAR) || calendar.get(Calendar.MONTH) < now.get(Calendar.MONTH)
@@ -102,7 +115,7 @@ class DiaryLocalDataSource private constructor(context: Context) : DataSource {
     }
 
     override fun queryByMonth(calendar: Calendar, callBack: DataSource.LoadDiariesCallBack) {
-        val db = mDbHelper.writableDatabase
+        val db = mDbHelper.readableDatabase
 
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH) + 1
@@ -121,7 +134,7 @@ class DiaryLocalDataSource private constructor(context: Context) : DataSource {
     }
 
     override fun queryByDay(calendar: Calendar, callBack: DataSource.LoadDiaryCallBack) {
-        val db = mDbHelper.writableDatabase
+        val db = mDbHelper.readableDatabase
 
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH) + 1
@@ -133,10 +146,12 @@ class DiaryLocalDataSource private constructor(context: Context) : DataSource {
             callBack.onDataNotAvailable()
             return
         }
+        //notice:没有这句，cursor 的 mPos初始为-1，
+        //会抛出 CursorIndexOutOfBoundsException: Index -1 requested, with a size of 1
+        cursor.moveToFirst()
 
         val diary = getDiaryFromCursor(cursor)
         callBack.onDiaryGot(diary)
-
         cursor.close()
         db.close()
     }
@@ -160,33 +175,31 @@ class DiaryLocalDataSource private constructor(context: Context) : DataSource {
 
     override fun insertDiary(diary: Diary) {
         val db = mDbHelper.writableDatabase
-        val values = ContentValues()
-        values.put(DiaryDbHelper.COLUMN_YEAR, diary.year)
-        values.put(DiaryDbHelper.COLUMN_MONTH, diary.month)
-        values.put(DiaryDbHelper.COLUMN_DAY_OF_MONTH, diary.dayOfMonth)
-        values.put(DiaryDbHelper.COLUMN_DAY_OF_WEEK, diary.dayOfWeek)
-        values.put(DiaryDbHelper.COLUMN_MINUTE, diary.minute)
-        values.put(DiaryDbHelper.COLUMN_HOUR, diary.hour)
-        values.put(DiaryDbHelper.COLUMN_TITLE, diary.title)
-        values.put(DiaryDbHelper.COLUMN_CONTENT, diary.content)
+        val values = ContentValues().apply {
+            put(DiaryDbHelper.COLUMN_YEAR, diary.year)
+            put(DiaryDbHelper.COLUMN_MONTH, diary.month)
+            put(DiaryDbHelper.COLUMN_DAY_OF_MONTH, diary.dayOfMonth)
+            put(DiaryDbHelper.COLUMN_DAY_OF_WEEK, diary.dayOfWeek)
+            put(DiaryDbHelper.COLUMN_MINUTE, diary.minute)
+            put(DiaryDbHelper.COLUMN_HOUR, diary.hour)
+            put(DiaryDbHelper.COLUMN_TITLE, diary.title)
+            put(DiaryDbHelper.COLUMN_CONTENT, diary.content)
+        }
         db.insert(DiaryDbHelper.TABLE_NAME, null, values)
         db.close()
     }
 
     override fun queryByKeyword(keyword: String, callBack: DataSource.LoadDiariesCallBack) {
         val db = mDbHelper.readableDatabase
-
-//        val whereClause = DiaryDbHelper.COLUMN_TITLE + DiaryDbHelper.OPERATOR_LIKE + "?" + DiaryDbHelper.OPERATOR_OR + DiaryDbHelper.COLUMN_CONTENT + DiaryDbHelper.OPERATOR_LIKE + "?"
         val whereClause = "${DiaryDbHelper.COLUMN_TITLE} ${DiaryDbHelper.OPERATOR_LIKE} ${DiaryDbHelper.OPERATOR_ARGUMENT} ${DiaryDbHelper.OPERATOR_OR} ${DiaryDbHelper.COLUMN_CONTENT} ${DiaryDbHelper.OPERATOR_LIKE} ${DiaryDbHelper.OPERATOR_ARGUMENT}"
         val whereArgs = arrayOf("%$keyword%", "%$keyword%")
-        val cursor = db.query(DiaryDbHelper.TABLE_NAME, null, whereClause, whereArgs, null, null, null)
 
+        val cursor = db.query(DiaryDbHelper.TABLE_NAME, null, whereClause, whereArgs, null, null, null)
         if (cursor == null || cursor.count == 0) {
             callBack.onDataNotAvailable()
-            return
+        } else {
+            callBack.onDiaryLoaded(getDiariesFromCursor(cursor))
         }
-        val diaries = getDiariesFromCursor(cursor)
-        callBack.onDiaryLoaded(diaries)
         cursor.close()
         db.close()
     }
@@ -207,16 +220,13 @@ class DiaryLocalDataSource private constructor(context: Context) : DataSource {
     }
 
     companion object {
-        private var mInstance: DiaryLocalDataSource? = null
+        private var mInstance: LocalDataSource? = null
 
         @JvmStatic
-        fun getInstance(context: Context): DiaryLocalDataSource? {
+        fun getInstance(context: Context): LocalDataSource? {
             if (mInstance == null) {
-                synchronized(DiaryLocalDataSource::class.java) {
-                    if (mInstance == null) {
-                        mInstance = DiaryLocalDataSource(context)
-                    }
-                }
+                // no need to use synchronized lock
+                mInstance = LocalDataSource(context)
             }
             return mInstance
         }

@@ -3,7 +3,6 @@ package com.example.neon.deardiary.data
 import java.io.Serializable
 import java.util.Calendar
 
-
 class Diary : Serializable {
     var id: Long? = null//数据库id
     var year: Int = 0//年

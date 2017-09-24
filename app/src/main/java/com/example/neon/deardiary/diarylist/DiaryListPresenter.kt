@@ -1,23 +1,19 @@
 package com.example.neon.deardiary.diarylist
 
-import android.util.Log
+import com.example.neon.deardiary.data.DataSource
 import com.example.neon.deardiary.data.Diary
-import com.example.neon.deardiary.data.source.DataSource
-import com.example.neon.deardiary.data.source.local.originaldb.DiaryLocalDataSource
+import com.example.neon.deardiary.data.LocalDataSource
+import com.example.neon.deardiary.utils.LogUtil
 import java.util.ArrayList
 import java.util.Calendar
 
 
-internal class DiaryListPresenter(dataSource: DiaryLocalDataSource, private val mView: DiaryListContract.View) : DiaryListContract.Presenter {
+internal class DiaryListPresenter(dataSource: LocalDataSource, private val mView: DiaryListContract.View) : DiaryListContract.Presenter {
     private val mDataSource: DataSource
 
     init {
         mDataSource = dataSource
         mView.setPresenter(this)
-    }
-
-    override fun start() {
-        loadDiaries(Calendar.getInstance())
     }
 
     override fun loadDiaries(c: Calendar) {
@@ -27,7 +23,7 @@ internal class DiaryListPresenter(dataSource: DiaryLocalDataSource, private val 
             }
 
             override fun onDataNotAvailable() {
-                Log.d(TAG, "onDataNotAvailable: 数据读取失败")
+                LogUtil.e(TAG,"onDataNotAvailable: 数据读取失败")
             }
         })
 

@@ -28,26 +28,22 @@ import java.util.Locale
 
 
 internal class DiaryListFragment : Fragment(), DiaryListContract.View {
-
     @BindView(R.id.diaryList)
-    internal lateinit var mDiaryList: RecyclerView
+    lateinit var mDiaryList: RecyclerView
     @BindView(R.id.bottom_year)
-    internal lateinit var mTvYear: TextView
+    lateinit var mTvYear: TextView
     @BindView(R.id.bottom_month)
-    internal lateinit var mTvMonth: TextView
+    lateinit var mTvMonth: TextView
 
     private lateinit var mPresenter: DiaryListContract.Presenter
     private lateinit var mCalendar: Calendar
-    private lateinit var mAdapter: DiaryRecyclerAdapter
-    //    private val mScrollPos: Int = 0
-//    private val mScrollTop: Int = 0
+    private lateinit var mAdapter: DiaryListAdapter
     private var isFirstStart: Boolean = false
     private lateinit var mUnBinder: Unbinder
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mAdapter = DiaryRecyclerAdapter(activity)
+        mAdapter = DiaryListAdapter(activity)
         mCalendar = Calendar.getInstance()
         isFirstStart = true
     }
@@ -60,11 +56,11 @@ internal class DiaryListFragment : Fragment(), DiaryListContract.View {
     }
 
     private fun initView() {
-        mDiaryList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        mDiaryList.layoutManager = LinearLayoutManager(activity)
         mDiaryList.adapter = mAdapter
         mDiaryList.isVerticalScrollBarEnabled = false
         mDiaryList.itemAnimator = DefaultItemAnimator()
-        mAdapter.setOnItemClickListener(object : DiaryRecyclerAdapter.OnItemClickListener {
+        mAdapter.setOnItemClickListener(object : DiaryListAdapter.OnItemClickListener {
             override fun onItemClick(view: View) {
                 val itemPosition = mDiaryList.getChildAdapterPosition(view)
                 val diary = mAdapter.getItem(itemPosition)
@@ -74,7 +70,7 @@ internal class DiaryListFragment : Fragment(), DiaryListContract.View {
         setBottomDate()
     }
 
-    fun setBottomDate() {
+    private fun setBottomDate() {
         val curYear = mCalendar.get(Calendar.YEAR)
         val curMonth = mCalendar.get(Calendar.MONTH) + 1
         mTvYear.text = String.format(Locale.getDefault(), "%d", curYear)
@@ -100,35 +96,10 @@ internal class DiaryListFragment : Fragment(), DiaryListContract.View {
         mAdapter.setData(diaries)
     }
 
-
-    override fun onPause() {
-        super.onPause()
-//        saveListScrollPosition()
-    }
-
-    //记录滑动的位置
-//    private fun saveListScrollPosition() {
-//        //        mScrollPos = mDiaryList.getFirstVisiblePosition();//获取当前可见第一项在listView中的位置
-//        //        View v1 = mDiaryList.getChildAt(0);//获取当前屏幕可见第一项对应的View
-//        //        mScrollTop = (v1 == null) ? 0 : v1.getTop();//获取当前View顶部距ListView顶部的高度
-//    }
-
     override fun onResume() {
         super.onResume()
         mPresenter.loadDiaries(mCalendar)
-//        configList()
     }
-
-    //设置ListView显示位置
-//    private fun configList() {
-//        if (isFirstStart) {
-//            //            mDiaryList.setSelection(mDiaryList.getCount() - 1);
-//            isFirstStart = false
-//        } else {
-//            //恢复到指定位置
-//            //            mDiaryList.setSelectionFromTop(mScrollPos, mScrollTop);
-//        }
-//    }
 
     @OnClick(R.id.write_today, R.id.search, R.id.settings, R.id.chooseDate)
     fun onClick(v: View) {
@@ -168,7 +139,6 @@ internal class DiaryListFragment : Fragment(), DiaryListContract.View {
 
     private fun showDatePickDialog() {
         val listener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-
             mCalendar.set(Calendar.YEAR, year)
             mCalendar.set(Calendar.MONTH, monthOfYear)
             mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -186,7 +156,8 @@ internal class DiaryListFragment : Fragment(), DiaryListContract.View {
             setBottomDate()
         }
 
-        val datePicker = CustomDatePickerDialog(activity, listener, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH))
+        val datePicker = CustomDatePickerDialog(activity, listener,
+                mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH))
         datePicker.show()
     }
 
@@ -197,6 +168,5 @@ internal class DiaryListFragment : Fragment(), DiaryListContract.View {
 
     companion object {
         val REQUEST_EDIT_DIARY = 0x1
-//        val TAG = "DiaryListFragment"
     }
 }

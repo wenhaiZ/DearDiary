@@ -1,9 +1,7 @@
 package com.example.neon.deardiary.diaryquery
 
-import com.example.neon.deardiary.base.BasePresenter
 import com.example.neon.deardiary.base.BaseView
 import com.example.neon.deardiary.data.Diary
-
 import java.util.ArrayList
 
 
@@ -14,7 +12,7 @@ internal interface DiaryQueryContract {
 
     }
 
-    interface Presenter : BasePresenter {
+    interface Presenter {
         fun diaryQueryByKeyword(keyword: String)
     }
 }

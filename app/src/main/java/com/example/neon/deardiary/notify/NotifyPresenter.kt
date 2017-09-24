@@ -1,10 +1,9 @@
 package com.example.neon.deardiary.notify
 
 import com.example.neon.deardiary.data.Diary
-import com.example.neon.deardiary.data.source.DataSource
+import com.example.neon.deardiary.data.DataSource
 
 import java.util.Calendar
-
 
 internal class NotifyPresenter(private val mDataSource: DataSource?, view: NotifyContract.View) : NotifyContract.Presenter {
 
@@ -12,13 +11,9 @@ internal class NotifyPresenter(private val mDataSource: DataSource?, view: Notif
         view.setPresenter(this)
     }
 
-    override fun start() {
-
-    }
-
     override fun getDiary(c: Calendar): Diary? {
         var foundDiary: Diary? = null
-        mDataSource !!.queryByDay(c, object : DataSource.LoadDiaryCallBack {
+        mDataSource?.queryByDay(c, object : DataSource.LoadDiaryCallBack {
             override fun onDiaryGot(diary: Diary) {
                 foundDiary = diary
             }
@@ -31,7 +26,6 @@ internal class NotifyPresenter(private val mDataSource: DataSource?, view: Notif
     }
 
     override fun insertDiary(diary: Diary) {
-        mDataSource !!.insertDiary(diary)
-
+        mDataSource?.insertDiary(diary)
     }
 }

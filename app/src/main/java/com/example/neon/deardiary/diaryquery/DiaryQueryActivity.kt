@@ -3,7 +3,7 @@ package com.example.neon.deardiary.diaryquery
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.example.neon.deardiary.R
-import com.example.neon.deardiary.data.source.local.originaldb.DiaryLocalDataSource
+import com.example.neon.deardiary.data.LocalDataSource
 import com.example.neon.deardiary.utils.ActivityUtil
 
 class DiaryQueryActivity : AppCompatActivity() {
@@ -16,7 +16,7 @@ class DiaryQueryActivity : AppCompatActivity() {
             diaryQueryFragment = DiaryQueryFragment()
             ActivityUtil.addFragmentToActivity(fragmentManager, diaryQueryFragment, R.id.query_container)
         }
-        val dataSource = DiaryLocalDataSource.getInstance(this)
+        val dataSource = LocalDataSource.getInstance(this)
         //create presenter
         DiaryQueryPresenter(diaryQueryFragment, dataSource)
 

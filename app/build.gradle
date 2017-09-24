@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 25
@@ -9,8 +8,8 @@ android {
         applicationId "com.example.neon.deardiary"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0.3"
+        versionCode 4
+        versionName "1.3.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -28,12 +27,9 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
-    //greenDAO
-    compile 'org.greenrobot:greendao:3.2.0'
+    compile 'com.android.support:appcompat-v7:25.4.0'
+    compile 'com.android.support:support-v4:25.4.0'
+    compile 'com.android.support:recyclerview-v7:25.4.0'
     //ButterKnife
     compile 'com.jakewharton:butterknife:8.7.0'
     kapt 'com.jakewharton:butterknife-compiler:8.7.0'

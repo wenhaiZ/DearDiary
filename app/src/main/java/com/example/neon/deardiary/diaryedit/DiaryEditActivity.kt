@@ -1,11 +1,10 @@
 package com.example.neon.deardiary.diaryedit
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-
+import android.support.v7.app.AppCompatActivity
 import com.example.neon.deardiary.R
 import com.example.neon.deardiary.data.Diary
-import com.example.neon.deardiary.data.source.local.originaldb.DiaryLocalDataSource
+import com.example.neon.deardiary.data.LocalDataSource
 import com.example.neon.deardiary.utils.ActivityUtil
 
 class DiaryEditActivity : AppCompatActivity() {
@@ -20,11 +19,12 @@ class DiaryEditActivity : AppCompatActivity() {
             ActivityUtil.addFragmentToActivity(fragmentManager, diaryEditFragment, R.id.edit_container)
         }
         val diary = intent.getSerializableExtra(DATA_DIARY) as Diary
-        val data = Bundle()
-        data.putSerializable(DATA_DIARY, diary)
-        diaryEditFragment.arguments = data
+
+        diaryEditFragment.arguments = Bundle().apply {
+            putSerializable(DATA_DIARY, diary)
+        }
         //create dataSource
-        val dataSource = DiaryLocalDataSource.getInstance(this)
+        val dataSource = LocalDataSource.getInstance(this)
         //create presenter
         DiaryEditPresenter(dataSource, diaryEditFragment)
     }

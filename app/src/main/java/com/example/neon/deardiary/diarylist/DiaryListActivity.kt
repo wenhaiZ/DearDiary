@@ -5,7 +5,7 @@ import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
 
 import com.example.neon.deardiary.R
-import com.example.neon.deardiary.data.source.local.originaldb.DiaryLocalDataSource
+import com.example.neon.deardiary.data.LocalDataSource
 import com.example.neon.deardiary.utils.ActivityUtil
 
 class DiaryListActivity : AppCompatActivity() {
@@ -22,7 +22,7 @@ class DiaryListActivity : AppCompatActivity() {
             ActivityUtil.addFragmentToActivity(fragmentManager, diaryListFragment, R.id.list_container)
         }
 
-        val dataSource = DiaryLocalDataSource.getInstance(this)
+        val dataSource = LocalDataSource.getInstance(this)
         //create presenter
         DiaryListPresenter(dataSource!!, diaryListFragment)
     }

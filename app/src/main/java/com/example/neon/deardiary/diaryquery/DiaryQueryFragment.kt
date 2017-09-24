@@ -1,42 +1,40 @@
 package com.example.neon.deardiary.diaryquery
 
 import android.app.Fragment
-import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.ListView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
-import butterknife.OnItemClick
 import butterknife.Unbinder
 import com.example.neon.deardiary.R
 import com.example.neon.deardiary.data.Diary
-import com.example.neon.deardiary.diaryedit.DiaryEditActivity
+import com.example.neon.deardiary.utils.LogUtil
 import java.util.ArrayList
 
-
 internal class DiaryQueryFragment : Fragment(), DiaryQueryContract.View {
-
     @BindView(R.id.search_result_list)
-    internal lateinit var mLvResult: ListView
+    lateinit var mLvResult: RecyclerView
     @BindView(R.id.searchKey)
-    internal lateinit var mEtQuery: EditText
+    lateinit var mEtQuery: EditText
 
-    private var mPresenter: DiaryQueryContract.Presenter? = null
-    private var mAdapter: DiaryQueryAdapter? = null
-    private var mUnBinder: Unbinder? = null
+    private lateinit var mPresenter: DiaryQueryContract.Presenter
+    private lateinit var mAdapter: DiaryQueryAdapter
+    private lateinit var mUnBinder: Unbinder
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_diary_query, container, false)
         mUnBinder = ButterKnife.bind(this, root)
-        mLvResult.dividerHeight = 0
+        mAdapter = DiaryQueryAdapter(activity)
+        mLvResult.adapter = mAdapter
+        mLvResult.layoutManager = LinearLayoutManager(activity)
         mEtQuery.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
@@ -51,17 +49,6 @@ internal class DiaryQueryFragment : Fragment(), DiaryQueryContract.View {
         return root
     }
 
-    @OnItemClick(R.id.search_result_list)
-    fun onItemClick(position: Int) {
-        val diary = mAdapter!!.getItem(position) as Diary
-        val bundle = Bundle()
-        bundle.putSerializable(DiaryEditActivity.DATA_DIARY, diary)
-        val intent = Intent(activity, DiaryEditActivity::class.java)
-        intent.putExtras(bundle)
-        startActivity(intent)
-
-    }
-
     @OnClick(R.id.search_close_btn)
     fun close() {
         activity.finish()
@@ -70,11 +57,7 @@ internal class DiaryQueryFragment : Fragment(), DiaryQueryContract.View {
     private fun beginQuery(keyword: String) {
         if ("" != keyword) {
             mLvResult.visibility = View.VISIBLE
-            if (mAdapter == null) {
-                mAdapter = DiaryQueryAdapter(activity)
-                mLvResult.adapter = mAdapter
-            }
-            mPresenter!!.diaryQueryByKeyword(keyword)
+            mPresenter.diaryQueryByKeyword(keyword)
         } else {
             mLvResult.visibility = View.INVISIBLE
         }
@@ -90,20 +73,19 @@ internal class DiaryQueryFragment : Fragment(), DiaryQueryContract.View {
     }
 
     override fun querySuccessfully(diaries: ArrayList<Diary>) {
-        mAdapter!!.setData(diaries)
+        mAdapter.setData(diaries)
     }
 
     override fun queryFailed() {
-        Log.e(TAG, "queryFailed: 查询失败")
+        LogUtil.e(TAG, "queryFailed: 查询失败")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mUnBinder!!.unbind()
+        mUnBinder.unbind()
     }
 
     companion object {
-
         private val TAG = "DiaryQueryFragment"
     }
 }

@@ -9,13 +9,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.util.Log
 import com.example.neon.deardiary.R
 import com.example.neon.deardiary.data.Diary
-import com.example.neon.deardiary.data.source.local.originaldb.DiaryLocalDataSource
+import com.example.neon.deardiary.data.LocalDataSource
 import com.example.neon.deardiary.diaryedit.DiaryEditActivity
 import com.example.neon.deardiary.settings.SettingsFragment
 import com.example.neon.deardiary.utils.Constant
+import com.example.neon.deardiary.utils.LogUtil
 import java.util.Calendar
 
 internal class NotifyReceiver : BroadcastReceiver(), NotifyContract.View {
@@ -23,7 +23,7 @@ internal class NotifyReceiver : BroadcastReceiver(), NotifyContract.View {
     private lateinit var mPresenter: NotifyContract.Presenter
 
     override fun onReceive(context: Context, intent: Intent) {
-        val dataSource = DiaryLocalDataSource.getInstance(context)
+        val dataSource = LocalDataSource.getInstance(context)
         mPresenter = NotifyPresenter(dataSource, this)
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -31,9 +31,10 @@ internal class NotifyReceiver : BroadcastReceiver(), NotifyContract.View {
         val remindIdFromPreference = preferences.getInt(SettingsFragment.KEY_REMIND_ID, 65535)
         val remindIdFromIntent = intent.getIntExtra(SettingsFragment.KEY_REMIND_ID, 0)
 
-        Log.d(TAG, "onReceive: isRemind?" + isRemindSet + " remindIdFromPreference:"
+        LogUtil.d(TAG, "onReceive: isRemind?" + isRemindSet + " remindIdFromPreference:"
                 + remindIdFromPreference + ",remindIdFromIntent: " + remindIdFromIntent)
 
+        //设置提醒并且 id 相符，发送通知
         if (isRemindSet && remindIdFromIntent == remindIdFromPreference) {
             sendNotification(context)
             setNextBroadCastTime(context, intent)
@@ -48,8 +49,10 @@ internal class NotifyReceiver : BroadcastReceiver(), NotifyContract.View {
             diary = Diary(today)
             mPresenter.insertDiary(diary)
         }
-        val data = Bundle()
-        data.putSerializable(Constant.DIARY, diary)
+
+        val data = Bundle().apply {
+            putSerializable(Constant.DIARY, diary)
+        }
 
         val startEdit = Intent(context, DiaryEditActivity::class.java)
         startEdit.putExtras(data)
@@ -81,10 +84,9 @@ internal class NotifyReceiver : BroadcastReceiver(), NotifyContract.View {
         val alarmIntent = PendingIntent.getBroadcast(context, SettingsFragment.REMIND_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, nextTime, alarmIntent)
         //log信息
-        Log.d(TAG, "onClick:" + ",下次通知时间：" + calendar.get(Calendar.YEAR) + "年" + (calendar.get(Calendar.MONTH) + 1) + "月"
+        LogUtil.d(TAG, "onClick:" + ",下次通知时间：" + calendar.get(Calendar.YEAR) + "年" + (calendar.get(Calendar.MONTH) + 1) + "月"
                 + calendar.get(Calendar.DAY_OF_MONTH) + "日" + calendar.get(Calendar.HOUR_OF_DAY) + "时" + calendar.get(Calendar.MINUTE) + "分" + calendar.get(Calendar.SECOND) + "秒")
     }
-
 
     override fun setPresenter(presenter: NotifyContract.Presenter) {
         mPresenter = presenter

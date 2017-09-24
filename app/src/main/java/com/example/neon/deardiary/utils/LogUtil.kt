@@ -11,12 +11,6 @@ object LogUtil {
         }
     }
 
-    fun i(tag: String, msg: String) {
-        if (debug) {
-            Log.i(tag, msg)
-        }
-    }
-
     fun e(tag: String, msg: String) {
         if (debug) {
             Log.e(tag, msg)

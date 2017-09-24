@@ -3,7 +3,7 @@ package com.example.neon.deardiary.settings
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.example.neon.deardiary.R
-import com.example.neon.deardiary.data.source.local.originaldb.DiaryLocalDataSource
+import com.example.neon.deardiary.data.LocalDataSource
 import com.example.neon.deardiary.utils.ActivityUtil
 
 internal class SettingsActivity : AppCompatActivity() {
@@ -16,7 +16,7 @@ internal class SettingsActivity : AppCompatActivity() {
             settingsFragment = SettingsFragment()
             ActivityUtil.addFragmentToActivity(fragmentManager, settingsFragment, R.id.settings_container)
         }
-        val dataSource = DiaryLocalDataSource.getInstance(this)
+        val dataSource = LocalDataSource.getInstance(this)
         //create the presenter
         SettingsPresenter(dataSource, settingsFragment)
     }

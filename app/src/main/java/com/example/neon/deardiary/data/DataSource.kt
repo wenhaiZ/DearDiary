@@ -1,6 +1,4 @@
-package com.example.neon.deardiary.data.source
-
-import com.example.neon.deardiary.data.Diary
+package com.example.neon.deardiary.data
 
 import java.util.ArrayList
 import java.util.Calendar

@@ -20,7 +20,6 @@ import com.example.neon.deardiary.widget.CustomTimePickerDialog
 import com.example.neon.deardiary.utils.StringUtil
 import java.util.Calendar
 
-
 internal class SettingsFragment : PreferenceFragment(), SettingsContract.View {
     private lateinit var mPresenter: SettingsContract.Presenter
     private lateinit var mPreferences: SharedPreferences
@@ -38,7 +37,7 @@ internal class SettingsFragment : PreferenceFragment(), SettingsContract.View {
         //已写日记天数
         val diaryCountPre = findPreference(KEY_DIARY_COUNT)
         val diaryCount = mPreferences.getString(KEY_DIARY_COUNT, "0")
-        diaryCountPre.summary = "${diaryCount!!} ${getString(R.string.day)}"
+        diaryCountPre.summary = "${diaryCount !!} ${getString(R.string.day)}"
 
         //删除日记
         val deleteAll = findPreference(KEY_DELETE_ALL)
@@ -110,10 +109,10 @@ internal class SettingsFragment : PreferenceFragment(), SettingsContract.View {
         val trigger = Calendar.getInstance()
 
         val remindTime = mPreferences.getString(KEY_REMIND_TIME, "09:00")
-        val time = remindTime !!.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val time = remindTime.split(":".toRegex())
 
-        val hourOfDay = Integer.valueOf(time[0]) !!
-        val minute = Integer.valueOf(time[1]) !!
+        val hourOfDay = Integer.valueOf(time[0])
+        val minute = Integer.valueOf(time[1])
 
         trigger.set(Calendar.HOUR_OF_DAY, hourOfDay)
         trigger.set(Calendar.MINUTE, minute)
@@ -121,7 +120,7 @@ internal class SettingsFragment : PreferenceFragment(), SettingsContract.View {
 
         //供AlarmManager设置定时任务
         mTriggerMills = trigger.timeInMillis
-        //如果设置时间小于当前时间，则加上一个周期(即明天的这个时刻)
+        //如果设置时间小于当前时间，则后延一天(即明天的这个时刻)
         if (mTriggerMills < System.currentTimeMillis()) {
             mTriggerMills += INTERVAL_DAY
         }

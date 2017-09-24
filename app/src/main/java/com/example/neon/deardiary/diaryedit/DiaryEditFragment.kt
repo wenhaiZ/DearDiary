@@ -4,25 +4,20 @@ import android.app.Activity
 import android.app.Fragment
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-
-import com.example.neon.deardiary.R
-import com.example.neon.deardiary.data.Diary
-import com.example.neon.deardiary.settings.SettingsFragment
-
-import java.util.Calendar
-
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Unbinder
-
+import com.example.neon.deardiary.R
+import com.example.neon.deardiary.data.Diary
+import com.example.neon.deardiary.settings.SettingsFragment
+import java.util.Calendar
 
 internal class DiaryEditFragment : Fragment(), DiaryEditContract.View {
 
@@ -42,10 +37,6 @@ internal class DiaryEditFragment : Fragment(), DiaryEditContract.View {
         mDiary = arguments.getSerializable(DiaryEditActivity.DATA_DIARY) as Diary
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_diary_edit, container, false)
         mUnBinder = ButterKnife.bind(this, root)
@@ -56,14 +47,17 @@ internal class DiaryEditFragment : Fragment(), DiaryEditContract.View {
     private fun initView() {
         mEtDiaryTitle.setText(mDiary.title)
         mEtDiaryContent.setText(mDiary.content)
+
         if ("" == mDiary.title) {
             mEtDiaryTitle.requestFocus()
         } else {
             mEtDiaryContent.requestFocus()
+            //将光标移到内容末尾
             mEtDiaryContent.setSelection(mEtDiaryContent.text.length)
         }
-        val date = "${mDiary.year}${getString(R.string.main_year)}${mDiary.month}${getString(R.string.main_month)}${mDiary.dayOfMonth}${getString(R.string.day_of_month)}"
-        mTvTitleTime.text = date
+
+        val displayDate = "${mDiary.year}${getString(R.string.main_year)}${mDiary.month}${getString(R.string.main_month)}${mDiary.dayOfMonth}${getString(R.string.day_of_month)}"
+        mTvTitleTime.text = displayDate
     }
 
     override fun setPresenter(presenter: DiaryEditContract.Presenter) {
@@ -74,14 +68,12 @@ internal class DiaryEditFragment : Fragment(), DiaryEditContract.View {
     @OnClick(R.id.appendTime, R.id.done_write)
     fun onButtonClick(v: View) {
         when (v.id) {
-            R.id.appendTime -> appendTimeInContent()
+            R.id.appendTime -> appendTimeToContent()
             R.id.done_write -> updateDiaryIfNeeded()
-            else -> {
-            }
         }
     }
 
-    private fun appendTimeInContent() {
+    private fun appendTimeToContent() {
         val now = Calendar.getInstance()
         val hour = now.get(Calendar.HOUR_OF_DAY)
         val minute = now.get(Calendar.MINUTE)
@@ -111,7 +103,6 @@ internal class DiaryEditFragment : Fragment(), DiaryEditContract.View {
         activity.setResult(Activity.RESULT_OK)
         activity.finish()
     }
-
 
     private fun updateValidDiaryCount() {
         val diaryCount = mPresenter.validDiaryCount()

@@ -1,9 +1,7 @@
 package com.example.neon.deardiary.diarylist
 
-import com.example.neon.deardiary.base.BasePresenter
 import com.example.neon.deardiary.base.BaseView
 import com.example.neon.deardiary.data.Diary
-
 import java.util.ArrayList
 import java.util.Calendar
 
@@ -16,7 +14,7 @@ internal interface DiaryListContract {
 
     }
 
-    interface Presenter : BasePresenter {
+    interface Presenter  {
         fun loadDiaries(c: Calendar)
 
         fun getDiary(c: Calendar): Diary?

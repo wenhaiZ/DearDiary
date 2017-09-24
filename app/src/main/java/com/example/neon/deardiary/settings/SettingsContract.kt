@@ -1,6 +1,5 @@
 package com.example.neon.deardiary.settings
 
-import com.example.neon.deardiary.base.BasePresenter
 import com.example.neon.deardiary.base.BaseView
 
 
@@ -9,7 +8,7 @@ internal interface SettingsContract {
         fun onDiaryDeleted()
     }
 
-    interface Presenter : BasePresenter {
+    interface Presenter {
         fun deleteAll()
     }
 }

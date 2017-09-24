@@ -1,13 +1,11 @@
 package com.example.neon.deardiary.notify
 
-import com.example.neon.deardiary.base.BasePresenter
 import com.example.neon.deardiary.base.BaseView
 import com.example.neon.deardiary.data.Diary
-
 import java.util.Calendar
 
 internal interface NotifyContract {
-    interface Presenter : BasePresenter {
+    interface Presenter {
         fun getDiary(c: Calendar): Diary?
 
         fun insertDiary(diary: Diary)

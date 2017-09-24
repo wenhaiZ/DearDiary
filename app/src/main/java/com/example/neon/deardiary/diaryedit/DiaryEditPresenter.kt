@@ -1,17 +1,12 @@
 package com.example.neon.deardiary.diaryedit
 
 import com.example.neon.deardiary.data.Diary
-import com.example.neon.deardiary.data.source.DataSource
-
+import com.example.neon.deardiary.data.DataSource
 
 internal class DiaryEditPresenter(private val mDataSource: DataSource?, private val mView: DiaryEditContract.View) : DiaryEditContract.Presenter {
 
     init {
         mView.setPresenter(this)
-    }
-
-    override fun start() {
-
     }
 
     override fun validDiaryCount(): Int = mDataSource !!.validDairyCount()

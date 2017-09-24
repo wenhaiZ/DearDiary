@@ -1,6 +1,6 @@
 package com.example.neon.deardiary.settings
 
-import com.example.neon.deardiary.data.source.DataSource
+import com.example.neon.deardiary.data.DataSource
 
 internal class SettingsPresenter(private val mDataSource: DataSource?, private val mView: SettingsContract.View) : SettingsContract.Presenter {
 
@@ -8,12 +8,8 @@ internal class SettingsPresenter(private val mDataSource: DataSource?, private v
         mView.setPresenter(this)
     }
 
-    override fun start() {
-
-    }
-
     override fun deleteAll() {
-        mDataSource!!.deleteAll()
+        mDataSource !!.deleteAll()
         mView.onDiaryDeleted()
     }
 }
