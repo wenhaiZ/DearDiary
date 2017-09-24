@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.example.neon.deardiary.splash.SplashActivity">
+    tools:context="com.wenhaiz.deardiary.splash.SplashActivity">
 
     <ImageView
         android:id="@+id/iv_splash"
         android:layout_width="match_parent"
         android:layout_height="320dp"
         android:layout_centerInParent="true"
-        android:src="@mipmap/splash"/>
+        android:src="@mipmap/splash"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/tv_version"
@@ -25,5 +24,5 @@
         android:layout_marginTop="40dp"
         android:text="V 1.0.0"
         android:textColor="@color/colorPrimary"
-        android:textSize="20sp"/>
+        android:textSize="20sp" />
 </RelativeLayout>

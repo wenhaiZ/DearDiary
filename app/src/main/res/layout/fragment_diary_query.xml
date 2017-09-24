@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,23 +22,22 @@
             android:background="#00000000"
             android:hint="@string/search_hint"
             android:maxLines="1"
-            android:padding="4dp"/>
+            android:padding="4dp" />
 
         <ImageView
             android:id="@+id/search_close_btn"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:focusable="true"
             android:gravity="center"
             android:padding="5dp"
             android:src="@mipmap/btn_search_close"
-            />
-
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/search_result_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
+        android:layout_height="wrap_content" />
 </LinearLayout>
