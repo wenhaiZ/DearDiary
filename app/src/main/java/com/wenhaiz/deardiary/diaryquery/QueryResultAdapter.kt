@@ -53,8 +53,8 @@ internal class QueryResultAdapter(private val mContext: Context) : RecyclerView.
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var mDateTV: TextView = itemView.findViewById(R.id.result_date) as TextView
-        var mTitleTV: TextView = itemView.findViewById(R.id.result_title) as TextView
-        var mContentTV: TextView = itemView.findViewById(R.id.result_content) as TextView
+        var mDateTV: TextView = itemView.findViewById(R.id.result_date)
+        var mTitleTV: TextView = itemView.findViewById(R.id.result_title)
+        var mContentTV: TextView = itemView.findViewById(R.id.result_content)
     }
 }

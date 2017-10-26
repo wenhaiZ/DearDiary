@@ -96,15 +96,15 @@ internal class DiaryListAdapter(private val mContext: Context) : RecyclerView.Ad
     }
 
     private inner class DiaryViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val mDayOfMonthTV: TextView = itemView.findViewById(R.id.day_of_month) as TextView
-        val mDayOfWeekTV: TextView = itemView.findViewById(R.id.week) as TextView
-        val mContentTV: TextView = itemView.findViewById(R.id.content) as TextView
-        val mTitleTV: TextView = itemView.findViewById(R.id.title) as TextView
-        val mEditTimeTV: TextView = itemView.findViewById(R.id.editTime) as TextView
+        val mDayOfMonthTV: TextView = itemView.findViewById(R.id.day_of_month)
+        val mDayOfWeekTV: TextView = itemView.findViewById(R.id.week)
+        val mContentTV: TextView = itemView.findViewById(R.id.content)
+        val mTitleTV: TextView = itemView.findViewById(R.id.title)
+        val mEditTimeTV: TextView = itemView.findViewById(R.id.editTime)
     }
 
     private inner class EmptyViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val mNullText: TextView = itemView.findViewById(R.id.null_content) as TextView
+        val mNullText: TextView = itemView.findViewById(R.id.null_content)
     }
 
     companion object {
