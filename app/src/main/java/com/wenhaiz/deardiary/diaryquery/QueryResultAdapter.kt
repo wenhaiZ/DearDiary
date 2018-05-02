@@ -12,17 +12,15 @@ import com.wenhaiz.deardiary.R
 import com.wenhaiz.deardiary.data.Diary
 import com.wenhaiz.deardiary.diaryedit.DiaryEditActivity
 import com.wenhaiz.deardiary.utils.StringUtil
-import java.util.ArrayList
+import java.util.*
 
 internal class QueryResultAdapter(private val mContext: Context) : RecyclerView.Adapter<QueryResultAdapter.ViewHolder>() {
-    private var mDiaryList: ArrayList<Diary> = ArrayList()
-
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(mContext).inflate(R.layout.item_query_result_list, parent, false)
         return ViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val diary = mDiaryList[position]
         val year = diary.year.toString()
         val month = diary.month.toString()
@@ -30,7 +28,7 @@ internal class QueryResultAdapter(private val mContext: Context) : RecyclerView.
         val hour = StringUtil.formatNumber(diary.hour)
         val minute = StringUtil.formatNumber(diary.minute)
         val time = "$year 年$month 月$dayOfMonth 日 $hour 时$minute 分"
-        holder?.apply {
+        holder.apply {
             mTitleTV.text = diary.title
             mContentTV.text = diary.content
             mDateTV.text = time
@@ -43,6 +41,8 @@ internal class QueryResultAdapter(private val mContext: Context) : RecyclerView.
             }
         }
     }
+
+    private var mDiaryList: ArrayList<Diary> = ArrayList()
 
 
     override fun getItemCount(): Int = mDiaryList.size
