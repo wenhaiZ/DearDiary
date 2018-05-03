@@ -8,17 +8,17 @@ Dear Diary 是我刚接触 SQLite 时做的一个非常简单的日记应用。
 
 如果你是一个 Android 初学者，刚接触了 SQLite，不妨拿这个项目来练练手，也欢迎提出 Issues.
 
-最新的版本中使用 ObjectBox 开源框架简化了数据库操作。 
+最新的版本中使用 [ObjectBox](http://objectbox.io/) 开源框架简化了数据库操作。 
 
 ## 软件截图
 <div>
-<img src="https://github.com/wenhaiz/DearDiary/blob/master/img/diary_list.png" alt="list" width="400" height="700"/>
-<img src="https://github.com/wenhaiz/DearDiary/blob/master/img/edit.png" alt="edit" width="400" height="700"/>
+<img src="https://github.com/wenhaiz/DearDiary/blob/master/img/diary_list.png" alt="list" width="270" height="540"/>
+<img src="https://github.com/wenhaiz/DearDiary/blob/master/img/edit.png" alt="edit" width="270" height="540"/>
 </div>
 
 <div>
-<img src="https://github.com/wenhaiz/DearDiary/blob/master/img/query_result.png" alt="query" width="400" height="700"/>
-<img src="https://github.com/wenhaiz/DearDiary/blob/master/img/settings.png" alt="settings" width="400" height="700"/>
+<img src="https://github.com/wenhaiz/DearDiary/blob/master/img/query_result.png" alt="query" width="270" height="540"/>
+<img src="https://github.com/wenhaiz/DearDiary/blob/master/img/settings.png" alt="settings" width="270" height="540"/>
 </div>
 
 ## 更新日志
