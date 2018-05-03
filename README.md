@@ -2,10 +2,13 @@
 ## 简介
 Dear Diary 是我刚接触 SQLite 时做的一个非常简单的日记应用。  
 
-项目最开始使用是 Java ,后来改成了 Kotlin。界面模仿了 iOS 上的日记应用《[素记](https://itunes.apple.com/us/app/%E7%B4%A0%E8%AE%B0-%E6%97%A5%E8%AE%B0%E6%9C%AC-%E7%AC%94%E8%AE%B0%E6%9C%AC-%E8%AE%B0%E4%BA%8B%E6%9C%AC/id1070487377?mt=8)》，架构方面参考了谷歌的 [todo-mvp](https://github.com/googlesamples/android-architecture/tree/todo-mvp/)。   
+项目最开始使用是 Java ,后来改成了 Kotlin，界面模仿了 iOS 上的日记应用《[素记](https://itunes.apple.com/us/app/%E7%B4%A0%E8%AE%B0-%E6%97%A5%E8%AE%B0%E6%9C%AC-%E7%AC%94%E8%AE%B0%E6%9C%AC-%E8%AE%B0%E4%BA%8B%E6%9C%AC/id1070487377?mt=8)》，架构方面参考了谷歌的 [mvp 架构](https://github.com/googlesamples/android-architecture/tree/todo-mvp/)。  
 
-这个应用的功能非常简单，就是写日记和查询日记，另外还有一个定时提醒功能，实现起来也不难。  
-如果你是一个 Android 初学者（当然我也是），刚接触了 SQLite，不妨拿这个项目来练练手，也欢迎提出 Issues.   
+这个应用的功能是日记撰写和查询，另外还有一个定时提醒功能，实现起来也不难。
+
+如果你是一个 Android 初学者，刚接触了 SQLite，不妨拿这个项目来练练手，也欢迎提出 Issues.
+
+最新的版本中使用 ObjectBox 开源框架简化了数据库操作。 
 
 ## 软件截图
 <div>
@@ -18,7 +21,12 @@ Dear Diary 是我刚接触 SQLite 时做的一个非常简单的日记应用。
 <img src="https://github.com/wenhaiz/DearDiary/blob/master/img/settings.png" alt="settings" width="400" height="700"/>
 </div>
 
-## 更新日志 
+## 更新日志
+
+### V 1.4.0  2018-05-03
+- 使用 `ObjectBox` 替换了原生 SQLite API
+- 优化代码
+
 ### V 1.3.1  2017-09-24
 - 使用 `Kotlin` 语言特性优化代码
 - 重命名包名为 `com.wenhaiz.deardiary`
