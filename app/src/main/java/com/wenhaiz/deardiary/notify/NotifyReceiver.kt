@@ -11,7 +11,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import com.wenhaiz.deardiary.R
 import com.wenhaiz.deardiary.data.Diary
-import com.wenhaiz.deardiary.data.LocalDataSource
+import com.wenhaiz.deardiary.data.ObjectBoxDataSource
 import com.wenhaiz.deardiary.diaryedit.DiaryEditActivity
 import com.wenhaiz.deardiary.settings.SettingsFragment
 import com.wenhaiz.deardiary.utils.Constant
@@ -23,7 +23,8 @@ internal class NotifyReceiver : BroadcastReceiver(), NotifyContract.View {
     private lateinit var mPresenter: NotifyContract.Presenter
 
     override fun onReceive(context: Context, intent: Intent) {
-        val dataSource = LocalDataSource.getInstance(context)
+//        val dataSource = LocalDataSource.getInstance(context)
+        val dataSource = ObjectBoxDataSource(context)
         mPresenter = NotifyPresenter(dataSource, this)
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)

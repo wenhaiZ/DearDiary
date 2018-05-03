@@ -91,12 +91,7 @@ class LocalDataSource private constructor(context: Context) : DataSource {
         })
     }
 
-    //检查给定日期是否早于当前时间
-    private fun isBefore(calendar: Calendar): Boolean {
-        val now = Calendar.getInstance()//获取当前日期
-        return calendar.get(Calendar.YEAR) < now.get(Calendar.YEAR) || calendar.get(Calendar.MONTH) < now.get(Calendar.MONTH)
 
-    }
 
     override fun queryByMonth(calendar: Calendar, callBack: DataSource.LoadDiariesCallBack) {
         val db = mDbHelper.readableDatabase

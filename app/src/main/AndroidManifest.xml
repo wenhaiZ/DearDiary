@@ -10,6 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:name=".MyApp"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
             android:name=".splash.SplashActivity"

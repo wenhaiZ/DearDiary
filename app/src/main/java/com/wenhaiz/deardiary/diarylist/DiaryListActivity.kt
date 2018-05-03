@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
 import com.wenhaiz.deardiary.R
-import com.wenhaiz.deardiary.data.LocalDataSource
+import com.wenhaiz.deardiary.data.ObjectBoxDataSource
 import com.wenhaiz.deardiary.utils.ActivityUtil
 
 class DiaryListActivity : AppCompatActivity() {
@@ -21,9 +21,10 @@ class DiaryListActivity : AppCompatActivity() {
             ActivityUtil.addFragmentToActivity(fragmentManager, diaryListFragment, R.id.list_container)
         }
 
-        val dataSource = LocalDataSource.getInstance(this)
+//        val dataSource = LocalDataSource.getInstance(this)
+        val dataSource = ObjectBoxDataSource(this)
         //create presenter
-        DiaryListPresenter(dataSource!!, diaryListFragment)
+        DiaryListPresenter(dataSource, diaryListFragment)
     }
 
 }

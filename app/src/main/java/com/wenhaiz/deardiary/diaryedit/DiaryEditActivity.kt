@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.wenhaiz.deardiary.R
 import com.wenhaiz.deardiary.data.Diary
-import com.wenhaiz.deardiary.data.LocalDataSource
+import com.wenhaiz.deardiary.data.ObjectBoxDataSource
 import com.wenhaiz.deardiary.utils.ActivityUtil
 
 class DiaryEditActivity : AppCompatActivity() {
@@ -24,13 +24,14 @@ class DiaryEditActivity : AppCompatActivity() {
             putSerializable(DATA_DIARY, diary)
         }
         //create dataSource
-        val dataSource = LocalDataSource.getInstance(this)
+//        val dataSource = LocalDataSource.getInstance(this)
+        val dataSource = ObjectBoxDataSource(this)
         //create presenter
         DiaryEditPresenter(dataSource, diaryEditFragment)
     }
 
     companion object {
-        val DATA_DIARY = "diary"
+        const val DATA_DIARY = "diary"
     }
 
 }

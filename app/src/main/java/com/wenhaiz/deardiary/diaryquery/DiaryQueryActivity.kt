@@ -3,7 +3,7 @@ package com.wenhaiz.deardiary.diaryquery
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.wenhaiz.deardiary.R
-import com.wenhaiz.deardiary.data.LocalDataSource
+import com.wenhaiz.deardiary.data.ObjectBoxDataSource
 import com.wenhaiz.deardiary.utils.ActivityUtil
 
 class DiaryQueryActivity : AppCompatActivity() {
@@ -16,9 +16,10 @@ class DiaryQueryActivity : AppCompatActivity() {
             diaryQueryFragment = DiaryQueryFragment()
             ActivityUtil.addFragmentToActivity(fragmentManager, diaryQueryFragment, R.id.query_container)
         }
-        val dataSource = LocalDataSource.getInstance(this)
+//        val dataSource = LocalDataSource.getInstance(this)
+        val objectBoxDataSource = ObjectBoxDataSource(this)
         //create presenter
-        DiaryQueryPresenter(diaryQueryFragment, dataSource)
+        DiaryQueryPresenter(diaryQueryFragment, objectBoxDataSource)
 
     }
 }

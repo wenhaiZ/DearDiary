@@ -2,17 +2,15 @@ package com.wenhaiz.deardiary.diarylist
 
 import com.wenhaiz.deardiary.data.DataSource
 import com.wenhaiz.deardiary.data.Diary
-import com.wenhaiz.deardiary.data.LocalDataSource
 import com.wenhaiz.deardiary.utils.LogUtil
 import java.util.ArrayList
 import java.util.Calendar
 
 
-internal class DiaryListPresenter(dataSource: LocalDataSource, private val mView: DiaryListContract.View) : DiaryListContract.Presenter {
-    private val mDataSource: DataSource
+internal class DiaryListPresenter(dataSource: DataSource, private val mView: DiaryListContract.View) : DiaryListContract.Presenter {
+    private val mDataSource: DataSource = dataSource
 
     init {
-        mDataSource = dataSource
         mView.setPresenter(this)
     }
 
