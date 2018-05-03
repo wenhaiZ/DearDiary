@@ -6,7 +6,9 @@ import android.app.FragmentManager
 
 object ActivityUtil {
     fun addFragmentToActivity(fragmentManager: FragmentManager, fragment: Fragment, id: Int) {
-        fragmentManager.beginTransaction().add(id, fragment).commit()
+        fragmentManager.beginTransaction()
+                .add(id, fragment)
+                .commit()
     }
 }
 

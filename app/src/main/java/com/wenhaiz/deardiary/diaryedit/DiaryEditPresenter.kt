@@ -1,7 +1,7 @@
 package com.wenhaiz.deardiary.diaryedit
 
-import com.wenhaiz.deardiary.data.Diary
 import com.wenhaiz.deardiary.data.DataSource
+import com.wenhaiz.deardiary.data.Diary
 
 internal class DiaryEditPresenter(private val mDataSource: DataSource?, private val mView: DiaryEditContract.View) : DiaryEditContract.Presenter {
 
@@ -12,7 +12,7 @@ internal class DiaryEditPresenter(private val mDataSource: DataSource?, private 
     override fun validDiaryCount(): Int = mDataSource !!.validDairyCount()
 
     override fun saveDiary(diary: Diary) {
-        mDataSource !!.updateDiary(diary, object : DataSource.UpdateDiaryCallback {
+        mDataSource ?.updateDiary(diary, object : DataSource.UpdateDiaryCallback {
             override fun onDiaryUpdated() {
                 mView.onDiaryUpdated()
             }

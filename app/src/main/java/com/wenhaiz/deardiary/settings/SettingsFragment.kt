@@ -162,7 +162,7 @@ internal class SettingsFragment : PreferenceFragment(), SettingsContract.View {
         override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
             val remindHour = StringUtil.formatNumber(hourOfDay)
             val remindMinute = StringUtil.formatNumber(minute)
-            val strRemindTime = remindHour + ":" + remindMinute
+            val strRemindTime = "$remindHour:$remindMinute"
             mPreferences.edit()
                     .putString(KEY_REMIND_TIME, strRemindTime)
                     .apply()
@@ -173,17 +173,17 @@ internal class SettingsFragment : PreferenceFragment(), SettingsContract.View {
     }
 
     companion object {
-        private val TAG = "SettingActivity"
-        private val KEY_DELETE_ALL = "delete_all"
-        val KEY_DIARY_COUNT = "diary_count"
-        val KEY_REMIND_SET = "remind_set"
-        val KEY_REMIND_TIME = "remind_time"
-        val KEY_REMIND_ID = "remind_id"
-        val KEY_LAST_TIME = "lastTime"
+        private const val TAG = "SettingActivity"
+        private const val KEY_DELETE_ALL = "delete_all"
+        const val KEY_DIARY_COUNT = "diary_count"
+        const val KEY_REMIND_SET = "remind_set"
+        const val KEY_REMIND_TIME = "remind_time"
+        const val KEY_REMIND_ID = "remind_id"
+        const val KEY_LAST_TIME = "lastTime"
 
         //发送通知的间隔24小时
-        val INTERVAL_DAY = (24 * 60 * 60 * 1000).toLong()
-        val REMIND_CODE = 0x123
-        val REMIND_ACTION = "com.example.neon.deardiary.Receiver"
+        const val INTERVAL_DAY = (24 * 60 * 60 * 1000).toLong()
+        const val REMIND_CODE = 0x123
+        const val REMIND_ACTION = "com.wenhaiz.deardiary.Receiver"
     }
 }

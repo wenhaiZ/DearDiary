@@ -47,6 +47,6 @@ internal class DiaryListPresenter(dataSource: DataSource, private val mView: Dia
     }
 
     companion object {
-        private val TAG = "DiaryListPresenter"
+        private const val TAG = "DiaryListPresenter"
     }
 }

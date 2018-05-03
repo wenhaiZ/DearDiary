@@ -109,7 +109,7 @@ internal class DiaryListAdapter(private val mContext: Context) : RecyclerView.Ad
 
     companion object {
         private val DAY_OF_WEEK = arrayOf("", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
-        private val VIEW_TYPE_DIARY = 0
-        private val VIEW_TYPE_EMPTY = 1
+        private const val VIEW_TYPE_DIARY = 0
+        private const val VIEW_TYPE_EMPTY = 1
     }
 }

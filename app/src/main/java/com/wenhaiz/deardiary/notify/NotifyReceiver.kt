@@ -23,7 +23,6 @@ internal class NotifyReceiver : BroadcastReceiver(), NotifyContract.View {
     private lateinit var mPresenter: NotifyContract.Presenter
 
     override fun onReceive(context: Context, intent: Intent) {
-//        val dataSource = SQLDataSource.getInstance(context)
         val dataSource = ObjectBoxDataSource(context)
         mPresenter = NotifyPresenter(dataSource, this)
 
@@ -43,6 +42,7 @@ internal class NotifyReceiver : BroadcastReceiver(), NotifyContract.View {
 
     }
 
+    @Suppress("DEPRECATION")
     private fun sendNotification(context: Context) {
         val today = Calendar.getInstance()
         var diary = mPresenter.getDiary(today)
@@ -94,7 +94,7 @@ internal class NotifyReceiver : BroadcastReceiver(), NotifyContract.View {
     }
 
     companion object {
-        private val TAG = "NotifyReceiver"
-        private val NOTIFICATION_ID = 6
+        private const val TAG = "NotifyReceiver"
+        private const val NOTIFICATION_ID = 6
     }
 }

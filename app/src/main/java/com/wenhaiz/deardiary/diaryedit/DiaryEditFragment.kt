@@ -65,22 +65,16 @@ internal class DiaryEditFragment : Fragment(), DiaryEditContract.View {
     }
 
 
-    @OnClick(R.id.appendTime, R.id.done_write)
-    fun onButtonClick(v: View) {
-        when (v.id) {
-            R.id.appendTime -> appendTimeToContent()
-            R.id.done_write -> updateDiaryIfNeeded()
-        }
-    }
-
-    private fun appendTimeToContent() {
+    @OnClick(R.id.appendTime)
+    fun appendTimeToContent() {
         val now = Calendar.getInstance()
         val hour = now.get(Calendar.HOUR_OF_DAY)
         val minute = now.get(Calendar.MINUTE)
         mEtDiaryContent.append("$hour${getString(R.string.hour)}$minute${getString(R.string.minute)}")
     }
 
-    private fun updateDiaryIfNeeded() {
+    @OnClick(R.id.done_write)
+    fun updateDiaryIfNeeded() {
         val newContent = mEtDiaryContent.text.toString()
         val newTitle = mEtDiaryTitle.text.toString()
         //如果标题或内容变化进行更新数据

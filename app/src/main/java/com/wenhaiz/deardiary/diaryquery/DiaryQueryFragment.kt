@@ -86,6 +86,6 @@ internal class DiaryQueryFragment : Fragment(), DiaryQueryContract.View {
     }
 
     companion object {
-        private val TAG = "DiaryQueryFragment"
+        private const val TAG = "DiaryQueryFragment"
     }
 }

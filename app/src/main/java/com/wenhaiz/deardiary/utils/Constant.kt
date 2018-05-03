@@ -5,5 +5,5 @@ package com.wenhaiz.deardiary.utils
  */
 
 object Constant {
-    val DIARY = "diary"
+    const val DIARY = "diary"
 }

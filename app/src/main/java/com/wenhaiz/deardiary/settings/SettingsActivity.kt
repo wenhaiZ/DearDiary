@@ -16,7 +16,6 @@ internal class SettingsActivity : AppCompatActivity() {
             settingsFragment = SettingsFragment()
             ActivityUtil.addFragmentToActivity(fragmentManager, settingsFragment, R.id.settings_container)
         }
-//        val dataSource = SQLDataSource.getInstance(this)
         val dataSource = ObjectBoxDataSource(this)
         //create the presenter
         SettingsPresenter(dataSource, settingsFragment)

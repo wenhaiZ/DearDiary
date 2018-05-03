@@ -101,25 +101,20 @@ internal class DiaryListFragment : Fragment(), DiaryListContract.View {
         mPresenter.loadDiaries(mCalendar)
     }
 
-    @OnClick(R.id.write_today, R.id.search, R.id.settings, R.id.chooseDate)
-    fun onClick(v: View) {
-        when (v.id) {
-            R.id.write_today -> {
-                editTodayDiary()
-            }
-            R.id.search -> {
-                val startQuery = Intent(activity, DiaryQueryActivity::class.java)
-                startActivity(startQuery)
-            }
-            R.id.settings -> {
-                val startSetting = Intent(activity, SettingsActivity::class.java)
-                startActivity(startSetting)
-            }
-            R.id.chooseDate -> showDatePickDialog()
-        }
+    @OnClick(R.id.settings)
+    fun goToSettings() {
+        val startSetting = Intent(activity, SettingsActivity::class.java)
+        startActivity(startSetting)
     }
 
-    private fun editTodayDiary() {
+    @OnClick(R.id.search)
+    fun goToSearch() {
+        val startSearch = Intent(activity, DiaryQueryActivity::class.java)
+        startActivity(startSearch)
+    }
+
+    @OnClick(R.id.write_today)
+    fun editTodayDiary() {
         val today = Calendar.getInstance()
         var diary: Diary? = mPresenter.getDiary(today)
         if (diary == null) {
@@ -137,7 +132,8 @@ internal class DiaryListFragment : Fragment(), DiaryListContract.View {
         startActivityForResult(intent, REQUEST_EDIT_DIARY)
     }
 
-    private fun showDatePickDialog() {
+    @OnClick(R.id.chooseDate)
+    fun showDatePickDialog() {
         val listener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             mCalendar.set(Calendar.YEAR, year)
             mCalendar.set(Calendar.MONTH, monthOfYear)
@@ -167,6 +163,6 @@ internal class DiaryListFragment : Fragment(), DiaryListContract.View {
     }
 
     companion object {
-        val REQUEST_EDIT_DIARY = 0x1
+        const val REQUEST_EDIT_DIARY = 0x1
     }
 }

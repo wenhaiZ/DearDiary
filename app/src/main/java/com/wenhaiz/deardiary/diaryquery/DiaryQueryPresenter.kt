@@ -1,9 +1,7 @@
 package com.wenhaiz.deardiary.diaryquery
 
-import com.wenhaiz.deardiary.data.Diary
 import com.wenhaiz.deardiary.data.DataSource
-import com.wenhaiz.deardiary.diaryquery.DiaryQueryContract
-
+import com.wenhaiz.deardiary.data.Diary
 import java.util.ArrayList
 
 internal class DiaryQueryPresenter(
