@@ -24,7 +24,7 @@ class DiaryEditActivity : AppCompatActivity() {
             putSerializable(DATA_DIARY, diary)
         }
         //create dataSource
-//        val dataSource = LocalDataSource.getInstance(this)
+//        val dataSource = SQLDataSource.getInstance(this)
         val dataSource = ObjectBoxDataSource(this)
         //create presenter
         DiaryEditPresenter(dataSource, diaryEditFragment)

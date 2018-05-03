@@ -12,7 +12,7 @@ import java.util.Calendar
  *  SQLite 数据源
  */
 
-class LocalDataSource private constructor(context: Context) : DataSource {
+class SQLDataSource private constructor(context: Context) : DataSource {
     private var mDbHelper: DiaryDbHelper = DiaryDbHelper(context)
 
     override fun updateDiary(diary: Diary, callback: DataSource.UpdateDiaryCallback) {
@@ -92,7 +92,6 @@ class LocalDataSource private constructor(context: Context) : DataSource {
             }
         })
     }
-
 
 
     override fun queryByMonth(calendar: Calendar, callBack: DataSource.LoadDiariesCallBack) {
@@ -200,15 +199,15 @@ class LocalDataSource private constructor(context: Context) : DataSource {
     }
 
     companion object {
-        private var mInstance: LocalDataSource? = null
+        private var sMInstance: SQLDataSource? = null
 
         @JvmStatic
-        fun getInstance(context: Context): LocalDataSource? {
-            if (mInstance == null) {
+        fun getInstance(context: Context): SQLDataSource? {
+            if (sMInstance == null) {
                 // no need to use synchronized lock
-                mInstance = LocalDataSource(context)
+                sMInstance = SQLDataSource(context)
             }
-            return mInstance
+            return sMInstance
         }
     }
 }

@@ -16,7 +16,7 @@ class DiaryQueryActivity : AppCompatActivity() {
             diaryQueryFragment = DiaryQueryFragment()
             ActivityUtil.addFragmentToActivity(fragmentManager, diaryQueryFragment, R.id.query_container)
         }
-//        val dataSource = LocalDataSource.getInstance(this)
+//        val dataSource = SQLDataSource.getInstance(this)
         val objectBoxDataSource = ObjectBoxDataSource(this)
         //create presenter
         DiaryQueryPresenter(diaryQueryFragment, objectBoxDataSource)

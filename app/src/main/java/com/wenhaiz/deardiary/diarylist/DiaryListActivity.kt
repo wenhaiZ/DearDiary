@@ -21,7 +21,7 @@ class DiaryListActivity : AppCompatActivity() {
             ActivityUtil.addFragmentToActivity(fragmentManager, diaryListFragment, R.id.list_container)
         }
 
-//        val dataSource = LocalDataSource.getInstance(this)
+//        val dataSource = SQLDataSource.getInstance(this)
         val dataSource = ObjectBoxDataSource(this)
         //create presenter
         DiaryListPresenter(dataSource, diaryListFragment)

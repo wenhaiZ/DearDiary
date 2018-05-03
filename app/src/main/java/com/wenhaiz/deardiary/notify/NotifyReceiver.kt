@@ -23,7 +23,7 @@ internal class NotifyReceiver : BroadcastReceiver(), NotifyContract.View {
     private lateinit var mPresenter: NotifyContract.Presenter
 
     override fun onReceive(context: Context, intent: Intent) {
-//        val dataSource = LocalDataSource.getInstance(context)
+//        val dataSource = SQLDataSource.getInstance(context)
         val dataSource = ObjectBoxDataSource(context)
         mPresenter = NotifyPresenter(dataSource, this)
 
