@@ -1,8 +1,10 @@
-package com.wenhaiz.deardiary.data
+package com.wenhaiz.deardiary.data.sql
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
+import com.wenhaiz.deardiary.data.DataSource
+import com.wenhaiz.deardiary.data.Diary
 import java.util.ArrayList
 import java.util.Calendar
 

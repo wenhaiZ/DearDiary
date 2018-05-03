@@ -3,7 +3,7 @@ package com.wenhaiz.deardiary.settings
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.wenhaiz.deardiary.R
-import com.wenhaiz.deardiary.data.ObjectBoxDataSource
+import com.wenhaiz.deardiary.data.objectbox.ObjectBoxDataSource
 import com.wenhaiz.deardiary.utils.ActivityUtil
 
 internal class SettingsActivity : AppCompatActivity() {

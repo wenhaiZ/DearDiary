@@ -1,7 +1,10 @@
-package com.wenhaiz.deardiary.data
+package com.wenhaiz.deardiary.data.objectbox
 
 import android.content.Context
 import com.wenhaiz.deardiary.MyApp
+import com.wenhaiz.deardiary.data.DataSource
+import com.wenhaiz.deardiary.data.Diary
+import com.wenhaiz.deardiary.data.Diary_
 import com.wenhaiz.deardiary.utils.LogUtil
 import io.objectbox.Box
 import java.util.Calendar

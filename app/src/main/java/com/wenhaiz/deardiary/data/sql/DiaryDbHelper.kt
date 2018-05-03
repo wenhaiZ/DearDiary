@@ -1,4 +1,4 @@
-package com.wenhaiz.deardiary.data
+package com.wenhaiz.deardiary.data.sql
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

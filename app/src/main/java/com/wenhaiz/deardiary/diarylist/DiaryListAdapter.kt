@@ -75,7 +75,7 @@ internal class DiaryListAdapter(private val mContext: Context) : RecyclerView.Ad
 
     override fun getItemViewType(position: Int): Int {
         val diary = mDiaries[position]
-        return if ("" == diary.content && "" == diary.title) {//日记内容为空
+        return if (diary.content.isBlank() && diary.title.isBlank()) {//日记内容为空
             VIEW_TYPE_EMPTY
         } else {
             VIEW_TYPE_DIARY

@@ -25,7 +25,7 @@ class SplashActivity : AppCompatActivity() {
         try {
             val packageInfo: PackageInfo = packageManager.getPackageInfo(packageName, 0)
             val versionName = packageInfo.versionName
-            val showVersionName = "V " + versionName
+            val showVersionName = "V $versionName"
             mTvVersion.text = showVersionName
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()

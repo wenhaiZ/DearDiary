@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.wenhaiz.deardiary.R
 import com.wenhaiz.deardiary.data.Diary
-import com.wenhaiz.deardiary.data.ObjectBoxDataSource
+import com.wenhaiz.deardiary.data.objectbox.ObjectBoxDataSource
 import com.wenhaiz.deardiary.utils.ActivityUtil
 
 class DiaryEditActivity : AppCompatActivity() {

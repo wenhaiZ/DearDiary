@@ -48,7 +48,7 @@ internal class DiaryEditFragment : Fragment(), DiaryEditContract.View {
         mEtDiaryTitle.setText(mDiary.title)
         mEtDiaryContent.setText(mDiary.content)
 
-        if ("" == mDiary.title) {
+        if (mDiary.title.isBlank()) {
             mEtDiaryTitle.requestFocus()
         } else {
             mEtDiaryContent.requestFocus()
