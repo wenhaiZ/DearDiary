@@ -29,9 +29,17 @@ interface DataSource {
 
     fun queryByDay(calendar: Calendar, callBack: LoadDiaryCallBack)
 
-    fun queryByMonth(calendar: Calendar, callBack: LoadDiariesCallBack)
+    fun queryByMonth(calendar: Calendar): List<Diary>
 
-    fun queryAndAddDefault(calendar: Calendar, callBack: LoadDiariesCallBack)
+    fun queryAndAddDefault(calendar: Calendar, callBack: LoadDiariesCallBack) {
+        val actualDiaryCount = getActualDiaryCount(calendar)
+        val savedDiaries = queryByMonth(calendar)
+        val queryResult = getEmptyDiaryList(actualDiaryCount, calendar)
+        if (savedDiaries.size < actualDiaryCount) {
+            replaceEmptyRecord(savedDiaries, queryResult)
+        }
+        callBack.onDiaryLoaded(queryResult)
+    }
 
     fun queryByKeyword(keyword: String, callBack: LoadDiariesCallBack)
 
@@ -44,5 +52,30 @@ interface DataSource {
         val now = Calendar.getInstance()//获取当前日期
         return calendar.get(Calendar.YEAR) < now.get(Calendar.YEAR)
                 || calendar.get(Calendar.MONTH) < now.get(Calendar.MONTH)
+    }
+
+    fun getEmptyDiaryList(count: Int, calendar: Calendar): ArrayList<Diary> {
+        val diaryList = ArrayList<Diary>(count)
+        //add empty diary
+        for (i in 1..count) {
+            calendar.set(Calendar.DAY_OF_MONTH, i)
+            diaryList.add(Diary.emptyDiary(calendar))
+        }
+        return diaryList
+    }
+
+    fun getActualDiaryCount(calendar: Calendar): Int {
+        return if (isBefore(calendar))
+            calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+        else
+            calendar.get(Calendar.DAY_OF_MONTH)
+    }
+
+    fun replaceEmptyRecord(savedDiaries: List<Diary>, queryResult: ArrayList<Diary>) {
+        for (i in 0 until savedDiaries.size) {
+            if (queryResult.contains(savedDiaries[i])) {
+                queryResult[savedDiaries[i].dayOfMonth - 1] = savedDiaries[i]
+            }
+        }
     }
 }

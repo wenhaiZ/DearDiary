@@ -8,11 +8,12 @@ import com.wenhaiz.deardiary.data.Diary
 import java.util.ArrayList
 import java.util.Calendar
 
+@Suppress("unused")
 /**
  *  SQLite 数据源
  */
 
-class SQLDataSource private constructor(context: Context) : DataSource {
+class SQLDataSource private constructor(context: Context) : DataSource{
     private var mDbHelper: DiaryDbHelper = DiaryDbHelper(context)
 
     override fun updateDiary(diary: Diary, callback: DataSource.UpdateDiaryCallback) {
@@ -40,6 +41,7 @@ class SQLDataSource private constructor(context: Context) : DataSource {
     override fun deleteAll() {
         val db = mDbHelper.writableDatabase
         db.delete(DiaryDbHelper.TABLE_NAME, null, null)
+        db.close()
     }
 
     private fun getDiaryFromCursor(cursor: Cursor): Diary {
@@ -64,52 +66,18 @@ class SQLDataSource private constructor(context: Context) : DataSource {
         return diaries
     }
 
-    //按月查询时，如果有记录为空，就添加一个默认的日记记录
-    override fun queryAndAddDefault(calendar: Calendar, callBack: DataSource.LoadDiariesCallBack) {
-        val isBefore = isBefore(calendar)
-        //设置查询边界
-        val diaryNumbers =
-                if (isBefore)
-                //获取当月最大天数
-                    calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-                else
-                //获取当前日期
-                    calendar.get(Calendar.DAY_OF_MONTH)
-
-        queryByMonth(calendar, object : DataSource.LoadDiariesCallBack {
-            override fun onDiaryLoaded(diaryList: ArrayList<Diary>) {
-                //如果记录数小于天数，为没有记录的日期添加默认值
-                if (diaryList.size < diaryNumbers) {
-                    addEmptyDiary(diaryNumbers, calendar)
-                    queryByMonth(calendar, callBack)
-                } else {
-                    callBack.onDiaryLoaded(diaryList)
-                }
-            }
-
-            override fun onDataNotAvailable() {
-                callBack.onDataNotAvailable()
-            }
-        })
-    }
-
-
-    override fun queryByMonth(calendar: Calendar, callBack: DataSource.LoadDiariesCallBack) {
+    override fun queryByMonth(calendar: Calendar): List<Diary> {
         val db = mDbHelper.readableDatabase
 
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH) + 1
         val selection = "${DiaryDbHelper.COLUMN_YEAR} ${DiaryDbHelper.OPERATOR_EQUAL} $year ${DiaryDbHelper.OPERATOR_AND} ${DiaryDbHelper.COLUMN_MONTH} ${DiaryDbHelper.OPERATOR_EQUAL} $month"
         val cursor = db.query(DiaryDbHelper.TABLE_NAME, null, selection, null, null, null, DiaryDbHelper.COLUMN_DAY_OF_MONTH)
-        if (cursor == null) {
-            callBack.onDataNotAvailable()
-            return
-        }
-
+                ?: return ArrayList()
         val diaries = getDiariesFromCursor(cursor)
-        callBack.onDiaryLoaded(diaries)
         cursor.close()
         db.close()
+        return diaries
     }
 
     override fun queryByDay(calendar: Calendar, callBack: DataSource.LoadDiaryCallBack) {
@@ -133,23 +101,6 @@ class SQLDataSource private constructor(context: Context) : DataSource {
         callBack.onDiaryGot(diary)
         cursor.close()
         db.close()
-    }
-
-    private fun addEmptyDiary(diaryNumbers: Int, calendar: Calendar) {
-        for (i in 1..diaryNumbers) {
-            calendar.set(Calendar.DAY_OF_MONTH, i)
-            queryByDay(calendar, object : DataSource.LoadDiaryCallBack {
-                override fun onDiaryGot(diary: Diary) {
-
-                }
-
-                override fun onDataNotAvailable() {
-                    val defaultDiary = Diary(calendar)
-                    insertDiary(defaultDiary)
-                }
-            })
-
-        }
     }
 
     override fun insertDiary(diary: Diary) {
@@ -184,7 +135,7 @@ class SQLDataSource private constructor(context: Context) : DataSource {
     }
 
     override fun validDairyCount(): Int {
-        val db = mDbHelper.writableDatabase
+        val db = mDbHelper.readableDatabase
         val columns = arrayOf(DiaryDbHelper.COLUMN_TITLE, DiaryDbHelper.COLUMN_CONTENT)
         val whereClause = "${DiaryDbHelper.COLUMN_CONTENT} ${DiaryDbHelper.OPERATOR_NOT_EQUAL} ${DiaryDbHelper.OPERATOR_ARGUMENT} ${DiaryDbHelper.OPERATOR_OR} ${DiaryDbHelper.COLUMN_TITLE} ${DiaryDbHelper.OPERATOR_NOT_EQUAL} ${DiaryDbHelper.OPERATOR_ARGUMENT}"
         val whereArgs = arrayOf("", "")
