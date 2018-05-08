@@ -72,9 +72,9 @@ class ObjectBoxDataSource(context: Context) : DataSource {
 
     override fun validDairyCount(): Int {
         return box.query()
-//                .notNull(Diary_.title)
-//                .or()
-//                .notNull(Diary_.content)
+                .notNull(Diary_.title)
+                .or()
+                .notNull(Diary_.content)
                 .build().find().size
     }
 }
