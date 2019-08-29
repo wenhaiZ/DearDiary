@@ -1,4 +1,5 @@
 # Dear Diary
+> 此项目不再做维护和更新
 ## 简介
 Dear Diary 是我刚接触 SQLite 时做的一个非常简单的日记应用。  
 
